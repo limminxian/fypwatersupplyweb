@@ -3,8 +3,7 @@
 <head>
 <?php
 include_once 'userClass.php';
-createTables();
-createSuperadmin();
+getdb();
 ?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
