@@ -2,7 +2,7 @@
 <html>
 <head>
 <?php
-include_once 'userClass.php';
+include_once 'config.php';
 getdb();
 //createTables();
 //createSuperadmin();

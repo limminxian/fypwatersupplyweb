@@ -244,6 +244,7 @@ FOREIGN KEY (HOMEOWNER) REFERENCES HOMEOWNER(ID)
 $con=getdb();
 try{
 mysqli_multi_query($con, $createTables);
+echo "table";
 }
 catch(exception $e){
 	echo "Connection failed: " . $e->getMessage();
