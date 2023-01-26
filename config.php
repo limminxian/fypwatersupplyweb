@@ -243,6 +243,7 @@ FOREIGN KEY (HOMEOWNER) REFERENCES HOMEOWNER(ID)
 ";
 $con=getdb();
 mysqli_multi_query($con, $createTables);
+echo getdb();
 }
 
 function createSuperadmin(){
