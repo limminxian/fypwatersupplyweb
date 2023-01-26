@@ -7,7 +7,7 @@ $db = "heroku_80d6ea926f679b3";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
-     //echo "Connected successfully"; 
+     echo "Connected successfully"; 
     }
 catch(exception $e)
     {
@@ -242,7 +242,12 @@ FOREIGN KEY (HOMEOWNER) REFERENCES HOMEOWNER(ID)
 );
 ";
 $con=getdb();
+try{
 mysqli_multi_query($con, $createTables);
+}
+catch(exception $e){
+	echo "Connection failed: " . $e->getMessage();
+}
 }
 
 function createSuperadmin(){
