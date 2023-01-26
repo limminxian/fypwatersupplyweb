@@ -3,7 +3,7 @@
 <head>
 <?php
 include_once 'userClass.php';
-getdb();
+//getdb();
 //createTables();
 //createSuperadmin();
 ?>
