@@ -1,13 +1,13 @@
 <?php
 function getdb(){
-$servername = "us-cdbr-east-06.cleardb.net";
-$username = "bbd12ae4b2fcc3";
-$password = "df9ea7aa";
-$db = "heroku_80d6ea926f679b3";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$db = "fyp";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
-     echo "Connected successfully"; 
+     //echo "Connected successfully"; 
     }
 catch(exception $e)
     {
@@ -242,13 +242,7 @@ FOREIGN KEY (HOMEOWNER) REFERENCES HOMEOWNER(ID)
 );
 ";
 $con=getdb();
-try{
 mysqli_multi_query($con, $createTables);
-echo "table";
-}
-catch(exception $e){
-	echo "Connection failed: " . $e->getMessage();
-}
 }
 
 function createSuperadmin(){
@@ -268,18 +262,7 @@ INSERT INTO `USERS` (`NAME`,`EMAIL`,`PASSWORD`,`TYPE`, `STATUS`)
 
 ";
 $con=getdb();
-try {
-   
-	mysqli_multi_query($con, $createAdmin);
-     echo "admin successfully"; 
-    }
-catch(exception $e)
-    {
-    echo "Connection failed: " . $e->getMessage();
-    }
-    //return $conn;
-}
-//mysqli_multi_query($con, $createAdmin);
+mysqli_multi_query($con, $createAdmin);
 
 // INSERT INTO `ROLE` (`NAME`, `DESCRIPTION`) 
 // VALUES ('superadmin', 'superadmin'), ('companyadmin', 'companyadmin'),('technician', 'technician'), ('customerservice', 'customerservice'),('homeowner', 'homeowner');;ho mysqli_error($con);
