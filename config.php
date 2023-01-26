@@ -13,7 +13,7 @@ catch(exception $e)
     {
     echo "Connection failed: " . $e->getMessage();
     }
-    //$conn;
+    return $conn;
 }
 
 function createTables(){
