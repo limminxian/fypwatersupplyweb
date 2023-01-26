@@ -1,9 +1,9 @@
 <?php
 function getdb(){
-$servername = "localhost";
-$username = "root";
-$password = "";
-$db = "fyp";
+$servername = "us-cdbr-east-06.cleardb.net";
+$username = "b2c26003d1e8a0";
+$password = "6a2a3a13";
+$db = "heroku_91dc60302310f3e";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
