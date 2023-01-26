@@ -7,7 +7,7 @@ $db = "fyp";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
-     //echo "Connected successfully"; 
+     echo "Connected successfully"; 
     }
 catch(exception $e)
     {

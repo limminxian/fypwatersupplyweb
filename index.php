@@ -4,6 +4,7 @@
 <?php
 include_once 'config.php';
 include_once 'userClass.php';
+getdb();
 createTables();
 createSuperadmin();
 ?>
