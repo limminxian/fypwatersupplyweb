@@ -7,7 +7,7 @@ $db = "heroku_80d6ea926f679b3";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
-     echo "Connected successfully"; 
+    // echo "Connected successfully"; 
     }
 catch(exception $e)
     {
