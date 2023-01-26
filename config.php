@@ -243,7 +243,11 @@ INSERT INTO `USERS` (`NAME`,`EMAIL`,`PASSWORD`,`TYPE`, `STATUS`)
 
 ";
 $con=getdb();
+try{
 mysqli_multi_query($con, $createAdmin);
+}catch(exception $e){
+	echo $e->getMessage();
+}
 
 // INSERT INTO `ROLE` (`NAME`, `DESCRIPTION`) 
 // VALUES ('superadmin', 'superadmin'), ('companyadmin', 'companyadmin'),('technician', 'technician'), ('customerservice', 'customerservice'),('homeowner', 'homeowner');;ho mysqli_error($con);
