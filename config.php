@@ -7,7 +7,7 @@ $db = "heroku_80d6ea926f679b3";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
-     echo "Connected successfully"; 
+     //echo "Connected successfully"; 
     }
 catch(exception $e)
     {
@@ -262,7 +262,18 @@ INSERT INTO `USERS` (`NAME`,`EMAIL`,`PASSWORD`,`TYPE`, `STATUS`)
 
 ";
 $con=getdb();
-mysqli_multi_query($con, $createAdmin);
+try {
+   
+	mysqli_multi_query($con, $createAdmin);
+     echo "admin successfully"; 
+    }
+catch(exception $e)
+    {
+    echo "Connection failed: " . $e->getMessage();
+    }
+    //return $conn;
+}
+//mysqli_multi_query($con, $createAdmin);
 
 // INSERT INTO `ROLE` (`NAME`, `DESCRIPTION`) 
 // VALUES ('superadmin', 'superadmin'), ('companyadmin', 'companyadmin'),('technician', 'technician'), ('customerservice', 'customerservice'),('homeowner', 'homeowner');;ho mysqli_error($con);
