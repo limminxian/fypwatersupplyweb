@@ -18,7 +18,7 @@ $(function(){
 	include_once 'userClass.php';
  ?>
  <body>
- <h1>Login</h1>
+ <h1>Login👥</h1>
   <br>
   <?php
   if(isset($_SESSION["error"])){
