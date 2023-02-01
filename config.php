@@ -3,7 +3,7 @@ function getdb(){
 $servername = "us-cdbr-east-06.cleardb.net";
 $username = "bbd12ae4b2fcc3";
 $password = "df9ea7aa";
-$db = "heroku_80d6ea926f679b3"; */
+$db = "heroku_80d6ea926f679b3"; 
 /*$servername = "localhost";
 $username = "root";
 $password = "";
