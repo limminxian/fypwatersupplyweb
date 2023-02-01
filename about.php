@@ -49,7 +49,7 @@ $(function(){
 <div class="container-fluid bg-2 text-center">
  <h3>FAQ</h3>
   <h3>How to register?</h3>
-  <p>click "register" to come on with us</p>
+  <p>click "register" to come on board with us</p>
 </div>
 
 <div class="container-fluid bg-3 text-center">
