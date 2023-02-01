@@ -20,7 +20,6 @@ function createTables(){
 
 // sql to create table
 $createTables = "
-
 CREATE TABLE IF NOT EXISTS ROLE (
 ID INT UNSIGNED AUTO_INCREMENT,
 NAME VARCHAR(30),
