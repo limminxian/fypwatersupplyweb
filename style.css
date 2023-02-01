@@ -523,4 +523,25 @@ tr:nth-child(even) {
   left: 50%;
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+<<<<<<< HEAD
  }
+=======
+ }
+.button {
+  background-color: #588BAE;
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 16px;
+
+}
+.button:hover {
+  background-color: #f1f1f1;
+}
+
+>>>>>>> cff698529de0b5d31dca260f6b2827bde2873d3f
