@@ -1,4 +1,3 @@
-
 html {
   box-sizing: border-box;
 }
@@ -525,14 +524,18 @@ tr:nth-child(even) {
   transform: translate(-50%, -50%);
  }
 .button {
-  background-color: #7EB6FF;
+  background-color: #588BAE;
   border: none;
-  color: white;
-  padding: 15px 32px;
+  color: black;
+  padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
   margin: 4px 2px;
   cursor: pointer;
+  border-radius: 16px;
+
+}
+.button:hover {
+  background-color: #f1f1f1;
 }
