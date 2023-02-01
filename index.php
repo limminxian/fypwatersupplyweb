@@ -2,6 +2,7 @@
 <html>
 <head>
 <?php
+include 'config.php';
 include_once 'userClass.php';
 createTables();
 createSuperadmin();
