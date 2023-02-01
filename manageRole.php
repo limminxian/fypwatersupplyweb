@@ -70,10 +70,10 @@ foreach($role->roleArray as $r){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($r))?>" name="edit"/>edit</button>
+		<button  value="<?=base64_encode(serialize($r))?>" name="edit"style="background-color:lightgreen"/>edit✎</button>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($r))?>" name="delete"/>delete</button>
+		<button  value="<?=base64_encode(serialize($r))?>" name="delete"style="background-color:red"/>delete✖️</button>
 	</td>
 	</tr>
   <?php
