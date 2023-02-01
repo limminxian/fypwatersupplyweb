@@ -48,6 +48,7 @@ $(function(){
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <div class="container-fluid bg-2 text-center">
  <h3>FAQ</h3>
   <h3>How to register?</h3>
@@ -84,10 +85,15 @@ $(function(){
   </div>
 >>>>>>> cff698529de0b5d31dca260f6b2827bde2873d3f
 =======
+=======
+>>>>>>> parent of 6fd00c5 (Update about.php)
 <div class="container-fluid bg-2 text-center">
  <h3>FAQ</h3>
   <h3>How to register?</h3>
   <p>click "register" to come on with us</p>
+<<<<<<< HEAD
+>>>>>>> parent of 6fd00c5 (Update about.php)
+=======
 >>>>>>> parent of 6fd00c5 (Update about.php)
 </div>
 
