@@ -1,9 +1,13 @@
 <?php
 function getdb(){
-$servername = "us-cdbr-east-06.cleardb.net";
+/* $servername = "us-cdbr-east-06.cleardb.net";
 $username = "bbd12ae4b2fcc3";
 $password = "df9ea7aa";
-$db = "heroku_80d6ea926f679b3";
+$db = "heroku_80d6ea926f679b3"; */
+$servername = "localhost";
+$username = "root";
+$password = "";
+$db = "fyp";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
@@ -133,6 +137,14 @@ USAGETIME INT,
 COMPANY INT UNSIGNED,
 PRIMARY KEY (ID),
 FOREIGN KEY (COMPANY) REFERENCES COMPANY(ID)
+);
+
+CREATE TABLE IF NOT EXISTS CHEMICALUSED (
+CHEMICAL INT UNSIGNED,
+AMOUNT INT,
+USEDATE DATETIME DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (ID),
+FOREIGN KEY (CHEMICAL) REFERENCES CHEMICAL(ID)
 );
 
 CREATE TABLE IF NOT EXISTS EQUIPTYPE (

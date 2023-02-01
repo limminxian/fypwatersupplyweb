@@ -745,6 +745,16 @@ class Chemical{
 			$_SESSION["errorView"]=mysqli_error($conn);
 		}
 	}
+	
+	function addChemicalStock($amount){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICALUSED` (`CHEMICAL`,`AMOUNT`) SELECT ?,?");
+		mysqli_stmt_bind_param($stmt,"dd",$this->id, $this->amount);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);
+		}
+	}
 }
 
 class Equipment{

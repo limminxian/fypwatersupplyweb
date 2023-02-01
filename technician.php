@@ -38,6 +38,12 @@ if (isset($_POST["addNew"])){
 	header("Location: addChemical.php");
 }
 
+if (isset($_POST["addused"])){
+	$t = unserialize(base64_decode($_POST["addused"]));
+	$_SESSION["chemical"]=$t;
+	header("Location: addChemicalStock.php");
+}
+
 $chemical = new Company();
 $chemical->getAllChemical();
 ?>
@@ -67,7 +73,7 @@ foreach($chemical->chemicalArray as $c){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="add"/>Add amount used</button>
+		<button  value="<?=base64_encode(serialize($c))?>" name="addused"/>Add amount used</button>
 	</td>
 	<td>
 		<button  value="<?=base64_encode(serialize($c))?>" name="view"/>View amount Used</button>
