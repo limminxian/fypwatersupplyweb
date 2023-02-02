@@ -58,7 +58,7 @@ $company->getAllHomeowner($company->id);
 		<input type="submit" name="clear" value="clear" />
 	</form>
 	<table>
-	  <tr>
+	 <tr bgcolor="#488AC7">
 		<th>ID</th>
 		<th>Name</th>
 		<th>Email</th>
@@ -100,7 +100,7 @@ $company->getAllHomeowner($company->id);
 	</form>
 	<br>
 	<table>
-	  <tr>
+	 <tr bgcolor="#488AC7">
 		<th>ID</th>
 		<th>Name</th>
 		<th>Number</th>
@@ -129,10 +129,13 @@ $company->getAllHomeowner($company->id);
 			<?php }
 		?>
 		<td>
-			<button  value="<?=base64_encode(serialize($h))?>" name="editHome"/>edit</button>
+			<center>
+			<button  value="<?=base64_encode(serialize($h))?>" class="edit"name="editHome"/>edit</button>
 		</td>
 		<td>
-			<button  value="<?=base64_encode(serialize($h))?>" name="deleteHome"/>delete</button>
+			<center>
+			<button  value="<?=base64_encode(serialize($h))?>" class="delete"name="deleteHome"/>delete</button>
+		  </center>
 		</td>
 		</tr>
 	  <?php
