@@ -54,7 +54,7 @@ $service->getAllRate($_SESSION["service"]);
 <a class="rightButton" href="createRate.php">Add new rates</a>
 
 <table>
-  <tr>
+ <tr bgcolor="#488AC7">
     <th>Effective date</th>
     <th>Rate</th>
 	<th></th>
@@ -77,10 +77,13 @@ foreach($service->ratesArray as $r){
 			
 			?>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" name="edit"/>edit</button>
+				<center>
+				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
 			</td>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" name="delete"/>delete</button>
+				<center>
+				<button  value="<?=base64_encode(serialize($r))?>" class="delete"name="delete"/>delete</button>
+	  </center>
 			</td>
 			<?php
 		}
