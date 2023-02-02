@@ -44,7 +44,7 @@ else{
 	$status = array("PENDING","ACTIVE","SUSPEND");
 	$prop = array("id","name","number","email","street","postalcode","description","noofstar");
 	<form method="post" action="">
-			<?php
+			
 	foreach($company as $key=>$value){
 		if(in_array($key,$prop)){
 			echo "<p>".$key. ": " .$value."</p>";
