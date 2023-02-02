@@ -100,7 +100,6 @@ else{
 	  <tr>
 		<th>Company Admin</th>
 		<th>Name</th>
-		<th>Number</th>
 		<th>Email</th>
 		<th>Street</th>
 		<th>Postal Code</th>
@@ -115,7 +114,7 @@ else{
 		?>
 	  <tr>
 		<?php
-			$properties = array('id', 'name', 'number', 'email', 'street', 'postalcode', 'description', 'status');
+			$properties = array('id', 'name', 'email', 'street', 'postalcode', 'description', 'status');
 			foreach ($properties as $prop) {?>
 				<td>
 					<?=$c->$prop?>
