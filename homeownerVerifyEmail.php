@@ -1,5 +1,5 @@
 <h1>Verfication</h1>
-<body>
+
 <div class="center bg-img">
 
 
