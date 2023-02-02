@@ -54,8 +54,8 @@ $company->getAllHomeowner($company->id);
 	<a class="rightButton" href="createStaff.php">Create Staff</a>
 	<form action="" method="post">
 		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
-		<input type="submit" name="search" value="search" />
-		<input type="submit" name="clear" value="clear" />
+		<input type="submit" class="edit"name="search" value="search" />
+		<input type="submit" class="delete"name="clear" value="clear" />
 	</form>
 	<table>
 	 <tr bgcolor="#488AC7">
