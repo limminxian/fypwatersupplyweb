@@ -183,11 +183,11 @@ else{
 		?>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" name="editHome"class="edit"/>edit</button>
+			<button  value="<?=base64_encode(serialize($h))?>"class="edit"name="editHome"/>edit</button>
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" name="deleteHome"class="delete"/>delete</button>
+			<button  value="<?=base64_encode(serialize($h))?>"class="delete" name="deleteHome"/>delete</button>
 		  </center>
 		</td>
 		</tr>
