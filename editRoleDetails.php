@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<title>Edit Roles</title> 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -17,7 +18,11 @@ $(function(){
 });
 </script>
 </head>
+<h1>Edit Roles</h1>
 <body>
+<div class="center bg-img">
+
+<form action="" method="post" class="formcontainer">
 <?php 
 include_once 'userClass.php';
 if(!isset($_SESSION['loginId'])){
@@ -78,7 +83,7 @@ else{
 		}
 	}?>
 	<br>
-				<input type="submit" name="submit" value="save" />
+				<input type="submit"class="formbutton" name="submit" value="save" />
 			</form>
 	<?php
 	if(isset($_POST["submit"])){
