@@ -96,7 +96,7 @@ $company->getAllHomeowner($company->id);
 <div id="Homeowner" class="tabcontent">
 <form action="" method="post">
 		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
-		<input type="submit" name="search" value="search" />
+		<input type="submit" class="edit"name="search" value="search" />
 	</form>
 	<br>
 	<table>
