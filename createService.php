@@ -6,7 +6,7 @@ include_once 'userClass.php';
 ?>
 
 <html>
-<title>IT for rent</title> 
+<title>create service</title> 
 
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,7 +26,7 @@ $(function(){
 
 </head>
 
-<h1>Register</h1>
+<h1>Create Service </h1>
 <?php
 if(isset($_POST["logout"])){
 	unset($_SESSION["loginId"]);
