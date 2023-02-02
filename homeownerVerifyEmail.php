@@ -1,3 +1,4 @@
+<h1>Verfication</h1>
 <style>
 @import url('https://fonts.googleapis.com/css?family=Raleway:200');
 
@@ -136,7 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 </form>
 
 <form action="" method="post">
-<br>Did not receive code? <input type="submit" class="edit"name="resend" value="Resend code" />
+<br>Did not receive code? <input type="submit" class="formbutton"name="resend" value="Resend code" />
 </form>
 <script>
 
