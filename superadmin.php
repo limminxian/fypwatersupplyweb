@@ -98,8 +98,8 @@ else{
 	<br>
 	<table>
 		
-	  <tr>
-		  <tr bgcolor="#488AC7">
+	
+		<tr bgcolor="#488AC7">
 		<th>Company Admin</th>
 		<th>Name</th>
 		<th>Number</th>
@@ -154,7 +154,7 @@ else{
 	<br>
 	<table>
 		<tr bgcolor="#488AC7">
-	  <tr>
+	  
 		<th>ID</th>
 		<th>Name</th>
 		<th>Number</th>
