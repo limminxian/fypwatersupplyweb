@@ -97,6 +97,7 @@ else{
 	</form>
 	<br>
 	<table>
+		<tr bgcolor="#488AC7">
 	  <tr>
 		<th>Company Admin</th>
 		<th>Name</th>
@@ -123,10 +124,13 @@ else{
 			<?php }
 		?>
 		<td>
-			<button  value="<?=base64_encode(serialize($c))?>" name="editComp"/>edit</button>
+			<center>
+			<button  value="<?=base64_encode(serialize($c))?>" name="editComp"class="edit"/>edit</button>
 		</td>
 		<td>
-			<button  value="<?=base64_encode(serialize($c))?>" name="deleteComp"/>delete</button>
+			<center>
+			<button  value="<?=base64_encode(serialize($c))?>" name="deleteComp"class="delete"/>delete</button>
+		  </center>
 		</td>
 		</tr>
 	  <?php
@@ -148,6 +152,7 @@ else{
 	?>
 	<br>
 	<table>
+		<tr bgcolor="#488AC7">
 	  <tr>
 		<th>ID</th>
 		<th>Name</th>
@@ -176,10 +181,13 @@ else{
 			<?php }
 		?>
 		<td>
-			<button  value="<?=base64_encode(serialize($h))?>" name="editHome"/>edit</button>
+			<center>
+			<button  value="<?=base64_encode(serialize($h))?>" name="editHome"class="edit"/>edit</button>
 		</td>
 		<td>
-			<button  value="<?=base64_encode(serialize($h))?>" name="deleteHome"/>delete</button>
+			<center>
+			<button  value="<?=base64_encode(serialize($h))?>" name="deleteHome"class="delete"/>delete</button>
+		  </center>
 		</td>
 		</tr>
 	  <?php
