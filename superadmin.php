@@ -97,8 +97,9 @@ else{
 	</form>
 	<br>
 	<table>
-		<tr bgcolor="#488AC7">
+		
 	  <tr>
+		  <tr bgcolor="#488AC7">
 		<th>Company Admin</th>
 		<th>Name</th>
 		<th>Number</th>
