@@ -54,7 +54,7 @@ $service->getAllService();
 <a class="rightButton" href="createServiceComp.php">Add new service</a>
 
 <table>
-  <tr>
+  <tr bgcolor="#488AC7">
     <th>Name</th>
     <th>Description</th>
     <th>Latest rate</th>
@@ -76,17 +76,20 @@ foreach($service->serviceArray as $r){
 			</td>
 		<?php }?>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" name="rates"/>rates</button>
+				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="rates"/>rates</button>
 			</td>
 			<?php
 		if(strcmp($r->createdby,"1")!=0){
 			
 			?>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" name="edit"/>edit</button>
+				<center>
+				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
 			</td>
+	                 <center>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" name="delete"/>delete</button>
+				<button  value="<?=base64_encode(serialize($r))?>" class="delete"name="delete"/>delete</button>
+	</center>
 			</td>
 			<?php
 		}
