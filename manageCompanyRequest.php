@@ -55,7 +55,7 @@ if(isset($_POST["back"])){
 
 ?>
 <table>
-  <tr>
+ <tr bgcolor="#488AC7">
     <th>Company Admin</th>
     <th>Name</th>
     <th>Number</th>
@@ -95,10 +95,13 @@ foreach($company->pendingCompanyArray as $c){
 		
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="accept"/>Accept</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="accept"/>Accept</button>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="reject"/>Reject</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="reject"/>Reject</button>
+	  </center>
 	</td>
   </tr><?php
 }?>
