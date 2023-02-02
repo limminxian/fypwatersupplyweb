@@ -1,4 +1,9 @@
 <h1>Verfication</h1>
+<body>
+<div class="center bg-img">
+
+<form action="" method="post" class="formcontainer">
+<?php 
 <style>
 @import url('https://fonts.googleapis.com/css?family=Raleway:200');
 
