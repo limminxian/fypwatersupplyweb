@@ -126,11 +126,11 @@ else{
 		?>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($c))?>" name="editComp"class="edit"/>edit</button>
+			<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="editComp"/>edit</button>
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($c))?>" name="deleteComp"class="delete"/>delete</button>
+			<button  value="<?=base64_encode(serialize($c))?>" class="delete"name="deleteComp"/>delete</button>
 		  </center>
 		</td>
 		</tr>
@@ -183,11 +183,11 @@ else{
 		?>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>"class="edit"name="editHome"/>edit</button>
+			<button  value="<?=base64_encode(serialize($h))?>" class="edit"name="editHome"/>edit</button>
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>"class="delete" name="deleteHome"/>delete</button>
+			<button  value="<?=base64_encode(serialize($h))?>" class="delete" name="deleteHome"/>delete</button>
 		  </center>
 		</td>
 		</tr>
