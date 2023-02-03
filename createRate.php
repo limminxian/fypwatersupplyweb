@@ -60,7 +60,7 @@ if (isset($_POST['submit'])) {
 
  
 <label for="effectdate">Effective date:</label>
-<input type="date" id="effectdate" name="effectdate">
+<input type="date" id="effectdate" name="effectdate"> <br>
 
 Rate: <input type="number" step="0.01" name="rate" placeholder="rate" class="form" required ><br>
  
