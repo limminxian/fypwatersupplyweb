@@ -37,7 +37,6 @@ if (isset($_POST['submit'])) {
 
 <div >
 <form action="" method="post" class="formcontainer">
-<div class="center bg-img">
 
 
  
