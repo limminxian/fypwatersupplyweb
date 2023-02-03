@@ -48,7 +48,7 @@ $service->getAllService();
 <a class="rightButton" href="createService.php">Add new service</a>
 
 <table>
-  <tr>
+<tr bgcolor="#488AC7">
     <th>ID</th>
     <th>Name</th>
     <th>Description</th>
@@ -69,10 +69,13 @@ foreach($service->serviceArray as $r){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($r))?>" name="edit"/>edit</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($r))?>" name="edit"class="edit"/>edit</button>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($r))?>" name="delete"/>delete</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($r))?>" name="delete"class="edit"/>delete</button>
+	  </center>
 	</td>
 	</tr>
   <?php
