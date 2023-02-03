@@ -22,11 +22,6 @@ include_once 'userClass.php';
 	</script>
 </head>
 <h1>Add Chemical</h1>
-	<body>
-	
-	<div class="center bg-img">
-
-<form action="" method="post" class="formcontainer">
 <?php 
 <?php
 if (isset($_POST['submit'])) {
@@ -42,6 +37,7 @@ if (isset($_POST['submit'])) {
 
 <div >
 <form action="" method="post" class="formcontainer">
+<div class="center bg-img">
 
 
  
