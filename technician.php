@@ -44,6 +44,12 @@ if (isset($_POST["addused"])){
 	header("Location: addChemicalStock.php");
 }
 
+if (isset($_POST["view"])){
+	$t = unserialize(base64_decode($_POST["view"]));
+	$_SESSION["chemical"]=$t;
+	header("Location: viewChemicalUsed.php");
+}
+
 $chemical = new Company();
 $chemical->getAllChemical();
 ?>

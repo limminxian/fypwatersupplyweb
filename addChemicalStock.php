@@ -26,7 +26,7 @@ include_once 'userClass.php';
 if (isset($_POST['submit'])) {
 	$amount = $_POST['amount'];
 	$c = $_SESSION["chemical"];
-	$c->addChemicalStock(array("amount"=>$amount));
+	$c->addChemicalStock($amount);
 	header("Location: technician.php");
 }
   

@@ -50,7 +50,7 @@ if (isset($_POST['submit'])) {
   
 
 ?>
-
+<body>
 <div class="center bg-img">
 
 <form action="" method="post" class="formcontainer">
@@ -76,7 +76,7 @@ Register allow:
 <input class="formbutton" type="submit" name="submit" value="Submit" />
 
 </form>
-</script>
+
 
 </div>
 </body>

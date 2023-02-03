@@ -554,6 +554,7 @@ class Staff extends User{
 	//properties
 	public $company;
 	public $ticketArray=[];
+	public $ticketTypeArray=[];
 	
 	function setStaff($staff){
 		foreach($staff as $key=>$value){
@@ -600,6 +601,26 @@ class Staff extends User{
 					$t = new Ticket();
 					$t->setTicket($r);
 					array_push($this->ticketArray,$t);
+				}
+			}
+		}
+	}
+	
+	function getAllTicketType(){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT * FROM TICKETTYPE WHERE COMPANY = (SELECT COMPANY FROM STAFF WHERE ID=?);");
+		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($c);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				$this->ticketTypeArray=[];
+				foreach ($rows as $r) {
+					$t = new Tickettype();
+					$t->setTicketType($r);
+					array_push($this->ticketTypeArray,$t);
 				}
 			}
 		}
@@ -684,11 +705,12 @@ class Ticket{
 	}
 }
 
-class Tikcettype{
+class Tickettype{
 	public $id;
 	public $name;
 	public $description;
-	public $toTech;
+	public $totech;
+	public $company;
 	
 	function setTicketType($tickettype){
 		foreach($tickettype as $key=>$value){
@@ -700,11 +722,29 @@ class Tikcettype{
 	function addTicketType($tickettype){
 		$this->setTicketType($tickettype);
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "INSERT INTO `TICKETTYPE` (`NAME`,`DESCRIPTION`,`TOTECH`) VALUES (?,?,?);" );
-		mysqli_stmt_bind_param($stmt,"ssd",$this->name,$this->description,$this->toTech);
+		$stmt = mysqli_prepare($conn, "INSERT INTO `TICKETTYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`COMPANY`) SELECT ?,?,?,COMPANY FROM `STAFF` WHERE `ID`=?;" );
+		mysqli_stmt_bind_param($stmt,"ssdd",$this->name,$this->description,$this->totech,$_SESSION['loginId']);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			echo mysqli_error($conn);
+			echo mysqli_error($conn);
 			$_SESSION["errorView"]=mysqli_error($conn);
+		}
+	}
+		
+	function updateTicketType($ticket){
+		foreach($ticket as $key=>$value){
+			$this->$key = $value;
+		}
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"UPDATE `TICKETTYPE` SET `NAME` = ? ,`DESCRIPTION` = ?,`TOTECH` = ? WHERE ID = ? ;");
+		mysqli_stmt_bind_param($stmt,"ssdd", $this->name,$this->description,$this->totech,$this->id);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($c);}
+		else{
+			mysqli_stmt_close($stmt);
+			$_SESSION["update"]=true;
 		}
 	}
 }
@@ -727,6 +767,7 @@ class Chemical{
 	public $id;
 	public $name;
 	public $amount;
+	public $chemicalUsedArray=[];
 	
 	function setChemical($chemical){
 		foreach($chemical as $key=>$value){
@@ -746,11 +787,28 @@ class Chemical{
 		}
 	}
 	
-	function addChemicalStock($amount){
+	function addChemicalStock($a){
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICALUSED` (`CHEMICAL`,`AMOUNT`) SELECT ?,?");
-		mysqli_stmt_bind_param($stmt,"dd",$this->id, $this->amount);
+		mysqli_stmt_bind_param($stmt,"dd",$this->id, $a);
 		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);
+		}
+	}
+	
+	function getChemicalUsed(){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT USEDATE, AMOUNT FROM CHEMICALUSED WHERE CHEMICAL=?;");
+		mysqli_stmt_bind_param($stmt,"d",$this->id);
+		mysqli_stmt_execute($stmt);
+		$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				$this->chemicalUsedArray=[];
+				foreach ($rows as $r) {
+					array_push($this->chemicalUsedArray,$r);
+				}
+			}
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
 		}

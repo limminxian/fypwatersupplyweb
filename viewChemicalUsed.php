@@ -11,14 +11,13 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<script>
 	$(function(){
-	  $("#nav-placeholder").load("navBarCust.php");
+	  $("#nav-placeholder").load("navBarTech.php");
 	});
 	</script>
 </head>
 <body>
 <?php 
 include_once 'userClass.php';
-$_SESSION["page"]="ticketType";
 if(!isset($_SESSION['loginId'])){
 	echo "Not allowed! Please login!";
 	?>
@@ -33,51 +32,43 @@ else{
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");
 	}
-	
-	if (isset($_POST["edit"])){
-		$t = unserialize(base64_decode($_POST["edit"]));
-		$_SESSION["ticket"]=$t;
-		header("Location: editTicketType.php");
-	}
 
-$tickettype = new Staff();
-$tickettype->getAllTicketType();
+	$c = $_SESSION["chemical"];
+	$c->getChemicalUsed();
+if (isset($_POST["add"])){
+	header("Location: addEquipmentStock.php");
+}
+
+if (isset($_POST["csv"])){
+	header("Location: addEquipmentCSV.php");
+}
+
 ?>
 <br>
-
-<a class="rightButton" href="createTicketType.php">Add new ticket</a>
-
 <table>
   <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>To Tech</th>
-    <th></th>
+    <th>Use date</th>
+    <th>Amount</th>
   </tr>	
   <form action="" method="post">
 <?php
-foreach($tickettype->ticketTypeArray as $r){
+foreach($c->chemicalUsedArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'name', 'description','totech');
+		$properties = array('USEDATE', 'AMOUNT');
 		foreach ($properties as $prop) {?>
 			<td>
-				<?=$r->$prop?>
+				<?=$c[$prop]?>
 			</td>
 		<?php }
 	?>
-	<td>
-		<button  value="<?=base64_encode(serialize($r))?>" name="edit"style="background-color:lightgreen"/>edit✎</button>
-	</td>
 	</tr>
   <?php
 }
 ?>
 
 </form>
-</table>
 </div>
 
 <?php 
