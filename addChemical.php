@@ -21,7 +21,13 @@ include_once 'userClass.php';
 	});
 	</script>
 </head>
-<h1>Register</h1>
+<h1>Add Chemical</h1>
+	<body>
+	
+	<div class="center bg-img">
+
+<form action="" method="post" class="formcontainer">
+<?php 
 <?php
 if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
