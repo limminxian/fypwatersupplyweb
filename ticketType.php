@@ -48,7 +48,7 @@ $tickettype->getAllTicketType();
 <a class="rightButton" href="createTicketType.php">Add new ticket</a>
 
 <table>
-  <tr>
+ <tr bgcolor="#488AC7">
     <th>ID</th>
     <th>Name</th>
     <th>Description</th>
@@ -69,7 +69,9 @@ foreach($tickettype->ticketTypeArray as $r){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($r))?>" name="edit"style="background-color:lightgreen"/>edit✎</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($r))?>" name="edit"class="edit"/>edit</button>
+	  </center>
 	</td>
 	</tr>
   <?php
