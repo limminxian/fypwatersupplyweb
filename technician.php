@@ -55,7 +55,7 @@ $chemical->getAllChemical();
 ?>
 <br>
 <table>
-  <tr>
+ <tr bgcolor="#488AC7">
     <th>ID</th>
     <th>Name</th>
     <th>Amount</th>
@@ -79,16 +79,24 @@ foreach($chemical->chemicalArray as $c){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="addused"/>Add amount used</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="addused"/>Add amount used</button>
+	  </center>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="view"/>View amount Used</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="view"/>View amount Used</button>
+	</center>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="edit"/>edit</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="edit"/>edit</button>
+	</center>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="delete"/>delete</button>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="delete"/>delete</button>
+</center>
 	</td>
 	</tr>
   <?php
