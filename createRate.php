@@ -26,7 +26,7 @@ $(function(){
 
 </head>
 
-<h1>Register</h1>
+<h1>Add Rate</h1>
 <?php
 if(isset($_POST["logout"])){
 	unset($_SESSION["loginId"]);
