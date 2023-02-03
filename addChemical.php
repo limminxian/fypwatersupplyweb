@@ -22,7 +22,7 @@ include_once 'userClass.php';
 	</script>
 </head>
 <h1>Add Chemical</h1>
-<?php 
+<div class="center bg-img">
 <?php
 if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
