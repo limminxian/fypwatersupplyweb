@@ -21,7 +21,7 @@ include_once 'userClass.php';
 	});
 	</script>
 </head>
-<h1>Register</h1>
+<h1>Add chemical stock</h1>
 <?php
 if (isset($_POST['submit'])) {
 	$amount = $_POST['amount'];
