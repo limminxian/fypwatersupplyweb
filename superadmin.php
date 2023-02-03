@@ -92,8 +92,8 @@ else{
 <div id="Company" class="tabcontent">
 	<form action="" method="post">
 		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
-		<input type="submit" name="search" value="search" />
-		<input type="submit" name="clear" value="clear" />
+		<input type="submit" name="search" class="edit" value="search" />
+		<input type="submit" name="clear" class="edit" value="clear" />
 	</form>
 	<br>
 	<table>
@@ -146,7 +146,7 @@ else{
 
 	<form action="" method="post">
 		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
-		<input type="submit" name="search" value="search" />
+		<input type="submit" class="edit" name="search" value="search" />
 	</form>
     <?php
 	$homeowner->getAllHomeowner();
