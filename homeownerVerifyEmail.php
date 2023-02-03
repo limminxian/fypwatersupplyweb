@@ -1,6 +1,6 @@
 <h1>Verfication</h1>
 
-<div class="center bg-img">
+
 
 
 <style>
@@ -112,6 +112,7 @@ body {
 
 </style>
 
+<div class="center bg-img">
 <?php
 include_once 'userClass.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST')
@@ -141,7 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST')
 </form>
 
 <form action="" method="post">
-<br>Did not receive code? <input type="submit" class="formbutton"name="resend" value="Resend code" />
+<br>Did not receive code? <input type="submit" name="resend"class="edit" value="Resend code" />
 </form>
 <script>
 
