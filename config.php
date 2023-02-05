@@ -1,13 +1,13 @@
 <?php
 function getdb(){
-$servername = "us-cdbr-east-06.cleardb.net";
+/* $servername = "us-cdbr-east-06.cleardb.net";
 $username = "bbd12ae4b2fcc3";
 $password = "df9ea7aa";
-$db = "heroku_80d6ea926f679b3"; 
-/*$servername = "localhost";
+$db = "heroku_80d6ea926f679b3";  */
+$servername = "localhost";
 $username = "root";
 $password = "";
-$db = "fyp";*/
+$db = "fyp";
 try {
    
     $conn = mysqli_connect($servername, $username, $password, $db);
@@ -88,7 +88,9 @@ ID INT UNSIGNED AUTO_INCREMENT,
 NAME VARCHAR(50),
 DESCRIPTION VARCHAR(100),
 TOTECH BOOLEAN,
-PRIMARY KEY (ID)
+COMPANY INT UNSIGNED,
+PRIMARY KEY (ID),
+FOREIGN KEY (COMPANY) REFERENCES COMPANY(ID)
 );
 
 
@@ -143,7 +145,7 @@ CREATE TABLE IF NOT EXISTS CHEMICALUSED (
 CHEMICAL INT UNSIGNED,
 AMOUNT INT,
 USEDATE DATETIME DEFAULT CURRENT_TIMESTAMP,
-PRIMARY KEY (ID),
+PRIMARY KEY (USEDATE,CHEMICAL),
 FOREIGN KEY (CHEMICAL) REFERENCES CHEMICAL(ID)
 );
 

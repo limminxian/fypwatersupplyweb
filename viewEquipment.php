@@ -41,27 +41,27 @@ if (isset($_POST["view"])){
 }
 
 $equipment = new Company();
-$equipment->getAllequipment();
+$equipment->getAllEquipment();
 ?>
 <br>
 <table>
   <tr>
     <th>ID</th>
     <th>Name</th>
-    <th>Stock</th>
+    <th>Description</th>
     <th></th>
     <th></th>
     <th></th>
 	<th></th>
   </tr>	
   <form action="" method="post">
-  	<a class="rightButton" href="addChemical.php">Add new equipment</a>
+  	<a class="rightButton" href="addEquipment.php">Add new equipment</a>
 <?php
 foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'name', 'amount');
+		$properties = array('id', 'name', 'description');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
