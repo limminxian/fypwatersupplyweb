@@ -326,8 +326,8 @@ class Company extends User{
 		parent::addUser($company);
 		$admin=parent::getId();
 		$this->saveAcraFile();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ADMIN`) VALUES(?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"ssdsd",$this->compName, $this->street,$this->postalcode,$this->description,$admin);
+		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -472,12 +472,28 @@ class Company extends User{
 		$path = pathinfo($this->acrapath['name']);
 		$ext = $path['extension'];
 		$temp_name = $this->acrapath['tmp_name'];
+		$this->acrapath = $filename.".".$ext;
 		$path_filename_ext = $target_dir.$filename.".".$ext;
 		
 		// Check if file already exists
 		if (file_exists($path_filename_ext)) {}else{
 			move_uploaded_file($temp_name,$path_filename_ext);
+			
 		}
+	}
+	
+	function downloadAcraFile(){
+		$file = "acra/".$this->acrapath;
+		header('Content-Description: File Transfer');
+		header('Content-Type: application/octet-stream');
+		header('Content-Disposition: attachment; filename='.basename($file));
+		header('Expires: 0');
+		header('Cache-Control: must-revalidate');
+		header('Pragma: public');
+		header('Content-Length: ' . filesize($file));
+		ob_clean();
+		flush();
+		readfile($file);
 	}
 }
 
@@ -955,7 +971,7 @@ class DataManager{
 	
 	function getAllPendingCompany(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN' AND U.`STATUS` = 'PENDING' AND U.ID = C.ADMIN;");
+		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,C.ACRAPATH,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN' AND U.`STATUS` = 'PENDING' AND U.ID = C.ADMIN;");
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
@@ -973,7 +989,7 @@ class DataManager{
 	
 	function getAllCompany(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN;");
+		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,C.ACRAPATH,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN;");
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}

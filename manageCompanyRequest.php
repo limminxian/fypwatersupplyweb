@@ -80,8 +80,8 @@ if (isset($_POST["reject"])){
 	header("Refresh:0");
 }
 if (isset($_POST["download"])){
-	$c = unserialize(base64_decode($_POST["reject"]));
-	$c->appRejCompany("REJECT");
+	$c = unserialize(base64_decode($_POST["download"]));
+	$c->downloadAcraFile();
 	header("Refresh:0");
 }
 ?>
@@ -101,7 +101,7 @@ foreach($company->pendingCompanyArray as $c){
 	?>
 	<td>
 		<center>
-		<a href="acra/<?=$_SESSION['loginId']?>">Download</a>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="download"/>Download</button>
 	</td>
 	<td>
 		<center>

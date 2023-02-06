@@ -130,8 +130,6 @@ No. of people: <input type="number" class="form homeForm" name="people" placehol
 
 </form>
 
-
-
 <script>
 function homeownerFuntion() {
 	document.getElementById("companyForm").style.display = "none";
@@ -174,14 +172,21 @@ function checkPassword() {
 function checkFile(){
 	var filename = document.getElementById("fileToUpload").value;
 	var parts = filename.split('.');
-	return parts[parts.length - 1];
+	var ext = parts[parts.length - 1];
 	switch (ext.toLowerCase()) {
     case 'jpg':
     case 'pdf':
-      document.getElementById("repassword").setCustomValidity('');
+		document.getElementById("fileToUpload").setCustomValidity('');
+		break;
+	default:
+		document.getElementById("fileToUpload").setCustomValidity("Please upload a pdf or jpg file");
 	}
-	document.getElementById("repassword").setCustomValidity("Please upload a pdf or jpg file");
+		
+	
 }
+
+
+
 </script>
 
 </div>
