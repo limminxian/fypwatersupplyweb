@@ -112,6 +112,7 @@ $(function(){
 	<br>
 	<div class="centerButton">
 		<a class="button" href="about.php" name="read">Read more</button>
+		<br>
 	</div>
   </div>
 </div>
