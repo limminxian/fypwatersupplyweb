@@ -95,7 +95,7 @@ foreach($chemical->chemicalArray as $c){
 	</td>
 	<td>
 		<center>
-		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="delete"/>delete</button>
+		
 </center>
 	</td>
 	</tr>
