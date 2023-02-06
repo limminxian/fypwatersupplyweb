@@ -46,7 +46,7 @@ if (isset($_POST["csv"])){
 ?>
 <br>
 <table>
-  <tr>
+ <tr bgcolor="#488AC7">
     <th>Use date</th>
     <th>Amount</th>
   </tr>	
