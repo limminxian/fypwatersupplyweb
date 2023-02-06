@@ -47,7 +47,7 @@ if (isset($_POST["csv"])){
 ?>
 <br>
 <table>
-  <tr>
+<tr bgcolor="#488AC7">
     <th>ID</th>
     <th>serial</th>
     <th>purchasedate</th>
@@ -55,8 +55,8 @@ if (isset($_POST["csv"])){
     <th></th>
   </tr>	
   <form action="" method="post">
-  	<button name="add"/>Add new stock</button>
-  	<button name="csv"/>Add new stocks by batch (CSV)</button>
+  	<button name="add"class="class="edit"/>Add new stock</button>
+  	<button name="csv"class="edit"/>Add new stocks by batch (CSV)</button>
 <?php
 foreach($equipment->equipmentArray as $c){
 	?>
@@ -70,10 +70,10 @@ foreach($equipment->equipmentArray as $c){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="edit"/>edit</button>
+		<button  value="<?=base64_encode(serialize($c))?>" name="edit"class="edit"/>edit</button>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="delete"/>delete</button>
+		
 	</td>
 	</tr>
   <?php
