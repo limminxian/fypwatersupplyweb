@@ -45,7 +45,7 @@ $equipment->getAllEquipment();
 ?>
 <br>
 <table>
-  <tr>
+ <tr bgcolor="#488AC7">
     <th>ID</th>
     <th>Name</th>
     <th>Description</th>
@@ -69,13 +69,13 @@ foreach($equipment->equipmentArray as $c){
 		<?php }
 	?>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="view"/>View equipment stock</button>
+		<button  value="<?=base64_encode(serialize($c))?>" name="view"class="edit"/>View equipment stock</button>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="edit"/>edit</button>
+		<button  value="<?=base64_encode(serialize($c))?>" name="edit"class="edit"/>edit</button>
 	</td>
 	<td>
-		<button  value="<?=base64_encode(serialize($c))?>" name="delete"/>delete</button>
+		
 	</td>
 	</tr>
   <?php
