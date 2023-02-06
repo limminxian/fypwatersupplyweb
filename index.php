@@ -84,7 +84,7 @@ $(function(){
 						}
 					}
 					?>
-					<p class="rating"><?=$c->noofrate?> subsribers</p>
+					<p class="rating"><?=$c->noofrate?> subscribers</p>
 					<p><?=$c->description?></p>
 					<p><button class="button" name="learn">Learn more</button></p>
 				</div>
