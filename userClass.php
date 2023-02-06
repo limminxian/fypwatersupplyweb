@@ -532,7 +532,7 @@ class Homeowner extends User{
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
 		$mail->Username = 'simfyp22s404@gmail.com'; //gmail name
-		$mail->Password = 'prmwpmtvovnjmpui'; //gmail app password
+		$mail->Password = 'tzqbpagchkmgisoc'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
@@ -546,8 +546,6 @@ class Homeowner extends User{
 		$mail->Body = "This is your 6 digit code from fypwatersupply: ".$this->code.". Please use it to verify your email.";
 		
 		$mail->send();
-		
-		echo "success";
 	}
 	
 	function verifyEmail($code){
