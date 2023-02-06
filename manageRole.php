@@ -75,7 +75,7 @@ foreach($role->roleArray as $r){
 	</td>
 	<td>
 		<center>
-		<button  value="<?=base64_encode(serialize($r))?>" class="delete"name="delete"/>delete</button>
+		
 	  </center>
 	</td>
 	</tr>
