@@ -15,8 +15,9 @@ if (isset($_POST['submit'])) {
 		$description = $_POST['description'];
 		$compName = $_POST['compName'];
 		$UEN = $_POST['uen'];
+		$file = $_FILES["fileToUpload"];
 		$a = new Company();
-		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"role"=>$role));
+		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"acrapath"=>$file,"role"=>$role));
 	}else{
 		$block = $_POST['block'];
 		$unitno = $_POST['unit'];
@@ -53,7 +54,7 @@ $(function(){
 
 </head>
 <div class="center bg-img">
-<form action="" method="post" class="formcontainer">
+<form action="" method="post" class="formcontainer" enctype="multipart/form-data">
 
 Role:
 <input type="radio" value="companyadmin" id="companyadmin" name="role" onclick="companyFuntion()" required>

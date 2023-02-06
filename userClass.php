@@ -1,6 +1,14 @@
 <?php
 include_once 'config.php';
+	
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+require  'phpmailer/src/Exception.php';
+require  'phpmailer/src/PHPMailer.php';
+require  'phpmailer/src/SMTP.php';
 session_start();
+
 class Role {
 	// Properties
 	public $id;
@@ -298,6 +306,7 @@ class Company extends User{
 	public $description;
 	public $noofstar;
 	public $noofrate;
+	public $acrapath;
 	public $chemicalArray=[];
 	public $equipmentArray=[];
 	public $staffArray=[];
@@ -315,8 +324,10 @@ class Company extends User{
 		$this->setCompany($company);		
 		$conn = getdb();
 		parent::addUser($company);
+		$admin=parent::getId();
+		$this->saveAcraFile();
 		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ADMIN`) VALUES(?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"ssdsd",$this->compName, $this->street,$this->postalcode,$this->description,parent::getId());
+		mysqli_stmt_bind_param($stmt,"ssdsd",$this->compName, $this->street,$this->postalcode,$this->description,$admin);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -453,6 +464,21 @@ class Company extends User{
 			}
 		}
 	}
+	
+	function saveAcraFile(){
+		// Where the file is going to be stored
+		$target_dir = "acra/";
+		$filename = parent::getId();
+		$path = pathinfo($this->acrapath['name']);
+		$ext = $path['extension'];
+		$temp_name = $this->acrapath['tmp_name'];
+		$path_filename_ext = $target_dir.$filename.".".$ext;
+		
+		// Check if file already exists
+		if (file_exists($path_filename_ext)) {}else{
+			move_uploaded_file($temp_name,$path_filename_ext);
+		}
+	}
 }
 
 class Homeowner extends User{
@@ -486,6 +512,7 @@ class Homeowner extends User{
 			//echo substr($this->postalcode,0,2);
 		}
 		$this->code = rand(100000,999999);
+		$this->sendEmail();
 		parent::addUser($homeowner);
 		$conn = getdb();
 		//parent::addUser($homeowner);
@@ -496,6 +523,31 @@ class Homeowner extends User{
 		// mail($this->email,"My subject","try");
 		$_SESSION["addUser"]=true;
 		header("Location:login.php");
+	}
+	
+	function sendEmail(){
+		$mail = new PHPMailer(true);
+		
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPAuth = true;
+		$mail->Username = 'simfyp22s404@gmail.com'; //gmail name
+		$mail->Password = 'prmwpmtvovnjmpui'; //gmail app password
+		$mail->SMTPSecure = 'ssl';
+		$mail->Port = 465;
+		
+		$mail->setFrom('simfyp22s404@gmail.com');
+		
+		$mail->addAddress($this->email);
+		
+		$mail->isHTML(true);
+		
+		$mail->Subject = "Email verification code";
+		$mail->Body = "This is your 6 digit code from fypwatersupply: ".$this->code.". Please use it to verify your email.";
+		
+		$mail->send();
+		
+		echo "success";
 	}
 	
 	function verifyEmail($code){
