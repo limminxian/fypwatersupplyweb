@@ -1,14 +1,14 @@
 <?php
 function getdb(){
-$servername = "us-cdbr-east-06.cleardb.net";
+/* $servername = "us-cdbr-east-06.cleardb.net";
 $username = "bbd12ae4b2fcc3";
 $password = "df9ea7aa";
-$db = "heroku_80d6ea926f679b3"; 
+$db = "heroku_80d6ea926f679b3";  */
 
-/* $servername = "localhost";
+$servername = "localhost";
 $username = "root";
 $password = "";
-$db = "fyp"; */
+$db = "fyp";
 
 try {
    
@@ -176,8 +176,8 @@ FOREIGN KEY (COMPANY) REFERENCES COMPANY(ID)
 CREATE TABLE IF NOT EXISTS EQUIPMENT (
 ID INT UNSIGNED AUTO_INCREMENT,
 EQUIPMENT VARCHAR(20),
-QUANTITY INT,
 INSTALLATIONDATE DATE,
+UNINSTALLATIONDATE DATE,
 HOMEOWNER INT UNSIGNED,
 TASK INT UNSIGNED,
 PRIMARY KEY (ID),

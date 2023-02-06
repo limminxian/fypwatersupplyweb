@@ -89,7 +89,7 @@ Decription of Business: <input type="text" class="form compForm" name="descripti
 
 UEN: <input type="text" class="form compForm" name="uen" placeholder="UEN" required ><br>
 
-ACRA certificate: <input type="file" class="form compForm" name="fileToUpload" id="fileToUpload" required>
+ACRA certificate: <input type="file" class="form compForm" name="fileToUpload" id="fileToUpload" onchange="checkFile()" required>
 
 </div>
 
@@ -169,6 +169,18 @@ function checkPassword() {
 	else{
 		document.getElementById("repassword").setCustomValidity('');
 	}
+}
+
+function checkFile(){
+	var filename = document.getElementById("fileToUpload").value;
+	var parts = filename.split('.');
+	return parts[parts.length - 1];
+	switch (ext.toLowerCase()) {
+    case 'jpg':
+    case 'pdf':
+      document.getElementById("repassword").setCustomValidity('');
+	}
+	document.getElementById("repassword").setCustomValidity("Please upload a pdf or jpg file");
 }
 </script>
 

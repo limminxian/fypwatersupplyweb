@@ -572,6 +572,7 @@ class Homeowner extends User{
 	function resendCode(){
 		$this->code = rand(100000,999999);
 		$conn = getdb();
+		$this->sendEmail();
 		$stmt = mysqli_prepare($conn,"UPDATE `HOMEOWNER` SET `CODE` = ? WHERE ID = ?;");
 		mysqli_stmt_bind_param($stmt,"sd",$this->code,$_SESSION['loginId']);
 		mysqli_stmt_execute($stmt);
@@ -752,6 +753,10 @@ class Ticket{
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
 		}
+	}
+	
+	function approvedToTech(){
+		
 	}
 }
 
