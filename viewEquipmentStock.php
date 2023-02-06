@@ -55,7 +55,7 @@ if (isset($_POST["csv"])){
     <th></th>
   </tr>	
   <form action="" method="post">
-  	<button name="add"class="class="edit"/>Add new stock</button>
+  	<button name="add"class="edit"/>Add new stock</button>
   	<button name="csv"class="edit"/>Add new stocks by batch (CSV)</button>
 <?php
 foreach($equipment->equipmentArray as $c){
