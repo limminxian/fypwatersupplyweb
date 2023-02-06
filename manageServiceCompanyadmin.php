@@ -88,7 +88,7 @@ foreach($service->serviceArray as $r){
 			</td>
 	                 <center>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" class="delete"name="delete"/>delete</button>
+				
 	</center>
 			</td>
 			<?php
