@@ -111,7 +111,7 @@ $(function(){
     <p>Our company provides a platform for our homeowners and business owners where they can communicate with eachother and home owners can choose to subscribe to business services for water supply.</p>
 	<br>
 	<div class="centerButton">
-		<href="about.php" class="button" name="read">Read more</button>
+		<a class="button" href="about.php" name="read">Read more</button>
 	</div>
   </div>
 </div>
