@@ -26,9 +26,10 @@ include_once 'userClass.php';
 <?php
 if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
-	$amount = $_POST['amount'];
+	$amount = $_POST['measure'];
+	$measure = $_POST['amount'];
 	$c = new Chemical();
-	$c->addChemical(array("name"=>$name,"amount"=>$amount));
+	$c->addChemical(array("name"=>$name,"amount"=>$amount,"measure"=>$measure));
 	header("Location: technician.php");
 }
   
@@ -42,7 +43,16 @@ if (isset($_POST['submit'])) {
  
 Name: <input class="form" type="text" name="name" placeholder="Name" required ><br>
 Amount: <input class="form" type="number" name="amount" placeholder="Amount" required ><br>
+<label for="measure">Measure:</label>
 
+<select name="measure" id="measure" class="form"  required>
+  <option value="l">Litre(l)</option>
+  <option value="ml">milielitre(ml)</option>
+  <option value="gram">gram(g)</option>
+  <option value="fourRoomFlat">kilogram(kg)</option>
+  <option value="fiveRoomFlat">centimetercube(cm3)</option>
+</select>
+<br>
 
 <input class="formbutton" type="submit" name="submit" value="Submit" />
 </form>
