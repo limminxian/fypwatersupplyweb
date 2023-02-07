@@ -93,7 +93,8 @@ class Service {
 		mysqli_stmt_bind_param($stmt,"ssd", $this->name,$this->description,$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			$_SESSION["errorView"]=mysqli_error($c);}
+			$_SESSION["errorView"]=mysqli_error($c);
+			}
 		else{
 			mysqli_stmt_close($stmt);
 			$_SESSION["add"]=true;
@@ -1073,7 +1074,7 @@ class DataManager{
 		$conn = getdb();
 		
 		$s = explode(" ", $search);
-		$sql = "SELECT U.ID AS ID,U.NAME,NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN AND CONCAT_WS('',U.ID,U.NAME, STREET,POSTALCODE,C.DESCRIPTION) LIKE '%".$s[0]."%'";
+		$sql = "SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN AND CONCAT_WS('',U.ID,U.NAME, STREET,POSTALCODE,C.DESCRIPTION) LIKE '%".$s[0]."%'";
 		if(count($s)>1){
 			for($i=1;$i<count($s);$i++){
 				$sql .=" AND CONCAT_WS('',U.ID,U.NAME, STREET,POSTALCODE,C.DESCRIPTION) LIKE '%".$s[$i]."%'";

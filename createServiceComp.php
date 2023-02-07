@@ -38,13 +38,6 @@ if (isset($_POST['submit'])) {
 	//check role	
 	$a = new Service();
 	$result = $a->addService(array("name"=>$name,"description"=>$description));
-
-	if(isset($_SESSION["errorAddUser"]))
-	{
-		$a=strval($_SESSION["errorAddUser"]);
-		echo "<div class='error'>" . $a . "</div>" ;
-		UNSET($_SESSION["errorAddUser"]);
-	}
 	
 	header("Location: manageServiceCompanyadmin.php");
 	
