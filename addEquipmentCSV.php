@@ -10,8 +10,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
 </head>
 <body>
-	<h1>Add Equipment</h1>
-	<div class="center bg-img">
+	
+	
 <?php 
 include_once 'userClass.php';
 $_SESSION["page"]="viewEquipment";
@@ -30,6 +30,7 @@ else{
 		header("Location: login.php");
 	}
 ?>
+<div class="center bg-img">
     <div id="wrap">
         <div class="container">
             <div class="row">
