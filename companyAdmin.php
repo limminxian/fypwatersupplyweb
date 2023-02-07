@@ -84,7 +84,7 @@ $company->getAllHomeowner($company->id);
 			<button  value="<?=base64_encode(serialize($s))?>" class="edit"name="edit"/>Edit</button>
 		</td>
 		<td>
-			<button  value="<?=base64_encode(serialize($s))?>" class="delete"name="delete"/>Delete</button>
+			
 		</td>
 	  </tr><?php
 	}
@@ -134,7 +134,7 @@ $company->getAllHomeowner($company->id);
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" class="delete"name="deleteHome"/>delete</button>
+			
 		  </center>
 		</td>
 		</tr>

@@ -84,7 +84,7 @@ $(function(){
 						}
 					}
 					?>
-					<p class="rating"><?=$c->noofrate?> subsribers</p>
+					<p class="rating"><?=$c->noofrate?> subscribers</p>
 					<p><?=$c->description?></p>
 					<p><button class="button" name="learn">Learn more</button></p>
 				</div>
@@ -97,7 +97,7 @@ $(function(){
 <br>
 <br>
 <br>
-<h2>Homeowner location
+<h2>Homeowner location 📍
 <br>
 <img src="img/homeownerlocation.png" style="width:100%;">
 <br>
@@ -106,12 +106,13 @@ $(function(){
 <div class="aboutContainer">
   <img src="img/homeAboutBack.jpg" style="width:100%;" class="about">
   <div class="text-block">
-    <h1>Who we are</h1>
-    <h2>Get to know more about our company</h2>
-    <p>Our company provided both business owner and homeowner a platform to communicate with each other where homeowner could subscribe to business service for water supply.</p>
+    <h1>Who are we</h1>
+    <h2>Get to know more about our company!</h2>
+    <p>Our company provides a platform for our homeowners and business owners where they can communicate with eachother and home owners can choose to subscribe to business services for water supply.</p>
 	<br>
 	<div class="centerButton">
-		<button class="button" name="read">Read more</button>
+		<a class="button" href="about.php" name="read">Read more</button>
+		<br>
 	</div>
   </div>
 </div>

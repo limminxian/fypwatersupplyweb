@@ -130,8 +130,7 @@ else{
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($c))?>" class="delete"name="deleteComp"/>delete</button>
-		  </center>
+			
 		</td>
 		</tr>
 	  <?php
@@ -187,7 +186,7 @@ else{
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" class="delete" name="deleteHome"/>delete</button>
+			
 		  </center>
 		</td>
 		</tr>
