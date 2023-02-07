@@ -51,7 +51,7 @@ $(function(){
   $("#nav-placeholder").load("navBarIndex.php");
 });
 </script>
-	<h1>Register</h1>
+	<h1>Register👥</h1>
 </head>
 <div class="center bg-img">
 <form action="" method="post" class="formcontainer" enctype="multipart/form-data">
