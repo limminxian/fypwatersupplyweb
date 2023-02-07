@@ -30,12 +30,12 @@ $(function(){
   <div class="center bg-img">
   <form action="" method="post" class="formcontainer">
   <p>
-    <label for="email" >Email</label><br>
+    <label for="email" >Email:</label><br>
     <input class="form" type="text" name="email">
   </p>
   
   <p>
-      <label for="password">Password</label><br>
+      <label for="password">Password:</label><br>
       <input class="form" type="password" name="password" autocomplete="off">
  </p>
     <input class="formbutton" type="submit" name="submit" value="Login" />
