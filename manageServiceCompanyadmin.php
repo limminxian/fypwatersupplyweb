@@ -59,8 +59,6 @@ $service->getAllService();
     <th>Description</th>
     <th>Latest rate</th>
 	<th></th>
-	<th></th>
-    <th></th>
   </tr>	
   <form action="" method="post">
 <?php
@@ -82,7 +80,7 @@ foreach($service->serviceArray as $r){
 		if(strcmp($r->createdby,"1")!=0){
 			
 			?>
-			<td>
+			<!--td>
 				<center>
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
 			</td>
@@ -90,11 +88,11 @@ foreach($service->serviceArray as $r){
 			<td>
 				
 	</center>
-			</td>
+			</td-->
 			<?php
 		}
 		else{?>
-			<td></td><td></td></tr>
+			</tr>
 			<?php
 		}
 }

@@ -38,7 +38,7 @@ if (isset($_POST['submit'])) {
 	//check role	
 	$a = new Service();
 	$result = $a->addService(array("name"=>$name,"description"=>$description));
-	//header("Location: manageServiceSuperadmin.php");
+	header("Location: manageServiceSuperadmin.php");
 	
 }
   

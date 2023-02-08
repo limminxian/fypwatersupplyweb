@@ -596,7 +596,7 @@ class Homeowner extends User{
 		return TRUE;
 	}
 	
-	function changeStatus($status){
+/* 	function changeStatus($status){
 		$this->status=$status;
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn, "UPDATE `USERS` SET `STATUS`= ? WHERE `ID` =?;" );
@@ -605,12 +605,23 @@ class Homeowner extends User{
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
 		}
-	}
+	} */
 	
 	function deleteHomeowner(){
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn, "DELETE FROM HOMEOWNER WHERE `ID` =?;" );
 		mysqli_stmt_bind_param($stmt,"d",$this->id);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);
+		}
+	}
+	
+	function changeStatus($status){
+		$this->status=$status;
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "UPDATE `USERS` SET `STATUS`= ? WHERE `ID` =?;" );
+		mysqli_stmt_bind_param($stmt,"sd",$this->status,parent::getId());
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
@@ -653,6 +664,14 @@ class Staff extends User{
 		mysqli_stmt_bind_param($stmt,"sd",$this->password, $_SESSION['loginId']);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
+	}
+	
+	function changeStatus($status){
+		$this->status=$status;
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "UPDATE `USERS` SET `STATUS`= ? WHERE `ID` =?;" );
+		mysqli_stmt_bind_param($stmt,"sd",$this->status,$this->id);
+		mysqli_stmt_execute($stmt);
 	}
 	
 	function getAllTicket(){

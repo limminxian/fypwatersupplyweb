@@ -35,6 +35,12 @@ if(isset($_POST["logout"])){
 	unset($_SESSION["loginId"]);
 	header("Location: login.php");
 }
+
+if (isset($_POST["edit"])){
+		$t = unserialize(base64_decode($_POST["edit"]));
+		$t->changeStatus("SUSPEND");
+		/* header("Location: editHomeownerDetails.php");; */
+	}
 	
 $_SESSION["page"]="companyAdmin";
 
@@ -81,7 +87,7 @@ $company->getAllHomeowner($company->id);
 			<?php }
 		?>
 		<td>
-			<button  value="<?=base64_encode(serialize($s))?>" class="edit"name="edit"/>Edit</button>
+			<button  value="<?=base64_encode(serialize($s))?>" class="edit"name="edit"/>suspend</button>
 		</td>
 		<td>
 			
@@ -128,15 +134,15 @@ $company->getAllHomeowner($company->id);
 				</td>
 			<?php }
 		?>
-		<td>
+		<!--td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" class="edit"name="editHome"/>edit</button>
+			<button  value="<?=base64_encode(serialize($h))?>" class="edit"name="editHome"/>suspend</button>
 		</td>
 		<td>
 			<center>
 			
 		  </center>
-		</td>
+		</td-->
 		</tr>
 	  <?php
 	}
