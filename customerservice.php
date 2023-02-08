@@ -61,7 +61,7 @@ foreach($ticket->ticketArray as $t){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'name', 'date', 'type', 'status');
+		$properties = array('id', 'name', 'createdate', 'type', 'status');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$t->$prop?>

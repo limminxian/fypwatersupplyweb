@@ -449,7 +449,7 @@ class Company extends User{
 	
 	function getAllService(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT S.*, R.* FROM SERVICETYPE S LEFT JOIN (SELECT EFFECTDATE,RATE,SERVICE FROM SERVICERATE WHERE COMPANY=? ORDER BY EFFECTDATE DESC LIMIT 1)R ON R.SERVICE=S.ID WHERE CREATEDBY IN (1,?) ;");
+		$stmt = mysqli_prepare($conn,"SELECT S.*, R.* FROM SERVICETYPE S LEFT JOIN (SELECT EFFECTDATE,RATE,SERVICE FROM SERVICERATE WHERE COMPANY=? ORDER BY EFFECTDATE DESC LIMIT 1)R ON R.SERVICE=S.ID WHERE CREATEDBY IN (SELECT ID FROM USERS WHERE TYPE=(SELECT ID FROM ROLE WHERE NAME='superadmin'),?) ;");
 		mysqli_stmt_bind_param($stmt,"dd",$_SESSION["loginId"],$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -676,7 +676,7 @@ class Staff extends User{
 	
 	function getAllTicket(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, S.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` S, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = S.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='OPEN' AND S.ID = ?;");
+		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, ST.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` ST, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = ST.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='OPEN' AND S.ID = ?;");
 		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
