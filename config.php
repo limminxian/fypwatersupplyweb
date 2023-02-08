@@ -1,17 +1,17 @@
 <?php
 function getdb(){
-$servername = "us-cdbr-east-06.cleardb.net";
+/* $servername = "us-cdbr-east-06.cleardb.net";
 $username = "bbd12ae4b2fcc3";
 $password = "df9ea7aa";
-$db = "heroku_80d6ea926f679b3"; 
+$db = "heroku_80d6ea926f679b3";  */
 
-/* $servername = "us-cdbr-east-06.cleardb.net";
+$servername = "us-cdbr-east-06.cleardb.net";
 $username = "bc292174f8cae7";
 $password = "68916e25";
-$db = "heroku_a43ceec7a5c075b";  */
+$db = "heroku_a43ceec7a5c075b"; 
 
-/* 
-$servername = "localhost";
+
+/* $servername = "localhost";
 $username = "root";
 $password = "";
 $db = "fyp"; */
