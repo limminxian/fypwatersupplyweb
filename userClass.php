@@ -738,7 +738,7 @@ class Staff extends User{
 class Ticket{
 	public $id;
 	public $name;
-	public $date;
+	public $createdate;
 	public $type;
 	public $status;
 	public $description;
@@ -871,7 +871,7 @@ class Tickettype{
 }
 
 class Chat{
-	public $date;
+	public $createdate;
 	public $name;
 	public $ticketid;
 	public $text;
