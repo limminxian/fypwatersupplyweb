@@ -279,10 +279,11 @@ INSERT INTO `ROLE` (`NAME`,`DESCRIPTION`,`REGISTER`)
         (SELECT ID FROM `ROLE` WHERE NAME = 'superadmin');
 		
 INSERT INTO `USERS` (`NAME`,`EMAIL`,`PASSWORD`,`TYPE`, `STATUS`)
-    SELECT 'Admin1','admin@gmail.com','".$hashed."',1, 'ACTIVE'
-	FROM DUAL
+    SELECT 'Admin1','admin@gmail.com','".$hashed."',ROLE.ID, 'ACTIVE'
+	FROM DUAL, ROLE
     WHERE NOT EXISTS
-        (SELECT id FROM `USERS` WHERE EMAIL = 'admin@gmail.com');
+        (SELECT id FROM `USERS` WHERE EMAIL = 'admin@gmail.com')
+		AND ROLE.NAME='superadmin';
 
 ";
 $con=getdb();
