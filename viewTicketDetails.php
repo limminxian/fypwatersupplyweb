@@ -54,7 +54,7 @@
 				</form>
 				<?php
 			}
-			else if(strcmp($key,"chatArray")!=0){
+			else if(strcmp($key,"chatArray")!=0 AND strcmp($key,"techArray")!=0){
 				echo "<p>".$key. ": " .$a."</p>";
 			}
 		}
@@ -79,9 +79,16 @@
 			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		}
+		
+		if(isset($_POST["aprvTech"])){
+			$ticket->updateStatus("PENDING");
+			$c = unserialize(base64_decode($_POST["tech"]));
+			$c->approvedToTech($ticket->id);
+			header("Location: customerservice.php");
+		}
 
 		if(isset($_POST["close"])){
-			$ticket->closeTicket();
+			$ticket->updateStatus("CLOSE");
 			unset($_POST);
 			header("Location: customerservice.php");
 			exit;
@@ -94,16 +101,39 @@
 		}
 		
 		$ticket->getAllChat();
+		$ticket->getAllTechnician();
 	?>
     <body>
-	
+		
 		<form action="" method="post" class="formcontainer">
+				
+				<?php
+				$check=true;
+					?>
+					<select name="tech" id="tech">
+					<?php
+					foreach($ticket->techArray as $t){
+						if($check){
+					?>
+							<option value=<?=base64_encode(serialize($t))?> selected="selected"><?=$t->id." ".$t->name." ( least workload )"?></option>
+								<?php
+								$check=false;
+						}
+						else{
+							?>
+								<option value=<?=base64_encode(serialize($t))?>><?=$t->id." ".$t->name?></option>
+								<?php
+						}
+					}
+			
+				?>
+					</select>
 				<?php
 				// $ticettype = new Tickettype();
 				
 				if(in_array($ticket->type,array("maintenance","installation"))){
 				?>
-					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="submit"/>
+					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="aprvTech"/>
 				<?php
 				}
 				else{
@@ -113,7 +143,7 @@
 				}
 				?>
         </form>
-			
+		
 		<div id="wrapper">
             <div id="menu">
             </div>

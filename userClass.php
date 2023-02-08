@@ -621,6 +621,7 @@ class Homeowner extends User{
 class Staff extends User{
 	//properties
 	public $company;
+	public $workload;
 	public $ticketArray=[];
 	public $ticketTypeArray=[];
 	
@@ -635,7 +636,7 @@ class Staff extends User{
 		$this->setStaff($staff);
 		$conn = getdb();
 		if(parent::addUser($staff)){
-			$stmt = mysqli_prepare($conn,"INSERT INTO `Staff` (`ID`, `COMPANY`) SELECT ?,ID FROM COMPANY WHERE ADMIN=?;");
+			$stmt = mysqli_prepare($conn,"INSERT INTO `Staff` (`ID`, `WORKLOAD`, `COMPANY`) SELECT ?,0,ID FROM COMPANY WHERE ADMIN=?;");
 			mysqli_stmt_bind_param($stmt,"dd",$this->id, $_SESSION["loginId"]);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
@@ -656,7 +657,7 @@ class Staff extends User{
 	
 	function getAllTicket(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.DATE, P.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `TICKETTYPE` P, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = P.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='PENDING' AND S.ID = ?;");
+		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.DATE, P.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `TICKETTYPE` P, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = P.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='OPEN' AND S.ID = ?;");
 		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -702,6 +703,17 @@ class Staff extends User{
 		$result = mysqli_stmt_get_result($stmt);
 		return mysqli_fetch_array($result, MYSQLI_NUM)[0];
 	}
+	
+	function approvedToTech($ticket){
+		$this->type=$type;
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "UPDATE `STAFF` SET `WORKLOAD`= WORKLOAD + 1 WHERE `ID` =?;" );
+		$stmt2 = mysqli_prepare($conn, "INSERT INTO `TASK` (TECHNICIAN,TICKET) VALUES (?,?);" );
+		mysqli_stmt_bind_param($stmt,"d",parent::getId());
+		mysqli_stmt_bind_param($stmt2,"dd",parent::getId(),$ticket);
+		mysqli_stmt_execute($stmt);
+		mysqli_stmt_execute($stmt2);
+	}
 }
 
 class Ticket{
@@ -712,6 +724,7 @@ class Ticket{
 	public $status;
 	public $description;
 	public $chatArray=[];
+	public $techArray=[];
 	
 	function setTicket($ticket){
 		foreach($ticket as $key=>$value){
@@ -741,10 +754,11 @@ class Ticket{
 		}
 	}
 	
-	function closeTicket(){
+	function updateStatus($status){
+		$this->status=$status;
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "UPDATE `TICKET` SET `STATUS`= 'CLOSE' WHERE `ID` =?;" );
-		mysqli_stmt_bind_param($stmt,"d",$this->id);
+		$stmt = mysqli_prepare($conn, "UPDATE `TICKET` SET `STATUS`= ? WHERE `ID` =?;" );
+		mysqli_stmt_bind_param($stmt,"sd",$this->status,$this->id);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
@@ -772,8 +786,24 @@ class Ticket{
 		}
 	}
 	
-	function approvedToTech(){
-		
+	function getAllTechnician(){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "SELECT U.ID,NAME,WORKLOAD FROM USERS U , STAFF S WHERE U.ID=S.ID AND `COMPANY` =  (SELECT COMPANY FROM STAFF WHERE ID = ?) AND TYPE = (SELECT ID FROM ROLE WHERE NAME = 'technician') ORDER BY WORKLOAD;" );
+		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				$this->techArray=[];
+				foreach ($rows as $r) {
+					$h = new Staff();
+					$h->setStaff($r);
+					array_push($this->techArray,$h);
+				}
+			}
+		}
 	}
 }
 
