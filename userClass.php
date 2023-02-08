@@ -1147,7 +1147,7 @@ class DataManager{
 	
 	function getAllService(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT * FROM SERVICETYPE WHERE CREATEDBY IN (SELECT ID FROM USERS WHERE TYPE = (SELECT ID FROM ROLE WHERE NAME ='ADMIN') );");
+		$stmt = mysqli_prepare($conn,"SELECT * FROM SERVICETYPE WHERE CREATEDBY IN (SELECT ID FROM USERS WHERE TYPE = (SELECT ID FROM ROLE WHERE NAME ='SUPERADMIN') );");
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}

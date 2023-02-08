@@ -45,14 +45,16 @@ else{
 	
 	if (isset($_POST["editComp"])){
 		$t = unserialize(base64_decode($_POST["editComp"]));
+		$t->changeStatus("SUSPEND");
+		/* 
 		$_SESSION["company"]=$t;
-		header("Location: editCompanyDetails.php");;
+		header("Location: editCompanyDetails.php");; */
 	}
 	
 	if (isset($_POST["editHome"])){
 		$t = unserialize(base64_decode($_POST["editHome"]));
-		$_SESSION["homeowner"]=$t;
-		header("Location: editHomeownerDetails.php");;
+		$t->changeStatus("SUSPEND");
+		/* header("Location: editHomeownerDetails.php");; */
 	}
 	
 	if (isset($_POST["deleteComp"])){
@@ -109,7 +111,6 @@ else{
 		<th>Description</th>
 		<th>Status</th>
 		<th></th>
-		<th></th>
 	  </tr>	
 	  <form action="" method="post">
 	<?php
@@ -126,11 +127,7 @@ else{
 		?>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="editComp"/>edit</button>
-		</td>
-		<td>
-			<center>
-			
+			<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="editComp"/>SUSPEND</button>
 		</td>
 		</tr>
 	  <?php
@@ -182,7 +179,7 @@ else{
 		?>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" class="edit"name="editHome"/>edit</button>
+			<button  value="<?=base64_encode(serialize($h))?>" class="edit"name="editHome"/>SUSPEND</button>
 		</td>
 		<td>
 			<center>

@@ -52,8 +52,6 @@ $service->getAllService();
     <th>ID</th>
     <th>Name</th>
     <th>Description</th>
-    <th></th>
-    <th></th>
   </tr>	
   <form action="" method="post">
 <?php
@@ -68,15 +66,15 @@ foreach($service->serviceArray as $r){
 			</td>
 		<?php }
 	?>
-	<td>
+	<!--td>
 		<center>
-		<button  value="<?=base64_encode(serialize($r))?>" name="edit"class="edit"/>edit</button>
+		<button  value="<?=base64_encode(serialize($r))?>" name="edit"class="edit"/>SUSPEND</button>
 	</td>
 	<td>
 		<center>
 		
 	  </center>
-	</td>
+	</td-->
 	</tr>
   <?php
 }

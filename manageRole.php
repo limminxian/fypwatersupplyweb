@@ -53,8 +53,6 @@ $role->getAllRole();
     <th>Name</th>
     <th>Description</th>
     <th>Allow Register</th>
-    <th></th>
-    <th></th>
   </tr>	
   <form action="" method="post">
 <?php
@@ -69,15 +67,12 @@ foreach($role->roleArray as $r){
 			</td>
 		<?php }
 	?>
-	<td>
+	<!--td>
 		<center>
 		<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
-	</td>
-	<td>
-		<center>
-		
-	  </center>
-	</td>
+	</td-->
+
+
 	</tr>
   <?php
 }
