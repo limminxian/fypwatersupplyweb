@@ -754,7 +754,7 @@ class Ticket{
 	
 	function getAllChat(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT C.DATE, C.TICKET as ticketid, U.NAME, C.TEXT FROM `CHAT` C, `TICKET` T, `USERS` U WHERE C.TICKET=T.ID AND U.ID=C.SENDER AND T.ID=? ORDER BY C.DATE;");
+		$stmt = mysqli_prepare($conn,"SELECT C.CREATEDATE, C.TICKET as ticketid, U.NAME, C.TEXT FROM `CHAT` C, `TICKET` T, `USERS` U WHERE C.TICKET=T.ID AND U.ID=C.SENDER AND T.ID=? ORDER BY C.DATE;");
 		mysqli_stmt_bind_param($stmt,"d",$this->id);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
