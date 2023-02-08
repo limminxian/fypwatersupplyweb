@@ -57,7 +57,6 @@ $chemical->getAllChemical();
 <table>
  <tr bgcolor="#488AC7">
     <th>Name</th>
-    <th>Amount</th>
     <th></th>
     <th></th>
   </tr>	
@@ -68,7 +67,7 @@ foreach($chemical->chemicalArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('name', 'amount');
+		$properties = array('name');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
