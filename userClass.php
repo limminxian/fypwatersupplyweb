@@ -308,6 +308,7 @@ class Company extends User{
 	public $noofstar;
 	public $noofrate;
 	public $acrapath;
+	public $code;
 	public $chemicalArray=[];
 	public $equipmentArray=[];
 	public $staffArray=[];
@@ -327,7 +328,7 @@ class Company extends User{
 		parent::addUser($company);
 		$admin=parent::getId();
 		$this->saveAcraFile();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
+		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `CODE`,`ADMIN`) VALUES(?,?,?,?,?,?,?);");
 		mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
@@ -508,7 +509,6 @@ class Homeowner extends User{
 	public $postalcode;
 	public $housetype;
 	public $noofpeople;
-	public $code;
 	public $area;
 	public $card;
 	
@@ -533,8 +533,8 @@ class Homeowner extends User{
 		parent::addUser($homeowner);
 		$conn = getdb();
 		//parent::addUser($homeowner);
-		$stmt = mysqli_prepare($conn,"INSERT INTO `HOMEOWNER` (`ID`, `BLOCKNO`, `UNITNO`, `STREET`, `POSTALCODE`, `HOUSETYPE`, `NOOFPEOPLE`, `CODE`, `AREA`) VALUES(?,?,?,?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"dsssdsdds",$this->id, $this->block,$this->unitno,$this->street,$this->postalcode,$this->housetype,$this->people,$this->code,$this->area);
+		$stmt = mysqli_prepare($conn,"INSERT INTO `HOMEOWNER` (`ID`, `BLOCKNO`, `UNITNO`, `STREET`, `POSTALCODE`, `HOUSETYPE`, `NOOFPEOPLE`, `AREA`) VALUES(?,?,?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt,"dsssdsdds",$this->id, $this->block,$this->unitno,$this->street,$this->postalcode,$this->housetype,$this->people,$this->area);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 		// mail($this->email,"My subject","try");
