@@ -11,7 +11,7 @@ $(function(){
   $("#nav-placeholder").load("navBarTech.php");
 });
 </script>
-<h1>Please install the technician app to access the services
+<h1>Please install the technician app to access the services↴
 <img src="img/QRcode.png" >
 <?php
 session_start();

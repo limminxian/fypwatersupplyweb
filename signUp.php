@@ -51,7 +51,7 @@ $(function(){
   $("#nav-placeholder").load("navBarIndex.php");
 });
 </script>
-
+	<h1>Register</h1>
 </head>
 <div class="center bg-img">
 <form action="" method="post" class="formcontainer" enctype="multipart/form-data">
@@ -66,7 +66,7 @@ Role:
 <label for="homeowner">homeowner</label>
  <br>
  
-Userame: 
+Username: 
 <input class="form" type="text" name="name" placeholder="Your Name" required ><br>
 
 Password: <input class="form" type="password" id="password" name="password" placeholder="Password" oninvalid="this.setCustomValidity('Please provide a password that matched rules above');" pattern="^[^\s]*(?=\S{8,16})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])(?=\S*[\W])[^\s]*$" oninput="setCustomValidity('')" required >
