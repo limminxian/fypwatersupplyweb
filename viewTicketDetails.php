@@ -81,7 +81,7 @@
 		}
 		
 		if(isset($_POST["aprvTech"])){
-			$ticket->updateStatus("PENDING");
+			$ticket->updateStatus("OPEN");
 			$c = unserialize(base64_decode($_POST["tech"]));
 			$c->approvedToTech($ticket->id);
 			header("Location: customerservice.php");
