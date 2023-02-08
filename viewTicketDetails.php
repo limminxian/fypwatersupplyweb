@@ -154,7 +154,7 @@
 			?>
 			<div class='msgln'><span class='chat-time'>
 			<?php
-				echo $t->date;
+				echo $t->createdate;
 			?>
 			</span> <b class='user-name'>
 			<?php 
