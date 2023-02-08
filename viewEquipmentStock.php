@@ -48,11 +48,8 @@ if (isset($_POST["csv"])){
 <br>
 <table>
 <tr bgcolor="#488AC7">
-    <th>ID</th>
     <th>serial</th>
     <th>purchasedate</th>
-    <th></th>
-    <th></th>
   </tr>	
   <form action="" method="post">
   	<button name="add"class="edit"/>Add new stock</button>
@@ -62,19 +59,19 @@ foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'serial', 'purchasedate');
+		$properties = array('serial', 'purchasedate');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
 			</td>
 		<?php }
 	?>
-	<td>
+	<!--td>
 		<button  value="<?=base64_encode(serialize($c))?>" name="edit"class="edit"/>edit</button>
 	</td>
 	<td>
 		
-	</td>
+	</td-->
 	</tr>
   <?php
 }

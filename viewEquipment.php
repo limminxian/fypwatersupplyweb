@@ -46,13 +46,9 @@ $equipment->getAllEquipment();
 <br>
 <table>
  <tr bgcolor="#488AC7">
-    <th>ID</th>
     <th>Name</th>
     <th>Description</th>
     <th></th>
-    <th></th>
-    <th></th>
-	<th></th>
   </tr>	
   <form action="" method="post">
   	<a class="rightButton" href="addEquipment.php">Add new equipment</a>
@@ -61,7 +57,7 @@ foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'name', 'description');
+		$properties = array('name', 'description');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
@@ -71,12 +67,12 @@ foreach($equipment->equipmentArray as $c){
 	<td>
 		<button  value="<?=base64_encode(serialize($c))?>" name="view"class="edit"/>View equipment stock</button>
 	</td>
-	<td>
+	<!--td>
 		<button  value="<?=base64_encode(serialize($c))?>" name="edit"class="edit"/>edit</button>
 	</td>
 	<td>
 		
-	</td>
+	</td-->
 	</tr>
   <?php
 }

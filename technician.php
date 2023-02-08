@@ -56,13 +56,10 @@ $chemical->getAllChemical();
 <br>
 <table>
  <tr bgcolor="#488AC7">
-    <th>ID</th>
     <th>Name</th>
     <th>Amount</th>
     <th></th>
     <th></th>
-    <th></th>
-	<th></th>
   </tr>	
   <form action="" method="post">
   	<a class="rightButton" href="addChemical.php">Add new chemical</a>
@@ -71,7 +68,7 @@ foreach($chemical->chemicalArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'name', 'amount');
+		$properties = array('name', 'amount');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
@@ -88,7 +85,7 @@ foreach($chemical->chemicalArray as $c){
 		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="view"/>View amount Used</button>
 	</center>
 	</td>
-	<td>
+	<!--td>
 		<center>
 		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="edit"/>edit</button>
 	</center>
@@ -97,7 +94,7 @@ foreach($chemical->chemicalArray as $c){
 		<center>
 		
 </center>
-	</td>
+	</td-->
 	</tr>
   <?php
 }
