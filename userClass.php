@@ -676,7 +676,7 @@ class Staff extends User{
 	
 	function getAllTicket(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, P.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `TICKETTYPE` P, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = P.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='OPEN' AND S.ID = ?;");
+		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, S.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` S, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = S.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='OPEN' AND S.ID = ?;");
 		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
