@@ -62,7 +62,7 @@ $(function(){
 ?>
 		<div class="column">
 			<div class="card">
-				<img src="img/business<?=$c->id?>.jpg" class="companyphoto" >
+				<img src="img/business1<?=$c->id?>.jpg" class="companyphoto" >
 				<div class="container">
 					<h2><?=$c->compName?></h2>
 					<?php
