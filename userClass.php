@@ -534,7 +534,7 @@ class Homeowner extends User{
 		$conn = getdb();
 		//parent::addUser($homeowner);
 		$stmt = mysqli_prepare($conn,"INSERT INTO `HOMEOWNER` (`ID`, `BLOCKNO`, `UNITNO`, `STREET`, `POSTALCODE`, `HOUSETYPE`, `NOOFPEOPLE`, `AREA`) VALUES(?,?,?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"dsssdsdds",$this->id, $this->block,$this->unitno,$this->street,$this->postalcode,$this->housetype,$this->people,$this->area);
+		mysqli_stmt_bind_param($stmt,"dsssdsds",$this->id, $this->block,$this->unitno,$this->street,$this->postalcode,$this->housetype,$this->people,$this->area);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 		// mail($this->email,"My subject","try");
