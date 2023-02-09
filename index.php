@@ -29,15 +29,15 @@ $(function(){
 <div class="slideshow-container">
 
 <div class="bannerSlides fade">
-  <img src="img/homeslider1.png" class="slides" style="width:100%">
+  <img src="img/homeslider1.PNG" class="slides" style="width:100%">
 </div>
 
 <div class="bannerSlides fade">
-  <img src="img/homeslider2.png" class="slides" style="width:100%">
+  <img src="img/homeslider2.PNG" class="slides" style="width:100%">
 </div>
 
 <div class="bannerSlides fade">
-  <img src="img/homeslider3.png" class="slides" style="width:100%">
+  <img src="img/homeslider3.PNG" class="slides" style="width:100%">
 </div>
 
 <a class="prev" onclick="plusSlides(-1)"><</a>
