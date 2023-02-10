@@ -100,7 +100,7 @@ $(function(){
     <div class="card">
       <img src="img/business3.jpg" alt="John" style="width:72%">
       <div class="container">
-        <h2>Company 3</h2>
+        <h2>Company 3</h2> 
 		 <span class="fa fa-star checked"></span>
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star checked"></span>
@@ -117,6 +117,8 @@ $(function(){
 <br>
 <br>
 
+  <div class="aboutContainer">
+  <img src="img/homeAboutBack.jpg" style="width:100%;" class="about">
   <div class="text-block">
     <h1>Who are we</h1>
     <h2>Get to know more about our company!</h2>
