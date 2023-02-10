@@ -116,21 +116,14 @@ $(function(){
 </div>
 <br>
 <br>
-<h2>Homeowner location 📍
-<br>
-<img src="img/homeownerlocation.png" style="width:100%;">
-<br>
-<br>
-<br>
-<div class="aboutContainer">
-  <img src="img/homeAboutBack.jpg" style="width:100%;" class="about">
+
   <div class="text-block">
     <h1>Who are we</h1>
     <h2>Get to know more about our company!</h2>
     <p>Our company provides a platform for our homeowners and business owners where they can communicate with eachother and home owners can choose to subscribe to business services for water supply.</p>
 	<br>
 	<div class="centerButton">
-		<a class="button" href="about.php" name="read">Read more</button>
+		<a  href="about.php" name="read">Read more</button>
 		<br>
 	</div>
   </div>
