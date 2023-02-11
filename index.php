@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
 <?php
 include_once 'config.php';
 include_once 'userClass.php';
@@ -29,15 +35,15 @@ $(function(){
 <div class="slideshow-container">
 
 <div class="bannerSlides fade">
-  <img src="img/homeslider1.png" class="slides" style="width:100%">
+  <img src="img/homeslider1.PNG" class="slides" style="width:100%">
 </div>
 
 <div class="bannerSlides fade">
-  <img src="img/homeslider2.png" class="slides" style="width:100%">
+  <img src="img/homeslider2.PNG" class="slides" style="width:100%">
 </div>
 
 <div class="bannerSlides fade">
-  <img src="img/homeslider3.png" class="slides" style="width:100%">
+  <img src="img/homeslider3.PNG" class="slides" style="width:100%">
 </div>
 
 <a class="prev" onclick="plusSlides(-1)"><</a>
@@ -52,58 +58,66 @@ $(function(){
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
 
-<h2>Top rating company</h2>
-
+<h2 style="text-align:center">Our Top Rated Companies</h2>
 <div class="row">
-<?php
-	$company = new DataManager();
-	$company->getTopCompany(3);
-	foreach($company->topCompanyArray as $c){
-?>
-		<div class="column">
-			<div class="card">
-				<img src="img/business<?=$c->id?>.jpg" class="companyphoto" >
-				<div class="container">
-					<h2><?=$c->compName?></h2>
-					<?php
-					for($i=1;$i<=5;$i++){
-						if($c->noofstar < $i){
-							if(is_float($c->noofstar)&& (round($c->noofstar)==$i)){
-							?>
-								<img src="img/halfstar.png" class="star">
-							<?php
-							}else{
-							?>
-								<img src="img/emptystar.png" class="star">
-							<?php
-							}
-						}else{
-							?>
-								<img src="img/star.png" class="star">
-							<?php
-						}
-					}
-					?>
-					<p class="rating"><?=$c->noofrate?> subscribers</p>
-					<p><?=$c->description?></p>
-					<p><button class="button" name="learn">Learn more</button></p>
-				</div>
-			</div>
-		</div>
-<?php
-	}
-?>
+  <div class="column">
+    <div class="card">
+      <img src="img/business1.jpg" alt="Jane" style="width:70%">
+      <div class="container">
+        <h2>Company 1 </h2>
+        <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+        <p class="title">❝Bring fresh water to your homes❞<br>✔10 Subscribers</p>
+        <p>Services offered → water supply</p>
+        <p>company1@gmail.com</p>
+        <p><button class="button">Learn more</button></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div class="card">
+      <img src="img/business2.jpg" alt="Mike" style="width:76%">
+      <div class="container">
+        <h2>Company 2</h2>
+        <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+        <p class="title">❝Drink pure water, stay healthy❞<br>✔15 Subscribers</p>
+        <p>Services offered → water supply.</p>
+        <p>company2@gmail.com</p>
+        <p><button class="button">Learn more</button></p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="column">
+    <div class="card">
+      <img src="img/business3.jpg" alt="John" style="width:72%">
+      <div class="container">
+        <h2>Company 3</h2> 
+		 <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+        <p class="title">❝Bright futures begin with clean water❞<br>✔20 Subscribers</p>
+        <p>Services offered → water supply.</p>
+        <p>company3@gmail.com</p>
+        <p><button class="button">Learn more</button></p>
+      </div>
+    </div>
+  </div>
 </div>
 <br>
 <br>
-<br>
-<h2>Homeowner location 📍
-<br>
-<img src="img/homeownerlocation.png" style="width:100%;">
-<br>
-<br>
-<br>
-<div class="aboutContainer">
+
+  <div class="aboutContainer">
   <img src="img/homeAboutBack.jpg" style="width:100%;" class="about">
   <div class="text-block">
     <h1>Who are we</h1>
@@ -111,7 +125,7 @@ $(function(){
     <p>Our company provides a platform for our homeowners and business owners where they can communicate with eachother and home owners can choose to subscribe to business services for water supply.</p>
 	<br>
 	<div class="centerButton">
-		<a class="button" href="about.php" name="read">Read more</button>
+		<a  href="about.php" name="read">Read more</button>
 		<br>
 	</div>
   </div>
