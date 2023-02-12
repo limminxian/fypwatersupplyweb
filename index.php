@@ -7,6 +7,15 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Poppins", sans-serif}
+body {font-size: 16px;}
+img {margin-bottom: -8px;}
+.mySlides {display: none;}
+</style>
+	
 <?php
 include_once 'config.php';
 include_once 'userClass.php';
@@ -116,7 +125,18 @@ $(function(){
 </div>
 <br>
 <br>
-
+<!-- Clarity Section -->
+<div class="w3-padding-64 w3-light-grey">
+  <div class="w3-row-padding">
+    <div class="w3-col l4 m6">
+      <img class="w3-image w3-round-large w3-hide-small w3-grayscale" src="img/waterdroplet.jpg" alt="App" width="335" height="471">
+    </div>
+    <div class="w3-col l8 m6">
+      <h1 class="w3-jumbo"><b>Our Unique Capabilities</b></h1>
+      <h1 class="w3-xxxlarge w3-text-red"><b>why join us ?</b></h1>
+      <p><span class="w3-xlarge">A Leadership Team.</span> We are a dynamic team with alot of determination. We have experience in collaborating with many companies. We bring out the best abilities in the companies that have joined us and motivate them to work together in achieving a shared goal.Come on board with us and you will never look back!!.</p>
+    </div>
+  </div>
   <div class="aboutContainer">
   <img src="img/homeAboutBack.jpg" style="width:100%;" class="about">
   <div class="text-block">
