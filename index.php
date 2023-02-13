@@ -67,62 +67,49 @@ $(function(){
   <span class="dot" onclick="currentSlide(3)"></span> 
 </div>
 
-<h2 style="text-align:center">Our Top Rated Companies</h2>
-<div class="row">
-  <div class="column">
-    <div class="card">
-      <img src="img/business1.jpg" alt="Jane" style="width:70%">
-      <div class="container">
-        <h2>Company 1 </h2>
-        <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star"></span>
-        <p class="title">❝Bring fresh water to your homes❞<br>✔10 Subscribers</p>
-        <p>Services offered → water supply</p>
-        <p>company1@gmail.com</p>
-        <p><button class="button">Learn more</button></p>
-      </div>
-    </div>
-  </div>
+<h2>Top rating company</h2>
 
-  <div class="column">
-    <div class="card">
-      <img src="img/business2.jpg" alt="Mike" style="width:76%">
-      <div class="container">
-        <h2>Company 2</h2>
-        <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-        <p class="title">❝Drink pure water, stay healthy❞<br>✔15 Subscribers</p>
-        <p>Services offered → water supply.</p>
-        <p>company2@gmail.com</p>
-        <p><button class="button">Learn more</button></p>
-      </div>
-    </div>
-  </div>
-  
-  <div class="column">
-    <div class="card">
-      <img src="img/business3.jpg" alt="John" style="width:72%">
-      <div class="container">
-        <h2>Company 3</h2> 
-		 <span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-<span class="fa fa-star checked"></span>
-        <p class="title">❝Bright futures begin with clean water❞<br>✔20 Subscribers</p>
-        <p>Services offered → water supply.</p>
-        <p>company3@gmail.com</p>
-        <p><button class="button">Learn more</button></p>
-      </div>
-    </div>
-  </div>
+<div class="row">
+<?php
+	$company = new DataManager();
+	$company->getTopCompany(3);
+	foreach($company->topCompanyArray as $c){
+?>
+		<div class="column">
+			<div class="card">
+				<img src="img/business<?=$c->id?>.jpg" class="companyphoto" >
+				<div class="container">
+					<h2><?=$c->compName?></h2>
+					<?php
+					for($i=1;$i<=5;$i++){
+						if($c->noofstar < $i){
+							if(is_float($c->noofstar)&& (round($c->noofstar)==$i)){
+							?>
+								<img src="img/halfstar.png" class="star">
+							<?php
+							}else{
+							?>
+								<img src="img/emptystar.png" class="star">
+							<?php
+							}
+						}else{
+							?>
+								<img src="img/star.png" class="star">
+							<?php
+						}
+					}
+					?>
+					<p class="rating"><?=$c->noofrate?> subsribers</p>
+					<p><?=$c->description?></p>
+					<p><button class="button" name="learn">Learn more</button></p>
+				</div>
+			</div>
+		</div>
+<?php
+	}
+?>
 </div>
+<br>
 <br>
 <br>
 <!-- Clarity Section -->
