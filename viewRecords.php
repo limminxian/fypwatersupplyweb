@@ -51,7 +51,6 @@ $unsub = [];
 $data = new DataManager();
 $waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
 $c->getCumulativeSubscribers();
-var_dump($waterusage);
 $current = strtotime("-12 month");
 for($i=0;$i<12;$i++){
 	$check = false;

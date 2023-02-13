@@ -308,6 +308,7 @@ class Company extends User{
 	public $noofstar;
 	public $noofrate;
 	public $acrapath;
+	public $photopath;
 	public $code;
 	public $chemicalArray=[];
 	public $equipmentArray=[];
@@ -471,6 +472,23 @@ class Company extends User{
 	}
 	
 	function saveAcraFile(){
+		// Where the file is going to be stored
+		$target_dir = "acra/";
+		$filename = parent::getId();
+		$path = pathinfo($this->acrapath['name']);
+		$ext = $path['extension'];
+		$temp_name = $this->acrapath['tmp_name'];
+		$this->acrapath = $filename.".".$ext;
+		$path_filename_ext = $target_dir.$filename.".".$ext;
+		
+		// Check if file already exists
+		if (file_exists($path_filename_ext)) {}else{
+			move_uploaded_file($temp_name,$path_filename_ext);
+			
+		}
+	}
+	
+	function savePhotoFile(){
 		// Where the file is going to be stored
 		$target_dir = "acra/";
 		$filename = parent::getId();

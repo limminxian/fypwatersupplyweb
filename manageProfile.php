@@ -18,7 +18,7 @@
 <body>
 <?php 
 include_once 'userClass.php';
-$_SESSION["page"]="manageRole";
+$_SESSION["page"]="manageProfile";
 if(!isset($_SESSION['loginId'])){
 	echo "Not allowed! Please login!";
 	?>
@@ -33,72 +33,23 @@ else{
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");
 	}
+if (isset($_POST['submit'])) {
+	$file = $_FILES["fileToUpload"];
+	$a = new Company();
+	$result = $a->updateCompany(array("photopath"=>$file));
 	
-	if (isset($_POST["edit"])){
-		$t = unserialize(base64_decode($_POST["edit"]));
-		$_SESSION["role"]=$t;
-		header("Location: editRoleDetails.php");
-	}
-
-$role = new DataManager();
-$role->getAllRole();
+}
 ?>
 <br>
 
-<a class="rightButton" href="createRole.php">Add new role</a>
 
-<table>
-  <tr bgcolor="#488AC7">
-    <th>ID</th>
-    <th>Name</th>
-    <th>Description</th>
-    <th>Allow Register</th>
-  </tr>	
   <form action="" method="post">
-<?php
-foreach($role->roleArray as $r){
-	?>
-  <tr>
-	<?php
-		$properties = array('id', 'name', 'description','register');
-		foreach ($properties as $prop) {?>
-			<td>
-				<?=$r->$prop?>
-			</td>
-		<?php }
-	?>
-	<!--td>
-		<center>
-		<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
-	</td-->
-
-
-	</tr>
-  <?php
-}
-?>
-
+Profile photos: <input type="file" class="form compForm" name="fileToUpload" id="fileToUpload" onchange="checkFile()" required>
 </form>
-</table>
-</div>
 
 <?php 
 }
 ?>
- <script>
- function checkFile(){
-	var filename = document.getElementById("fileToUpload").value;
-	var parts = filename.split('.');
-	var ext = parts[parts.length - 1];
-	switch (ext.toLowerCase()) {
-    case 'jpg':
-    case 'png':
-		document.getElementById("fileToUpload").setCustomValidity('');
-		break;
-	default:
-		document.getElementById("fileToUpload").setCustomValidity("Please upload a png or jpg file");
-	}
- }
-</script> 
+   
 </body>
 </html> 
