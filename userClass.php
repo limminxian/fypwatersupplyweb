@@ -451,7 +451,7 @@ class Company extends User{
 	
 	function getAllService(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT S.*, R.* FROM SERVICETYPE S LEFT JOIN (SELECT EFFECTDATE,RATE,SERVICE FROM SERVICERATE WHERE COMPANY=? ORDER BY EFFECTDATE DESC LIMIT 1)R ON R.SERVICE=S.ID WHERE CREATEDBY IN (SELECT ID FROM USERS WHERE TYPE=(SELECT ID FROM ROLE WHERE NAME='superadmin'),?) ;");
+		$stmt = mysqli_prepare($conn,"SELECT S.*, R.* FROM SERVICETYPE S LEFT JOIN (SELECT EFFECTDATE,RATE,SERVICE FROM SERVICERATE WHERE COMPANY=? ORDER BY EFFECTDATE DESC LIMIT 1)R ON R.SERVICE=S.ID WHERE CREATEDBY IN ((SELECT ID FROM USERS WHERE TYPE=(SELECT ID FROM ROLE WHERE NAME='superadmin')),?) ;");
 		mysqli_stmt_bind_param($stmt,"dd",$_SESSION["loginId"],$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -918,11 +918,11 @@ class Chemical{
 		}
 	}
 	
-	function addChemical($chemical){
+	function addChemical($chemical,$admin){
 		$this->setChemical($chemical);
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICAL` (`NAME`,`AMOUNT`,`COMPANY`) SELECT ?,?,COMPANY FROM `STAFF` WHERE `ID`=?");
-		mysqli_stmt_bind_param($stmt,"sdd",$this->name, $this->amount,$_SESSION['loginId']);
+		mysqli_stmt_bind_param($stmt,"sdd",$this->name, $this->amount,$admin);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
@@ -956,11 +956,11 @@ class Chemical{
 		}
 	}
 	
-	function getChemicalAvgUse(){
+	function getPer1L($chemical, $company){
 		$chemicalused=[];
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT PER1LWATER FROM CHEMICAL WHERE COMPANY = (SELECT ID FROM COMPANY WHERE ADMIN = ?)");
-		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
+		$stmt = mysqli_prepare($conn,"SELECT PER1LWATER FROM CHEMICAL WHERE NAME=? AND COMPANY = (SELECT ID FROM COMPANY WHERE ADMIN = ?)");
+		mysqli_stmt_bind_param($stmt,"Sd",$chemcal,$company);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
@@ -971,6 +971,7 @@ class Chemical{
 					array_push($chemicalused,$r);
 				}
 			}
+			return $chemicalused;
 		}
 	}
 }
