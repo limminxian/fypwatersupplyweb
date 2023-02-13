@@ -37,7 +37,7 @@ else{
 	<form method="post" action="">
 		<select name="type" id="type" onchange="this.form.submit()">
 		<?php
-		$type = array("newsub","area","maintenance","revenue");
+		$type = array("total subscribers","area","maintenance","revenue");
 		foreach($type as $t){
 		?>
 			<option value=<?=$t?>><?=$t?></option>
@@ -47,21 +47,12 @@ else{
 		</select>
 	</form>
 <?php
-$dataPoints = array(
-	array("label"=> 'Jan', "y"=> 41),
-	array("label"=> 'Feb', "y"=> 35),
-	array("label"=> 'Mar', "y"=> 50),
-	array("label"=> 'Apr', "y"=> 45),
-	array("label"=> 'May', "y"=> 52),
-	array("label"=> 'Jun', "y"=> 68),
-	array("label"=> 'Jul', "y"=> 38),
-	array("label"=> 'Aug', "y"=> 71),
-	array("label"=> 'Sep', "y"=> 52),
-	array("label"=> 'Oct', "y"=> 60),
-	array("label"=> 'Nov', "y"=> 36),
-	array("label"=> 'Dec', "y"=> 49)
-);
-	
+$c=new Company();
+$dataPoints = [];
+$c->getCumulativeSubscribers();
+foreach ($c->subscribers as $s){
+	array_push($dataPoints,array("label"=> $s["YEARMONTH"], "y"=>(int)$s["CUMULATIVESUBSCRIBER"]));
+}
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -74,17 +65,14 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	exportEnabled: true,
 	theme: "light1", // "light1", "light2", "dark1", "dark2"
 	title:{
-		text: "New subscribers count in 2022"
-	},
-	axisY:{
-		includeZero: true
+		text: "Total subscribers count"
 	},
 	data: [{
 		type: "column", //change type to bar, line, area, pie, etc
-		//indexLabel: "{y}", //Shows y value on all Data Points
+		indexLabel: "{y}", //Shows y value on all Data Points
 		indexLabelFontColor: "#5A5757",
 		indexLabelPlacement: "outside",   
-		dataPoints: <?php echo json_encode($dataPoints, JSON_NUMERIC_CHECK); ?>
+		dataPoints: <?php echo json_encode($dataPoints); ?>
 	}]
 });
 chart.render();

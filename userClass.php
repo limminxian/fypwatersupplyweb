@@ -314,6 +314,7 @@ class Company extends User{
 	public $staffArray=[];
 	public $homeownerArray=[];
 	public $serviceArray=[];
+	public $subscribers=[];
 	
 	function setCompany($company){
 		foreach($company as $key=>$value){
@@ -496,6 +497,24 @@ class Company extends User{
 		ob_clean();
 		flush();
 		readfile($file);
+	}
+	
+	function getCumulativeSubscribers(){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"WITH SUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH),UNSUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH)  SELECT S.YEARMONTH,S.SUBSCRIBER,(SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)) AS CUMULATIVESUBSCRIBER FROM SUB S LEFT JOIN UNSUB U ON S.YEARMONTH = U.YEARMONTH;");
+		mysqli_stmt_bind_param($stmt,"dd",$_SESSION["loginId"],$_SESSION["loginId"]);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				$this->subscribers=[];
+				foreach ($rows as $r) {
+					array_push($this->subscribers,$r);
+				}
+			}
+		}
 	}
 }
 
