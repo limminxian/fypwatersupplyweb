@@ -92,7 +92,7 @@ window.onload = function chart() {
 				exportEnabled: true,
 				theme: "light1", // "light1", "light2", "dark1", "dark2"
 				title:{
-					text: "Subscribe count data"
+					text: "Subscribe count data in past 12 months"
 				},
 				legend:{
 					cursor: "pointer",

@@ -47,7 +47,7 @@ else{
 	}
 	
 $service = new Company();
-$service->getAllService();
+$s= $service->getAllService($_SESSION["loginId"]);
 ?>
 <br>
 
@@ -62,7 +62,7 @@ $service->getAllService();
   </tr>	
   <form action="" method="post">
 <?php
-foreach($service->serviceArray as $r){
+foreach($s as $r){
 	?>
   <tr>
 	<?php
