@@ -84,7 +84,7 @@ $company->getAllHomeowner($companyId);
 		</td>
 		<td>
 			<center>
-			<button  value="<?=base64_encode(serialize($h))?>" name="deleteHome"class="delete"/>delete</button>
+			
 		  </center>
 		</td>
 		</tr>
