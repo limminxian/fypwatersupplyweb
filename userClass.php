@@ -488,11 +488,12 @@ class Company extends User{
 		}
 	}
 	
-	function savePhotoFile(){
+	function savePhotoFile($photopath){
+		$this->photopath=photopath;
 		// Where the file is going to be stored
-		$target_dir = "acra/";
+		$target_dir = "companylogos/";
 		$filename = parent::getId();
-		$path = pathinfo($this->acrapath['name']);
+		$path = pathinfo($this->photopath['name']);
 		$ext = $path['extension'];
 		$temp_name = $this->acrapath['tmp_name'];
 		$this->acrapath = $filename.".".$ext;

@@ -18,7 +18,7 @@
 <body>
 <?php 
 include_once 'userClass.php';
-$_SESSION["page"]="manageProfile";
+$_SESSION["page"]="uploadLogo";
 if(!isset($_SESSION['loginId'])){
 	echo "Not allowed! Please login!";
 	?>
@@ -36,7 +36,7 @@ else{
 if (isset($_POST['submit'])) {
 	$file = $_FILES["fileToUpload"];
 	$a = new Company();
-	$result = $a->updateCompany(array("photopath"=>$file));
+	$result = $a->savePhotoFile(array("photopath"=>$file));
 	
 }
 ?>
