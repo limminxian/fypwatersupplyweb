@@ -11,7 +11,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 	<script>
 	$(function(){
-	  $("#nav-placeholder").load("navBarSuper.php");
+	  $("#nav-placeholder").load("navBarComp.php");
 	});
 	</script>
 </head>
@@ -29,27 +29,48 @@ if(!isset($_SESSION['loginId'])){
 
 } 
 else{
+	$a = new Company();
+	$p = $a->displayProfileImage($_SESSION["loginId"]);
+	
 	if(isset($_POST["logout"])){
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");
 	}
-if (isset($_POST['submit'])) {
-	$file = $_FILES["fileToUpload"];
-	$a = new Company();
-	$result = $a->savePhotoFile(array("photopath"=>$file));
 	
-}
+	if (isset($_POST['submit'])) {
+		$file = $_FILES["fileToUpload"];
+		$result = $a->savePhotoFile($file,$_SESSION["loginId"]);
+		
+	}
 ?>
 <br>
 
 
-  <form action="" method="post">
-Profile photos: <input type="file" class="form compForm" name="fileToUpload" id="fileToUpload" onchange="checkFile()" required>
-</form>
+  <form action="" method="post"  class="formcontainer" enctype="multipart/form-data">
+	Profile photos: <br>
+	<img src="companylogos/<?=$p?>" height="100">
+<input type="file" class="form compForm" name="fileToUpload" id="fileToUpload" onchange="checkFile()" required>
 
-<?php 
+	<br>
+	<input class="formbutton" type="submit" name="submit" value="Submit" />
+</form>
+<?php
 }
 ?>
-   
+<script>
+ function checkFile(){
+	var filename = document.getElementById("fileToUpload").value;
+	var parts = filename.split('.');
+	var ext = parts[parts.length - 1];
+	switch (ext.toLowerCase()) {
+    case 'jpg':
+    case 'png':
+		document.getElementById("fileToUpload").setCustomValidity('');
+		break;
+	default:
+		document.getElementById("fileToUpload").setCustomValidity("Please upload a png or jpg file");
+	}
+ }
+</script> 
 </body>
 </html> 

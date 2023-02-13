@@ -488,15 +488,15 @@ class Company extends User{
 		}
 	}
 	
-	function savePhotoFile($photopath){
-		$this->photopath=photopath;
+	function savePhotoFile($photopath,$admin){
+		$this->photopath=$photopath;
 		// Where the file is going to be stored
 		$target_dir = "companylogos/";
-		$filename = parent::getId();
+		$filename = $admin;
 		$path = pathinfo($this->photopath['name']);
 		$ext = $path['extension'];
-		$temp_name = $this->acrapath['tmp_name'];
-		$this->acrapath = $filename.".".$ext;
+		$temp_name = $this->photopath['tmp_name'];
+		$this->photopath = $filename.".".$ext;
 		$path_filename_ext = $target_dir.$filename.".".$ext;
 		
 		// Check if file already exists
@@ -504,6 +504,10 @@ class Company extends User{
 			move_uploaded_file($temp_name,$path_filename_ext);
 			
 		}
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "UPDATE COMPANY SET PHOTOPATH = ? WHERE `ID` = (SELECT ID FROM COMPANY WHERE ADMIN = ?);" );
+		mysqli_stmt_bind_param($stmt,"sd",$this->photopath,$admin);
+		mysqli_stmt_execute($stmt);
 	}
 	
 	function downloadAcraFile(){
@@ -518,6 +522,20 @@ class Company extends User{
 		ob_clean();
 		flush();
 		readfile($file);
+	}
+	
+	function displayProfileImage($admin){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "SELECT PHOTOPATH FROM COMPANY WHERE `ID` = (SELECT ID FROM COMPANY WHERE ADMIN = ?);" );
+		mysqli_stmt_bind_param($stmt,"d",$admin);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);
+		}
+		else{
+			$result = mysqli_stmt_get_result($stmt);
+			return( mysqli_fetch_all($result, MYSQLI_ASSOC)[0]["PHOTOPATH"]);
+		}
 	}
 	
 	function getCumulativeSubscribers(){

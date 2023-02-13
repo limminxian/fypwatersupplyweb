@@ -85,20 +85,6 @@ foreach($role->roleArray as $r){
 <?php 
 }
 ?>
- <script>
- function checkFile(){
-	var filename = document.getElementById("fileToUpload").value;
-	var parts = filename.split('.');
-	var ext = parts[parts.length - 1];
-	switch (ext.toLowerCase()) {
-    case 'jpg':
-    case 'png':
-		document.getElementById("fileToUpload").setCustomValidity('');
-		break;
-	default:
-		document.getElementById("fileToUpload").setCustomValidity("Please upload a png or jpg file");
-	}
- }
-</script> 
+
 </body>
 </html> 
