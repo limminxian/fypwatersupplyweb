@@ -315,6 +315,7 @@ class Company extends User{
 	public $homeownerArray=[];
 	public $serviceArray=[];
 	public $subscribers=[];
+	public $waterUse=[];
 	
 	function setCompany($company){
 		foreach($company as $key=>$value){
@@ -498,7 +499,7 @@ class Company extends User{
 		flush();
 		readfile($file);
 	}
-	//(SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)
+	
 	function getCumulativeSubscribers(){
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"WITH SUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH),UNSUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH)  SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, (SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)) AS CUMULATIVESUB  FROM SUB S LEFT JOIN UNSUB U ON S.YEARMONTH = U.YEARMONTH;");
@@ -516,6 +517,7 @@ class Company extends User{
 			}
 		}
 	}
+
 }
 
 class Homeowner extends User{
@@ -953,6 +955,24 @@ class Chemical{
 			$_SESSION["errorView"]=mysqli_error($conn);
 		}
 	}
+	
+	function getChemicalAvgUse(){
+		$chemicalused=[];
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT PER1LWATER FROM CHEMICAL WHERE COMPANY = (SELECT ID FROM COMPANY WHERE ADMIN = ?)");
+		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				foreach ($rows as $r) {
+					array_push($chemicalused,$r);
+				}
+			}
+		}
+	}
 }
 
 class Equipment{
@@ -1023,6 +1043,13 @@ class EquipmentStock{
 			$_SESSION["errorAddStock"]=mysqli_error($conn);
 		}
 	}
+}
+
+class WaterUsage{
+	
+	
+	
+	
 }
 
 class DataManager{
@@ -1198,6 +1225,25 @@ class DataManager{
 					array_push($this->serviceArray,$c);
 				}
 			}
+		}
+	}
+	
+	function getAllWaterUse($company){
+		$waterusage=[];
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT RECORDDATE, COUNT(HOMEOWNER) AS HOMEOWNERCOUNT, SUM(WATERUSAGE) AS WATERUSAGESUM FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) GROUP BY RECORDDATE");
+		mysqli_stmt_bind_param($stmt,"d",$company);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				foreach ($rows as $r) {
+					array_push($waterusage,$r);
+				}
+			}
+			return $waterusage;
 		}
 	}
 }

@@ -36,7 +36,7 @@ else{
  ?>
 	<select name="type" id="type" onchange="chart()">
 		<?php
-		$type = array("subscribers","area","maintenance","revenue");
+		$type = array("subscribers","estimation","maintenance","revenue","area");
 		foreach($type as $t){
 		?>
 			<option value=<?=$t?>><?=$t?></option>
@@ -48,7 +48,10 @@ else{
 $c=new Company();
 $sub = [];
 $unsub = [];
+$data = new DataManager();
+$waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
 $c->getCumulativeSubscribers();
+var_dump($waterusage);
 $current = strtotime("-12 month");
 for($i=0;$i<12;$i++){
 	$check = false;
@@ -128,7 +131,7 @@ window.onload = function chart() {
 			}
 			break;
 		
-		case "maintenance":
+		case "estimation":
 
 	}
  
