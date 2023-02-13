@@ -34,49 +34,105 @@ else{
 		header("Location: login.php");
 	}
  ?>
-	<form method="post" action="">
-		<select name="type" id="type" onchange="this.form.submit()">
+	<select name="type" id="type" onchange="chart()">
 		<?php
-		$type = array("total subscribers","area","maintenance","revenue");
+		$type = array("subscribers","area","maintenance","revenue");
 		foreach($type as $t){
 		?>
 			<option value=<?=$t?>><?=$t?></option>
 		<?php
 		}
 		?>
-		</select>
-	</form>
+	</select>
 <?php
 $c=new Company();
-$dataPoints = [];
+$sub = [];
+$unsub = [];
 $c->getCumulativeSubscribers();
-foreach ($c->subscribers as $s){
-	array_push($dataPoints,array("label"=> $s["YEARMONTH"], "y"=>(int)$s["CUMULATIVESUBSCRIBER"]));
+$current = strtotime("-12 month");
+for($i=0;$i<12;$i++){
+	$check = false;
+	$cu = date("Ym",$current);
+	foreach ($c->subscribers as $s){
+		if(strcmp($cu,$s["YEARMONTH"])==0){
+			array_push($sub,array("label"=> $cu, "y"=>(int)$s["SUBSCRIBER"]));
+			$check = true;
+		}
+	}
+	if(!$check){
+		array_push($sub,array("label"=> $cu, "y"=>0));
+	}
+	$current = strtotime("+1 month", $current);
+	
+	foreach ($c->subscribers as $s){
+		if(strcmp($cu,$s["YEARMONTH"])==0){
+			array_push($unsub,array("label"=> $cu, "y"=>(int)$s["UNSUBSCRIBER"]));
+			$check = true;
+		}
+	}
+	if(!$check){
+		array_push($unsub,array("label"=> $cu, "y"=>0));
+	}
 }
+
 ?>
 <!DOCTYPE HTML>
 <html>
 <head>  
 <script>
-window.onload = function () {
+window.onload = function chart() {
+	var c = document.getElementById("type").value;
+	switch (c){
+		case "subscribers":
+			var chart = new CanvasJS.Chart("chartContainer", {
+				animationEnabled: true,
+				exportEnabled: true,
+				theme: "light1", // "light1", "light2", "dark1", "dark2"
+				title:{
+					text: "Subscribe count data"
+				},
+				legend:{
+					cursor: "pointer",
+					verticalAlign: "center",
+					horizontalAlign: "right",
+					itemclick: toggleDataSeries
+				},
+				data: [{
+					type: "column", //change type to bar, line, area, pie, etc
+					name: "Subscribe count",
+					indexLabel: "{y}", //Shows y value on all Data Points
+					showInLegend: true,
+					indexLabelFontColor: "#5A5757",
+					indexLabelPlacement: "outside",   
+					dataPoints: <?php echo json_encode($sub); ?>
+				},{
+					type: "column",
+					name: "Unsubscribe count",
+					indexLabel: "{y}",
+					showInLegend: true,
+					indexLabelFontColor: "#5A5757",
+					indexLabelPlacement: "outside",  
+					dataPoints: <?php echo json_encode($unsub); ?>
+				}]
+			});
+			chart.render();
+			  
+			function toggleDataSeries(e){
+				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+					e.dataSeries.visible = false;
+				}
+				else{
+					e.dataSeries.visible = true;
+				}
+				chart.render();
+			}
+			break;
+		
+		case "maintenance":
+
+	}
  
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	exportEnabled: true,
-	theme: "light1", // "light1", "light2", "dark1", "dark2"
-	title:{
-		text: "Total subscribers count"
-	},
-	data: [{
-		type: "column", //change type to bar, line, area, pie, etc
-		indexLabel: "{y}", //Shows y value on all Data Points
-		indexLabelFontColor: "#5A5757",
-		indexLabelPlacement: "outside",   
-		dataPoints: <?php echo json_encode($dataPoints); ?>
-	}]
-});
-chart.render();
- 
+
 }
 </script>
 
