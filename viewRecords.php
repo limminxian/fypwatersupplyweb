@@ -34,7 +34,7 @@ else{
 		header("Location: login.php");
 	}
  ?>
-	<select name="type" id="type" onchange="chart()">
+	<select name="type" id="type" onchange="this.form.submit();chart()">
 		<?php
 		$type = array("subscribers","estimation","maintenance","revenue","area");
 		foreach($type as $t){
@@ -45,12 +45,15 @@ else{
 		?>
 	</select>
 <?php
+
 $c=new Company();
 $sub = [];
 $unsub = [];
 $data = new DataManager();
 $waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
+
 $c->getCumulativeSubscribers();
+var_dump($data->getMeanHomeowner($_SESSION["loginId"]));
 $current = strtotime("-12 month");
 for($i=0;$i<12;$i++){
 	$check = false;

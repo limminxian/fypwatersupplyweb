@@ -1270,8 +1270,9 @@ class DataManager{
 	function getAllWaterUse($company){
 		$waterusage=[];
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT RECORDDATE, COUNT(HOMEOWNER) AS HOMEOWNERCOUNT, SUM(WATERUSAGE) AS WATERUSAGESUM FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) GROUP BY RECORDDATE");
-		mysqli_stmt_bind_param($stmt,"d",$company);
+		$current = date("Y-m-01",strtotime("-12 month"));
+		$stmt = mysqli_prepare($conn,"SELECT RECORDDATE, SUM(NOOFPEOPLE) AS NOOFPEOPLE, SUM(WATERUSAGE) AS WATERUSAGE FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND RECORDDATE > ? AND H.ID = W.HOMEOWNER GROUP BY RECORDDATE;");
+		mysqli_stmt_bind_param($stmt,"ds",$company,$current);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
@@ -1283,6 +1284,20 @@ class DataManager{
 				}
 			}
 			return $waterusage;
+		}
+	}
+	
+	function getMeanHomeowner($company){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT CEILING(AVG(NOOFPEOPLE)) AS NOOFPEOPLEMEAN FROM HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?);");
+		mysqli_stmt_bind_param($stmt,"d",$company,);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			$rows = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
+			return $rows;
 		}
 	}
 }
