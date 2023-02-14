@@ -53,7 +53,24 @@ $data = new DataManager();
 $waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
 
 $c->getCumulativeSubscribers();
-var_dump($data->getMeanHomeowner($_SESSION["loginId"]));
+$uniquenoofpeople = $data->getUniqueNoofpeople($_SESSION["loginId"]);
+$noofpeople = array("less than 3"=>0,"3 to 5"=>0,"6 to 9"=>0,"more than 10"=>0);
+$revenue = $data->getRevenue($_SESSION["loginId"]);
+foreach($uniquenoofpeople as $a){
+	if($a<=2){
+		$noofpeople["less than 3"]+=1;
+	}
+	else if($a>2 and $a<=5){
+		$noofpeople["3 to 5"]+=1;
+	}
+	else if($a>5 and $a<=9){
+		$noofpeople["6 to 9"]+=1;
+	}
+	else{
+		$noofpeople["more than 10"]+=1;
+	}
+}
+var_dump($revenue);
 $current = strtotime("-12 month");
 for($i=0;$i<12;$i++){
 	$check = false;

@@ -1300,5 +1300,44 @@ class DataManager{
 			return $rows;
 		}
 	}
+	
+	function getUniqueNoofpeople($company){
+		$homeowner=[];
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT DISTINCT(NOOFPEOPLE) AS NOOFPEOPLE FROM HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?);");
+		mysqli_stmt_bind_param($stmt,"d",$company,);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);				
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				foreach ($rows as $r) {
+					array_push($homeowner,$r);
+				}
+			}
+			return $homeowner;
+		}
+	}
+	
+	function getRevenue($company){
+		$revenue=[];
+		$conn = getdb();
+		$current = date("Y-m-01",strtotime("-12 month"));
+		$stmt = mysqli_prepare($conn,"SELECT PAYMENTDATE, SUM(AMOUNT) FROM HOMEOWNER H, BILL B WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND H.ID=B.HOMEOWNER AND PAYMENTDATE > ? GROUP BY PAYMENTDATE;");
+		mysqli_stmt_bind_param($stmt,"ds",$company,$current);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);				
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				foreach ($rows as $r) {
+					array_push($revenue,$r);
+				}
+			}
+			return $revenue;
+		}
+	}
 }
 ?>
