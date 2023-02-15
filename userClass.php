@@ -248,7 +248,7 @@ class User{
 				}
 				else if(strcmp($row[0],"PENDING")==0){
 					switch($row[3]){
-						case "companyadmin":
+						case "companyAdmin":
 							return array(FALSE,"Your company is being verified. An email will be sent to you when the verification is done.");
 							break;
 						case "customerservice":
