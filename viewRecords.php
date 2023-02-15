@@ -78,10 +78,17 @@ else{
 			<?php
 			$type = array("subscribers","estimation","people","revenue","area");
 			foreach($type as $t){
-				if(strcmp($_SESSION["type"],$t)==0){
-			?>
-					<option value=<?=$t?> selected="selected"><?=$t?></option>
-			<?php
+				if(isset($_SESSION["type"])){
+					if(strcmp($_SESSION["type"],$t)==0){
+				?>
+						<option value=<?=$t?> selected="selected"><?=$t?></option>
+				<?php
+					}
+					else{
+						?>
+						<option value=<?=$t?>><?=$t?></option>
+						<?php
+					}
 				}
 				else{
 					?>
