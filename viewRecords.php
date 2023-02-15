@@ -36,7 +36,7 @@ else{
  ?>
 	<select name="type" id="type" onchange="this.form.submit();chart()">
 		<?php
-		$type = array("subscribers","estimation","maintenance","revenue","area");
+		$type = array("subscribers","estimation","people","revenue","area");
 		foreach($type as $t){
 		?>
 			<option value=<?=$t?>><?=$t?></option>
@@ -51,6 +51,7 @@ $sub = [];
 $unsub = [];
 $data = new DataManager();
 $waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
+
 
 $c->getCumulativeSubscribers();
 $uniquenoofpeople = $data->getUniqueNoofpeople($_SESSION["loginId"]);
@@ -70,7 +71,8 @@ foreach($uniquenoofpeople as $a){
 		$noofpeople["more than 10"]+=1;
 	}
 }
-var_dump($revenue);
+$areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
+var_dump($areahomeowner);
 $current = strtotime("-12 month");
 for($i=0;$i<12;$i++){
 	$check = false;
@@ -151,7 +153,49 @@ window.onload = function chart() {
 			break;
 		
 		case "estimation":
-
+			var chart = new CanvasJS.Chart("chartContainer", {
+				animationEnabled: true,
+				exportEnabled: true,
+				theme: "light2", // "light1", "light2", "dark1", "dark2"
+				title:{
+					text: "Subscribe count data in past 12 months"
+				},
+				legend:{
+					cursor: "pointer",
+					verticalAlign: "center",
+					horizontalAlign: "right",
+					itemclick: toggleDataSeries
+				},
+				data: [{
+					type: "column", //change type to bar, line, area, pie, etc
+					name: "Subscribe count",
+					indexLabel: "{y}", //Shows y value on all Data Points
+					showInLegend: true,
+					indexLabelFontColor: "#5A5757",
+					indexLabelPlacement: "outside",   
+					dataPoints: <?php echo json_encode($sub); ?>
+				},{
+					type: "column",
+					name: "Unsubscribe count",
+					indexLabel: "{y}",
+					showInLegend: true,
+					indexLabelFontColor: "#5A5757",
+					indexLabelPlacement: "outside",  
+					dataPoints: <?php echo json_encode($unsub); ?>
+				}]
+			});
+			chart.render();
+			  
+			function toggleDataSeries(e){
+				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+					e.dataSeries.visible = false;
+				}
+				else{
+					e.dataSeries.visible = true;
+				}
+				chart.render();
+			}
+			break;
 	}
  
 

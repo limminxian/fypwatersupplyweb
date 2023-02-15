@@ -1320,6 +1320,25 @@ class DataManager{
 		}
 	}
 	
+	function getAreaHomeowner($company){
+		$homeowner=[];
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT AREA, COUNT(ID) AS HOMEOWNER FROM HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) GROUP BY AREA;");
+		mysqli_stmt_bind_param($stmt,"d",$company,);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);				
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				foreach ($rows as $r) {
+					array_push($homeowner,$r);
+				}
+			}
+			return $homeowner;
+		}
+	}
+	
 	function getRevenue($company){
 		$revenue=[];
 		$conn = getdb();
@@ -1340,4 +1359,63 @@ class DataManager{
 		}
 	}
 }
+class linear{
+	public $c0;
+	public $c1;
+	public $learningRate=0.001;
+	public $loop = 3000;
+	public $data=[];
+	
+	function getLinear($data){
+		$this->data = $data;
+		$this->c0=$this->data[0][1];
+		$this->c1=$this->data[0][2];
+
+		function linearFunction (float $c0, float $x0, float $c1, float $x1) : float {
+			return $c0 * $x0 + $c1 * $x1;
+		}
+
+		function squaredError(float $c0, float $c1, array $data): float {
+		  return array_sum(
+			array_map(
+			  function ($point) use ($c0, $c1) {
+				return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) ** 2;
+			  },
+			  $data
+			)
+		  ) / count($data);
+		}
+
+		var_dump(squaredError($this->c0, $this->c1, $this->data));
+
+		function descent(int $m, float $c0, float $c1, array $data): float {
+		  return (-2 / count($data)) * array_sum(
+			array_map(
+			  function ($point) use ($c0, $c1, $m) {
+				return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) * $point[$m];
+			  },
+			  $data
+			)
+		  );
+		}
+		function adaptC0(float $c0, float $c1, array $data, float $learningRate): float {
+			return $c0 - $learningRate * descent(0, $c0, $c1, $data);
+		}
+
+		function adaptC1(float $c0, float $c1, array $data, float $learningRate): float {
+			return $c1 - $learningRate * descent(1, $c0, $c1, $data);
+		}
+
+		$errors = [];
+		for ($i = 0; $i < $this->loop; $i++) {
+			$errors[] = squaredError($this->c0, $this->c1, $this->data);
+			$newC0 = adaptC0($this->c0, $this->c1, $this->data, $this->learningRate);
+			$newC1 = adaptC1($this->c0, $this->c1, $this->data, $this->learningRate);
+
+			$this->c0 = $newC0;
+			$this->c1 = $newC1;
+		} 
+		return array($this->c0 ,$this->c1);
+	}
+ }
 ?>
