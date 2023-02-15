@@ -359,12 +359,12 @@ class Company extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'simfyp22s404@gmail.com'; //gmail name
-		$mail->Password = 'dpzyyyvuzeijeztn'; //gmail app password
+		$mail->Username = 'hasna.ruhi16@gmail.com'; //gmail name
+		$mail->Password = 'eupfzpgiqzvlutyh'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		 $mail->SMTPDebug = true;
-		$mail->setFrom('simfyp22s404@gmail.com');
+		$mail->setFrom('hasna.ruhi16@gmail.com');
 		
 		$mail->addAddress($this->email);
 		
