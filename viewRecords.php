@@ -161,7 +161,6 @@ function chart() {
 				cursor: "pointer",
 				verticalAlign: "center",
 				horizontalAlign: "right",
-				itemclick: toggleDataSeries
 			},
 			data: [{
 				type: "column", //change type to bar, line, area, pie, etc
@@ -172,18 +171,7 @@ function chart() {
 				dataPoints: <?php echo json_encode($cumulative); ?>
 			}]
 		});
-		chart2.render();
-		  
-		function toggleDataSeries(e){
-			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-				e.dataSeries.visible = false;
-			}
-			else{
-				e.dataSeries.visible = true;
-			}
-			chart2.render();
-		}
-		
+		chart2.render();	
 		
 	}
 	
