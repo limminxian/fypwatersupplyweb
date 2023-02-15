@@ -63,8 +63,8 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 	}
 	
 	function getLinear($data){
-		$learningRate=0.001;
-		$loop = 3000;
+		$learningRate=0.01;
+		$loop = 10000;
 		$c0=$data[0][1];
 		$c1=$data[0][2];
 
@@ -82,8 +82,6 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			)
 		  ) / count($data);
 		}
-
-		var_dump(squaredError($c0, $c1, $data));
 
 		function descent(int $m, float $c0, float $c1, array $data): float {
 		  return (-2 / count($data)) * array_sum(
@@ -115,11 +113,12 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		return array($c0 ,$c1);
 	}
 	
-	public getCumulativeSubscription(){
+	function getCumulativeSubscription(){
 		$c=new Company();
 		$cumulative=[];
 		$subscribers = $c->getCumulativeSubscribers();
 		$current = strtotime("-12 month");
+		$sum=1;
 		for($i=0;$i<12;$i++){
 			$check = false;
 			$cu = date("Ym",$current);
@@ -127,23 +126,24 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 				if(strcmp($cu,$s["YEARMONTH"])==0){
 					array_push($cumulative,array("label"=> $cu, "y"=>(int)$s["CUMULATIVESUB"]));
 					$check = true;
+					$sum = $s["CUMULATIVESUB"];
 				}
 			}
 			if(!$check){
-				array_push($cumulative,array("label"=> $cu, "y"=>0));
-			}]
+				array_push($cumulative,array("label"=> $cu, "y"=>(int)$sum));
+			}
 			$current = strtotime("+1 month", $current);
 		}
-		return array($cumulative);
+		return $cumulative;
 	}
 	
-	public getCumulativeSubscriptionEstimation(){
+	function getCumulativeSubscriptionEstimation(){
 		$cumulative = getCumulativeSubscription();		
 		$data=[];
 		$i=0;
 		foreach($cumulative as $c){
 			$i++;
-			array_push($data,array(1,$i,$c));
+			array_push($data,array(1,$i,$c["y"]));
 		}
 		
 		$linear = getLinear($data);
@@ -151,7 +151,7 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		$current = time();
 		for($i=13;$i<24;$i++){
 			$cu = date("Ym",$current);
-			$y = $linear[0] + $linear[1]*$i;
+			$y = $linear[0] + ($linear[1]*$i);
 			array_push($newcumulative,array("label"=> $cu, "y"=>(int)$y));
 			$current = strtotime("+1 month", $current);
 		}

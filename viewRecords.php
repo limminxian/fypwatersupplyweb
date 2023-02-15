@@ -42,14 +42,20 @@ else{
 		//header("Location: ".$_SERVER['PHP_SELF']);
 	}
 	
+	$sub=[];
+	$unsub=[];
+	$cumulative=[];
+	$cumulativeEstimation=[];
+	
 	if(isset($_SESSION["type"])){
 		switch($_SESSION["type"]){
 			case "estimation":
-				$cumulative = getSubscription();
+				$cumulativeEstimation = getCumulativeSubscriptionEstimation();
 				break;
 			case "subscribers":
 				$sub = getSubscription()[0];
 				$unsub = getSubscription()[1];
+				$cumulative = getCumulativeSubscription();
 				break;
 		}
 	}
@@ -78,103 +84,140 @@ else{
 			?>
 		</select>
 	</form>
-<!DOCTYPE HTML>
-<html>
 <p id="demo"></p>
-<head>  
 <script>
 function chart() {
 	var c = document.getElementById("type").value;
 	switch (c){
-		case "subscribers":
-			var chart = new CanvasJS.Chart("chartContainer", {
-				animationEnabled: true,
-				exportEnabled: true,
-				theme: "light1", // "light1", "light2", "dark1", "dark2"
-				title:{
-					text: "Subscribe count data in past 12 months"
-				},
-				legend:{
-					cursor: "pointer",
-					verticalAlign: "center",
-					horizontalAlign: "right",
-					itemclick: toggleDataSeries
-				},
-				data: [{
-					type: "column", //change type to bar, line, area, pie, etc
-					name: "Subscribe count",
-					indexLabel: "{y}", //Shows y value on all Data Points
-					showInLegend: true,
-					indexLabelFontColor: "#5A5757",
-					indexLabelPlacement: "outside",   
-					dataPoints: <?php echo json_encode($sub); ?>
-				},{
-					type: "column",
-					name: "Unsubscribe count",
-					indexLabel: "{y}",
-					showInLegend: true,
-					indexLabelFontColor: "#5A5757",
-					indexLabelPlacement: "outside",  
-					dataPoints: <?php echo json_encode($unsub); ?>
-				}]
-			});
-			chart.render();
-			  
-			function toggleDataSeries(e){
-				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-					e.dataSeries.visible = false;
-				}
-				else{
-					e.dataSeries.visible = true;
-				}
-				chart.render();
-			}
-			break;
-		
 		case "estimation":
-			var chart = new CanvasJS.Chart("chartContainer", {
-				animationEnabled: true,
-				exportEnabled: true,
-				theme: "dark1", // "light1", "light2", "dark1", "dark2"
-				title:{
-					text: "Subscribe count data in past 12 months"
-				},
-				legend:{
-					cursor: "pointer",
-					verticalAlign: "center",
-					horizontalAlign: "right",
-					itemclick: toggleDataSeries
-				},
-				data: [{
-					type: "column", //change type to bar, line, area, pie, etc
-					name: "Subscribe count",
-					indexLabel: "{y}", //Shows y value on all Data Points
-					showInLegend: true,
-					indexLabelFontColor: "#5A5757",
-					indexLabelPlacement: "outside",   
-					dataPoints: <?php echo json_encode($cumulative); ?>
-				}]
-			});
-			chart.render();
-			  
-			function toggleDataSeries(e){
-				if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
-					e.dataSeries.visible = false;
-				}
-				else{
-					e.dataSeries.visible = true;
-				}
-				chart.render();
-			}
+			estimation();
+			break;
+		case "subscribers":
+		default:
+			subscription();
 			break;
 	}
- 
-
+	
+	function subscription(){
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light1", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Subscribe and unsubscribe count in past 12 months"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "column", //change type to bar, line, area, pie, etc
+				name: "Subscribe count",
+				indexLabel: "{y}", //Shows y value on all Data Points
+				showInLegend: true,
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($sub); ?>
+			},{
+				type: "column",
+				name: "Unsubscribe count",
+				indexLabel: "{y}",
+				showInLegend: true,
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",  
+				dataPoints: <?php echo json_encode($unsub); ?>
+			}]
+		});
+		chart.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart.render();
+		}
+		
+		var chart2 = new CanvasJS.Chart("chartContainer2", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light1", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Cumulative subscribers count in past 12 months"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "column", //change type to bar, line, area, pie, etc
+				name: "Subscribe count",
+				indexLabel: "{y}", //Shows y value on all Data Points
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($cumulative); ?>
+			}]
+		});
+		chart2.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart2.render();
+		}
+		
+		
+	}
+	
+	function estimation(){
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light1", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Subscribe estimation for next 12 months"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "column", //change type to bar, line, area, pie, etc
+				indexLabel: "{y}", //Shows y value on all Data Points
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($cumulativeEstimation); ?>
+			}]
+		});
+		chart.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart.render();
+		}
+	}
 }
 window.onload = function () {chart();};
 </script>
-
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<div id="chartContainer"  style="height: 360px; width: 100%;"></div> <br>
+<div id="chartContainer2"  style="height: 360px; width: 100%;"></div> 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
          <?PHP
 }
