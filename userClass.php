@@ -816,15 +816,15 @@ class Staff extends User{
 }
 
 class CompanyAdmin{
-	public $company;
 	
 	function getCompany($id){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "SELECT ID FROM `COMPANY` WHERE ADMIN=?;" );
+		$stmt = mysqli_prepare($conn, "SELECT ID FROM `COMPANY` WHERE ADMIN=?;" );\
 		mysqli_stmt_bind_param($stmt,"d", $id);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);
-		return mysqli_fetch_array($result, MYSQLI_NUM)[0];
+		$t = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
+		return $t["ID"];
 	}
 }
 
