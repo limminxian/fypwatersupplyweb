@@ -66,15 +66,18 @@ else{
 	if(isset($_SESSION["type"])){
 		switch($_SESSION["type"]){
 			case "estimation":
-				getSubscription();
+				$sub = getSubscription()[0];
+				$unsub = getSubscription()[1];
 				break;
 			case "subscribers":
-				getSubscription();
+				$sub = getSubscription()[0];
+				$unsub = getSubscription()[1];
 				break;
 		}
 	}
 	else{
-		getSubscription();
+		$sub = getSubscription()[0];
+		$unsub = getSubscription()[1];
 	}
 
 

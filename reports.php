@@ -59,7 +59,7 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 				array_push($unsub,array("label"=> $cu, "y"=>0));
 			}
 		}
-		return $sub,$unsub;
+		return array($sub,$unsub);
 	}
 	
 	function getLinear($data){
