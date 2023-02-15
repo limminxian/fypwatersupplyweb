@@ -360,7 +360,7 @@ class Company extends User{
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
 		$mail->Username = 'simfyp22s404@gmail.com'; //gmail name
-		$mail->Password = 'tzqbpagchkmgisoc'; //gmail app password
+		$mail->Password = 'dpzyyyvuzeijeztn'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
