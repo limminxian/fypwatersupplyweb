@@ -354,6 +354,26 @@ class Company extends User{
 		mysqli_stmt_execute($stmt);
 		echo mysqli_error($conn);
 		mysqli_stmt_close($stmt);
+		$mail = new PHPMailer(true);
+		
+		$mail->isSMTP();
+		$mail->Host = 'smtp.gmail.com';
+		$mail->SMTPAuth = true;
+		$mail->Username = 'simfyp22s404@gmail.com'; //gmail name
+		$mail->Password = 'tzqbpagchkmgisoc'; //gmail app password
+		$mail->SMTPSecure = 'ssl';
+		$mail->Port = 465;
+		
+		$mail->setFrom('simfyp22s404@gmail.com');
+		
+		$mail->addAddress($this->email);
+		
+		$mail->isHTML(true);
+		
+		$mail->Subject = "Company acceptance result";
+		$mail->Body = "You have been ". $status ." from fypwatersupply.";
+		
+		$mail->send();
 	}
 	
 	function getAllChemical(){
@@ -610,7 +630,7 @@ class Homeowner extends User{
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
 		$mail->Username = 'simfyp22s404@gmail.com'; //gmail name
-		$mail->Password = 'tzqbpagchkmgisoc'; //gmail app password
+		$mail->Password = 'dpzyyyvuzeijeztn'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
