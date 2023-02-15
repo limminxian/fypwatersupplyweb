@@ -102,6 +102,7 @@ for($i=0;$i<12;$i++){
 ?>
 <!DOCTYPE HTML>
 <html>
+<p id="demo"></p>
 <head>  
 <script>
 window.onload = function chart() {
@@ -153,10 +154,11 @@ window.onload = function chart() {
 			break;
 		
 		case "estimation":
+			document.getElementById("demo").innerHtml="try";
 			var chart = new CanvasJS.Chart("chartContainer", {
 				animationEnabled: true,
 				exportEnabled: true,
-				theme: "light2", // "light1", "light2", "dark1", "dark2"
+				theme: "dark1", // "light1", "light2", "dark1", "dark2"
 				title:{
 					text: "Subscribe count data in past 12 months"
 				},
