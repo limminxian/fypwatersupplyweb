@@ -539,6 +539,7 @@ class Company extends User{
 	}
 	
 	function getCumulativeSubscribers(){
+		$subscribers=[];
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"WITH SUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH),UNSUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH)  SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, (SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)) AS CUMULATIVESUB  FROM SUB S LEFT JOIN UNSUB U ON S.YEARMONTH = U.YEARMONTH;");
 		mysqli_stmt_bind_param($stmt,"dd",$_SESSION["loginId"],$_SESSION["loginId"]);
@@ -548,11 +549,11 @@ class Company extends User{
 		else{
 			$result = mysqli_stmt_get_result($stmt);		
 			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
-				$this->subscribers=[];
 				foreach ($rows as $r) {
-					array_push($this->subscribers,$r);
+					array_push(subscribers,$r);
 				}
 			}
+			return subscribers;
 		}
 	}
 
@@ -1359,63 +1360,5 @@ class DataManager{
 		}
 	}
 }
-class linear{
-	public $c0;
-	public $c1;
-	public $learningRate=0.001;
-	public $loop = 3000;
-	public $data=[];
-	
-	function getLinear($data){
-		$this->data = $data;
-		$this->c0=$this->data[0][1];
-		$this->c1=$this->data[0][2];
 
-		function linearFunction (float $c0, float $x0, float $c1, float $x1) : float {
-			return $c0 * $x0 + $c1 * $x1;
-		}
-
-		function squaredError(float $c0, float $c1, array $data): float {
-		  return array_sum(
-			array_map(
-			  function ($point) use ($c0, $c1) {
-				return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) ** 2;
-			  },
-			  $data
-			)
-		  ) / count($data);
-		}
-
-		var_dump(squaredError($this->c0, $this->c1, $this->data));
-
-		function descent(int $m, float $c0, float $c1, array $data): float {
-		  return (-2 / count($data)) * array_sum(
-			array_map(
-			  function ($point) use ($c0, $c1, $m) {
-				return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) * $point[$m];
-			  },
-			  $data
-			)
-		  );
-		}
-		function adaptC0(float $c0, float $c1, array $data, float $learningRate): float {
-			return $c0 - $learningRate * descent(0, $c0, $c1, $data);
-		}
-
-		function adaptC1(float $c0, float $c1, array $data, float $learningRate): float {
-			return $c1 - $learningRate * descent(1, $c0, $c1, $data);
-		}
-
-		$errors = [];
-		for ($i = 0; $i < $this->loop; $i++) {
-			$errors[] = squaredError($this->c0, $this->c1, $this->data);
-			$newC0 = adaptC0($this->c0, $this->c1, $this->data, $this->learningRate);
-			$newC1 = adaptC1($this->c0, $this->c1, $this->data, $this->learningRate);
-
-			$this->c0 = $newC0;
-			$this->c1 = $newC1;
-		} 
-		return array($this->c0 ,$this->c1);
-	}
- }
 ?>

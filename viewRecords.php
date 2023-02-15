@@ -18,6 +18,7 @@
 <body>
 <?php 
 include_once 'userClass.php';
+include_once 'reports.php';
 $_SESSION["page"]="viewRecords";
 if(!isset($_SESSION['loginId'])){
 	echo "Not allowed! Please login!";
@@ -34,70 +35,48 @@ else{
 		header("Location: login.php");
 	}
  ?>
-	<select name="type" id="type" onchange="this.form.submit();chart()">
-		<?php
-		$type = array("subscribers","estimation","people","revenue","area");
-		foreach($type as $t){
-		?>
-			<option value=<?=$t?>><?=$t?></option>
-		<?php
-		}
-		?>
-	</select>
+ 
+	<form method="post" action="">
+		<select name="type" id="type" onchange="this.form.submit();chart();">
+			<?php
+			$type = array("subscribers","estimation","people","revenue","area");
+			foreach($type as $t){
+				if(strcmp($_SESSION["type"],$t)==0){
+			?>
+					<option value=<?=$t?> selected="selected"><?=$t?></option>
+			<?php
+				}
+				else{
+					?>
+					<option value=<?=$t?>><?=$t?></option>
+					<?php
+				}
+			}
+			?>
+		</select>
+	</form>
 <?php
 
-$c=new Company();
-$sub = [];
-$unsub = [];
-$data = new DataManager();
-$waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
-
-
-$c->getCumulativeSubscribers();
-$uniquenoofpeople = $data->getUniqueNoofpeople($_SESSION["loginId"]);
-$noofpeople = array("less than 3"=>0,"3 to 5"=>0,"6 to 9"=>0,"more than 10"=>0);
-$revenue = $data->getRevenue($_SESSION["loginId"]);
-foreach($uniquenoofpeople as $a){
-	if($a<=2){
-		$noofpeople["less than 3"]+=1;
+	
+	if(isset ($_POST["type"])){
+		$_SESSION["type"]=$_POST["type"];
+		header("Location: ".$_SERVER['PHP_SELF']);
 	}
-	else if($a>2 and $a<=5){
-		$noofpeople["3 to 5"]+=1;
-	}
-	else if($a>5 and $a<=9){
-		$noofpeople["6 to 9"]+=1;
+	
+	if(isset($_SESSION["type"])){
+		switch($_SESSION["type"]){
+			case "estimation":
+				getSubscription();
+				break;
+			case "subscribers":
+				getSubscription();
+				break;
+		}
 	}
 	else{
-		$noofpeople["more than 10"]+=1;
+		getSubscription();
 	}
-}
-$areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
-var_dump($areahomeowner);
-$current = strtotime("-12 month");
-for($i=0;$i<12;$i++){
-	$check = false;
-	$cu = date("Ym",$current);
-	foreach ($c->subscribers as $s){
-		if(strcmp($cu,$s["YEARMONTH"])==0){
-			array_push($sub,array("label"=> $cu, "y"=>(int)$s["SUBSCRIBER"]));
-			$check = true;
-		}
-	}
-	if(!$check){
-		array_push($sub,array("label"=> $cu, "y"=>0));
-	}
-	$current = strtotime("+1 month", $current);
-	
-	foreach ($c->subscribers as $s){
-		if(strcmp($cu,$s["YEARMONTH"])==0){
-			array_push($unsub,array("label"=> $cu, "y"=>(int)$s["UNSUBSCRIBER"]));
-			$check = true;
-		}
-	}
-	if(!$check){
-		array_push($unsub,array("label"=> $cu, "y"=>0));
-	}
-}
+
 
 ?>
 <!DOCTYPE HTML>
@@ -105,7 +84,7 @@ for($i=0;$i<12;$i++){
 <p id="demo"></p>
 <head>  
 <script>
-window.onload = function chart() {
+function chart() {
 	var c = document.getElementById("type").value;
 	switch (c){
 		case "subscribers":
@@ -154,7 +133,6 @@ window.onload = function chart() {
 			break;
 		
 		case "estimation":
-			document.getElementById("demo").innerHtml="try";
 			var chart = new CanvasJS.Chart("chartContainer", {
 				animationEnabled: true,
 				exportEnabled: true,
@@ -202,6 +180,7 @@ window.onload = function chart() {
  
 
 }
+window.onload = function () {chart();};
 </script>
 
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
