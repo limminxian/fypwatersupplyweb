@@ -5,15 +5,16 @@ $username = "bbd12ae4b2fcc3";
 $password = "df9ea7aa";
 $db = "heroku_80d6ea926f679b3";  */
 
-$servername = "ec2-3-225-213-67.compute-1.amazonaws.com:5432";
+/* $servername = "ec2-3-225-213-67.compute-1.amazonaws.com:5432";
 $username = "lbftgzbfbhpkxk";
 $password = "7730fd74a05533e54625120ba59d494a060111ce887ccd836c95a9d7494ed0b2";
-$db = "d1rhm1e7kg5b5e"; 
+$db = "d1rhm1e7kg5b5e";  */
 
-/* $servername = "localhost";
+
+$servername = "localhost";
 $username = "root";
 $password = "";
-$db = "fyp"; */
+$db = "fyp";
 
 try {
    
