@@ -91,7 +91,7 @@ class Service {
 		}
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`) VALUES(?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"ssd", $this->name,$this->description,$this->toTech,$_SESSION["loginId"]);
+		mysqli_stmt_bind_param($stmt,"ssdd", $this->name,$this->description,$this->toTech,$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($c);
