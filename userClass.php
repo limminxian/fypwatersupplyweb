@@ -561,7 +561,7 @@ class Company extends User{
 	function getCumulativeSubscribers($company){
 		$subscribers=[];
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"WITH SUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribed' AND COMPANY=? GROUP BY YEARMONTH),UNSUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribed' AND COMPANY=? GROUP BY YEARMONTH)  SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, (SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)) AS CUMULATIVESUB  FROM SUB S LEFT JOIN UNSUB U ON S.YEARMONTH = U.YEARMONTH;");
+		$stmt = mysqli_prepare($conn,"SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, ((@sum1 := @sum1 + SUM(S.SUBSCRIBER)) - COALESCE(@sum2 := @sum2 + SUM(U.SUBSCRIBER),0)) AS CUMULATIVESUB FROM (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE JOIN (SELECT @sum1 := 0) A JOIN (SELECT @sum2 := 0) B WHERE CATEGORY = 'subscribe' AND COMPANY=? GROUP BY YEARMONTH) S , (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribe' AND COMPANY=? GROUP BY YEARMONTH) U WHERE S.YEARMONTH = U.YEARMONTH;");
 		mysqli_stmt_bind_param($stmt,"dd",$company,$company);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -819,7 +819,7 @@ class CompanyAdmin{
 	
 	function getCompany($id){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "SELECT ID FROM `COMPANY` WHERE ADMIN=?;" );\
+		$stmt = mysqli_prepare($conn, "SELECT ID FROM `COMPANY` WHERE ADMIN=?;" );
 		mysqli_stmt_bind_param($stmt,"d", $id);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);
