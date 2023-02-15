@@ -166,6 +166,9 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			$totalwater+=$w["WATERUSAGE"];
 			$totalpeople+=$w["NOOFPEOPLE"];
 		}
+		if($totalwater==0){
+			return 0;
+		}
 		return $totalwater/$totalpeople;
 		
 	}
