@@ -59,45 +59,12 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		}
 		return array($sub,$unsub);
 	}
-	
+
 	function getLinear($data){
 		$learningRate=0.001;
 		$loop = 5000;
 		$c0=$data[0][1];
 		$c1=$data[0][2];
-
-		function linearFunction (float $c0, float $x0, float $c1, float $x1) : float {
-			return $c0 * $x0 + $c1 * $x1;
-		}
-
-		function squaredError(float $c0, float $c1, array $data): float {
-		  return array_sum(
-			array_map(
-			  function ($point) use ($c0, $c1) {
-				return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) ** 2;
-			  },
-			  $data
-			)
-		  ) / count($data);
-		}
-
-		function descent(int $m, float $c0, float $c1, array $data): float {
-		  return (-2 / count($data)) * array_sum(
-			array_map(
-			  function ($point) use ($c0, $c1, $m) {
-				return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) * $point[$m];
-			  },
-			  $data
-			)
-		  );
-		}
-		function adaptC0(float $c0, float $c1, array $data, float $learningRate): float {
-			return $c0 - $learningRate * descent(0, $c0, $c1, $data);
-		}
-
-		function adaptC1(float $c0, float $c1, array $data, float $learningRate): float {
-			return $c1 - $learningRate * descent(1, $c0, $c1, $data);
-		}
 
 		$errors = [];
 		for ($i = 0; $i < $loop; $i++) {
@@ -109,6 +76,39 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			$c1 = $newC1;
 		} 
 		return array($c0 ,$c1);
+	}
+	
+	function squaredError (float $c0, float $c1, array $data): float {
+	  return array_sum(
+		array_map(
+		  function ($point) use ($c0, $c1) {
+			return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) ** 2;
+		  },
+		  $data
+		)
+	  ) / count($data);
+	}
+	
+	function linearFunction (float $c0, float $x0, float $c1, float $x1) : float {
+		return $c0 * $x0 + $c1 * $x1;
+	}
+	
+	function descent (int $m, float $c0, float $c1, array $data): float {
+		return (-2 / count($data)) * array_sum(
+		array_map(
+		  function ($point) use ($c0, $c1, $m) {
+			return ($point[2] - linearFunction($c0, $point[0], $c1, $point[1])) * $point[$m];
+		  },
+		  $data
+		)
+	  );
+	}
+	function adaptC0(float $c0, float $c1, array $data, float $learningRate): float {
+		return $c0 - $learningRate * descent(0, $c0, $c1, $data);
+	}
+
+	function adaptC1 (float $c0, float $c1, array $data, float $learningRate): float {
+		return $c1 - $learningRate * descent(1, $c0, $c1, $data);
 	}
 	
 	function getCumulativeSubscription(){
@@ -155,33 +155,42 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 	}
 	
 	function getWaterUsageEstimation(){
+		$data = new DataManager();
 		$waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
 		$sub = getCumulativeSubscriptionEstimation();
 		$current = time();
 		$waterperpeople=[];
-		$waterest=[]
+		$waterest=[];
+		$check = false;
 		for($i=0;$i<12;$i++){
 			$cu = date("Ym",$current);
 			foreach ($waterusage as $w){
-				if(strcmp($cu,$w["RECORDDATE"])==0){
+				if(strcmp($cu,$w["RECORD"])==0){
 					$wa = $w["WATERUSAGE"]/$w["NOOFPEOPLE"];
 					array_push($waterperpeople,array($cu,$wa));
+					echo $w["WATERUSAGE"];
 					$check = true;
 				}
 			}
-			if(!$check){
-				array_push($waterperpeople,array($cu, end($waterperpeople)[1]);
+			if(!$check && $i!=0){
+				array_push($waterperpeople,array($cu, end($waterperpeople)[1]));
+			}
+			else{
+				array_push($waterperpeople,array($cu, 0));
 			}
 			$current = strtotime("+1 month", $current);
 		}
+		print "<pre>";
+			print_r( $waterusage);
+			print "</pre>";
 		for($i=0;$i<12;$i++){
 			$w=$waterperpeople[$i];
 			$s=$sub[$i];
 			if (strcmp($s["label"],$w[0]==0)){
 				$c = $s["y"]*$w[1];
-				array_push($waterperpeople,array("label"=> $w[0], "y"=>(int)$c);
+				array_push($waterest,array("label"=> $w[0], "y"=>(int)$c));
 			} 
-			return $waterperpeople;
 		}
+		return $waterest;
 	}
 ?>

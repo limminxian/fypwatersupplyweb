@@ -1272,7 +1272,7 @@ class DataManager{
 		$waterusage=[];
 		$conn = getdb();
 		$current = date("Y-m-01",strtotime("-12 month"));
-		$stmt = mysqli_prepare($conn,"SELECT RECORDDATE, SUM(NOOFPEOPLE) AS NOOFPEOPLE, SUM(WATERUSAGE) AS WATERUSAGE FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND RECORDDATE > ? AND H.ID = W.HOMEOWNER GROUP BY RECORDDATE;");
+		$stmt = mysqli_prepare($conn,"SELECT EXTRACT(YEAR_MONTH FROM RECORDDATE) AS RECORD, SUM(NOOFPEOPLE) AS NOOFPEOPLE, SUM(WATERUSAGE) AS WATERUSAGE FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND STR_TO_DATE (RECORDDATE, '%Y-%m-%d') >= STR_TO_DATE(?, '%Y-%m-%d')  AND H.ID = W.HOMEOWNER GROUP BY RECORD;");
 		mysqli_stmt_bind_param($stmt,"ds",$company,$current);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
