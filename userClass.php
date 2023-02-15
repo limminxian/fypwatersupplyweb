@@ -363,7 +363,6 @@ class Company extends User{
 		$mail->Password = 'eupfzpgiqzvlutyh'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		 $mail->SMTPDebug = true;
 		$mail->setFrom('hasna.ruhi16@gmail.com');
 		
 		$mail->addAddress($this->email);
@@ -371,7 +370,7 @@ class Company extends User{
 		$mail->isHTML(true);
 		
 		$mail->Subject = "Company acceptance result";
-		$mail->Body = "You have been ". $status ." from fypwatersupply.";
+		$mail->Body = "Your account is ". $status .". From fypwatersupply.";
 		
 		$mail->send();
 	}
@@ -633,7 +632,6 @@ class Homeowner extends User{
 		$mail->Password = 'eupfzpgiqzvlutyh'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		 $mail->SMTPDebug = true;
 		
 		$mail->setFrom('hasna.ruhi16@gmail.com');
 		
