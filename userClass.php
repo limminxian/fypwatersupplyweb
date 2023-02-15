@@ -550,10 +550,10 @@ class Company extends User{
 			$result = mysqli_stmt_get_result($stmt);		
 			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
 				foreach ($rows as $r) {
-					array_push(subscribers,$r);
+					array_push($subscribers,$r);
 				}
 			}
-			return subscribers;
+			return $subscribers;
 		}
 	}
 

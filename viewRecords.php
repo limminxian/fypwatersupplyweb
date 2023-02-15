@@ -34,6 +34,29 @@ else{
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");
 	}
+	
+	
+	
+	if(isset ($_POST["type"])){
+		$_SESSION["type"]=$_POST["type"];
+		//header("Location: ".$_SERVER['PHP_SELF']);
+	}
+	
+	if(isset($_SESSION["type"])){
+		switch($_SESSION["type"]){
+			case "estimation":
+				$cumulative = getSubscription();
+				break;
+			case "subscribers":
+				$sub = getSubscription()[0];
+				$unsub = getSubscription()[1];
+				break;
+		}
+	}
+	else{
+		$sub = getSubscription()[0];
+		$unsub = getSubscription()[1];
+	}
  ?>
  
 	<form method="post" action="">
@@ -55,33 +78,6 @@ else{
 			?>
 		</select>
 	</form>
-<?php
-
-	
-	if(isset ($_POST["type"])){
-		$_SESSION["type"]=$_POST["type"];
-		header("Location: ".$_SERVER['PHP_SELF']);
-	}
-	
-	if(isset($_SESSION["type"])){
-		switch($_SESSION["type"]){
-			case "estimation":
-				$sub = getSubscription()[0];
-				$unsub = getSubscription()[1];
-				break;
-			case "subscribers":
-				$sub = getSubscription()[0];
-				$unsub = getSubscription()[1];
-				break;
-		}
-	}
-	else{
-		$sub = getSubscription()[0];
-		$unsub = getSubscription()[1];
-	}
-
-
-?>
 <!DOCTYPE HTML>
 <html>
 <p id="demo"></p>
@@ -156,15 +152,7 @@ function chart() {
 					showInLegend: true,
 					indexLabelFontColor: "#5A5757",
 					indexLabelPlacement: "outside",   
-					dataPoints: <?php echo json_encode($sub); ?>
-				},{
-					type: "column",
-					name: "Unsubscribe count",
-					indexLabel: "{y}",
-					showInLegend: true,
-					indexLabelFontColor: "#5A5757",
-					indexLabelPlacement: "outside",  
-					dataPoints: <?php echo json_encode($unsub); ?>
+					dataPoints: <?php echo json_encode($cumulative); ?>
 				}]
 			});
 			chart.render();

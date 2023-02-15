@@ -114,4 +114,47 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		} 
 		return array($c0 ,$c1);
 	}
+	
+	public getCumulativeSubscription(){
+		$c=new Company();
+		$cumulative=[];
+		$subscribers = $c->getCumulativeSubscribers();
+		$current = strtotime("-12 month");
+		for($i=0;$i<12;$i++){
+			$check = false;
+			$cu = date("Ym",$current);
+			foreach ($subscribers as $s){
+				if(strcmp($cu,$s["YEARMONTH"])==0){
+					array_push($cumulative,array("label"=> $cu, "y"=>(int)$s["CUMULATIVESUB"]));
+					$check = true;
+				}
+			}
+			if(!$check){
+				array_push($cumulative,array("label"=> $cu, "y"=>0));
+			}]
+			$current = strtotime("+1 month", $current);
+		}
+		return array($cumulative);
+	}
+	
+	public getCumulativeSubscriptionEstimation(){
+		$cumulative = getCumulativeSubscription();		
+		$data=[];
+		$i=0;
+		foreach($cumulative as $c){
+			$i++;
+			array_push($data,array(1,$i,$c));
+		}
+		
+		$linear = getLinear($data);
+		$newcumulative = [];
+		$current = time();
+		for($i=13;$i<24;$i++){
+			$cu = date("Ym",$current);
+			$y = $linear[0] + $linear[1]*$i;
+			array_push($newcumulative,array("label"=> $cu, "y"=>(int)$y));
+			$current = strtotime("+1 month", $current);
+		}
+		return $newcumulative;
+	}
 ?>
