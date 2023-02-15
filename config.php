@@ -18,7 +18,7 @@ $db = "fyp"; */
 
 try {
    
-    $conn = mysqli_connect($servername, $username, $password, $db,$port);
+    $conn = mysqli_connect($servername,$username, $password, $db, $port);
      //echo "Connected successfully"; 
     }
 catch(exception $e)
