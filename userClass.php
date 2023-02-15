@@ -363,7 +363,7 @@ class Company extends User{
 		$mail->Password = 'dpzyyyvuzeijeztn'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		
+		 $mail->SMTPDebug = true;
 		$mail->setFrom('simfyp22s404@gmail.com');
 		
 		$mail->addAddress($this->email);
