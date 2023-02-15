@@ -364,7 +364,7 @@ class Company extends User{
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
-		$mail->From('simfyp22s404@gmail.com');
+		$mail->setFrom('simfyp22s404@gmail.com');
 		
 		$mail->addAddress($this->email);
 		
@@ -634,7 +634,7 @@ class Homeowner extends User{
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
-		$mail->From('simfyp22s404@gmail.com');
+		$mail->setFrom('simfyp22s404@gmail.com');
 		
 		$mail->addAddress($this->email);
 		
