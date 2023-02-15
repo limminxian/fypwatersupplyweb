@@ -7,8 +7,6 @@ $data = new DataManager();
 $sub = [];
 $unsub = [];
 
-$waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
-
 
 $uniquenoofpeople = $data->getUniqueNoofpeople($_SESSION["loginId"]);
 $noofpeople = array("less than 3"=>0,"3 to 5"=>0,"6 to 9"=>0,"more than 10"=>0);
@@ -63,8 +61,8 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 	}
 	
 	function getLinear($data){
-		$learningRate=0.01;
-		$loop = 10000;
+		$learningRate=0.001;
+		$loop = 5000;
 		$c0=$data[0][1];
 		$c1=$data[0][2];
 
@@ -118,7 +116,6 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		$cumulative=[];
 		$subscribers = $c->getCumulativeSubscribers();
 		$current = strtotime("-12 month");
-		$sum=1;
 		for($i=0;$i<12;$i++){
 			$check = false;
 			$cu = date("Ym",$current);
@@ -126,11 +123,10 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 				if(strcmp($cu,$s["YEARMONTH"])==0){
 					array_push($cumulative,array("label"=> $cu, "y"=>(int)$s["CUMULATIVESUB"]));
 					$check = true;
-					$sum = $s["CUMULATIVESUB"];
 				}
 			}
 			if(!$check){
-				array_push($cumulative,array("label"=> $cu, "y"=>(int)$sum));
+				array_push($cumulative,array("label"=> $cu, "y"=>end($cumulative)["y"]));
 			}
 			$current = strtotime("+1 month", $current);
 		}
@@ -156,5 +152,36 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			$current = strtotime("+1 month", $current);
 		}
 		return $newcumulative;
+	}
+	
+	function getWaterUsageEstimation(){
+		$waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
+		$sub = getCumulativeSubscriptionEstimation();
+		$current = time();
+		$waterperpeople=[];
+		$waterest=[]
+		for($i=0;$i<12;$i++){
+			$cu = date("Ym",$current);
+			foreach ($waterusage as $w){
+				if(strcmp($cu,$w["RECORDDATE"])==0){
+					$wa = $w["WATERUSAGE"]/$w["NOOFPEOPLE"];
+					array_push($waterperpeople,array($cu,$wa));
+					$check = true;
+				}
+			}
+			if(!$check){
+				array_push($waterperpeople,array($cu, end($waterperpeople)[1]);
+			}
+			$current = strtotime("+1 month", $current);
+		}
+		for($i=0;$i<12;$i++){
+			$w=$waterperpeople[$i];
+			$s=$sub[$i];
+			if (strcmp($s["label"],$w[0]==0)){
+				$c = $s["y"]*$w[1];
+				array_push($waterperpeople,array("label"=> $w[0], "y"=>(int)$c);
+			} 
+			return $waterperpeople;
+		}
 	}
 ?>

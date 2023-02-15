@@ -46,11 +46,13 @@ else{
 	$unsub=[];
 	$cumulative=[];
 	$cumulativeEstimation=[];
+	$waterEstimation=[];
 	
 	if(isset($_SESSION["type"])){
 		switch($_SESSION["type"]){
 			case "estimation":
 				$cumulativeEstimation = getCumulativeSubscriptionEstimation();
+				$waterEstimation = getWaterUsageEstimation();
 				break;
 			case "subscribers":
 				$sub = getSubscription()[0];
@@ -211,6 +213,40 @@ function chart() {
 				e.dataSeries.visible = true;
 			}
 			chart.render();
+		}
+		
+		var chart2 = new CanvasJS.Chart("chartContainer2", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light1", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Cumulative subscribers count in past 12 months"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "column", //change type to bar, line, area, pie, etc
+				name: "Subscribe count",
+				indexLabel: "{y}", //Shows y value on all Data Points
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($waterEstimation); ?>
+			}]
+		});
+		chart2.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart2.render();
 		}
 	}
 }
