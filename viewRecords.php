@@ -51,19 +51,25 @@ else{
 	if(isset($_SESSION["type"])){
 		switch($_SESSION["type"]){
 			case "estimation":
-				$cumulativeEstimation = getCumulativeSubscriptionEstimation();
-				$waterEstimation = getWaterUsageEstimation();
+				$s = new CompanyAdmin();
+				$company = $s->getCompany($_SESSION["loginId"]);
+				$cumulativeEstimation = getCumulativeSubscriptionEstimation($company);
+				$waterEstimation = getWaterUsageEstimation($company);
 				break;
 			case "subscribers":
-				$sub = getSubscription()[0];
-				$unsub = getSubscription()[1];
+				$s = new CompanyAdmin();
+				$company = $s->getCompany($_SESSION["loginId"]);
+				$sub = getSubscription($company)[0];
+				$unsub = getSubscription($company)[1];
 				$cumulative = getCumulativeSubscription();
 				break;
 		}
 	}
 	else{
-		$sub = getSubscription()[0];
-		$unsub = getSubscription()[1];
+		$s = new CompanyAdmin();
+		$company = $s->getCompany($_SESSION["loginId"]);
+		$sub = getSubscription($company)[0];
+		$unsub = getSubscription($company)[1];
 	}
  ?>
  
@@ -196,7 +202,7 @@ function chart() {
 				itemclick: toggleDataSeries
 			},
 			data: [{
-				type: "column", //change type to bar, line, area, pie, etc
+				type: "line", //change type to bar, line, area, pie, etc
 				indexLabel: "{y}", //Shows y value on all Data Points
 				indexLabelFontColor: "#5A5757",
 				indexLabelPlacement: "outside",   
@@ -220,7 +226,7 @@ function chart() {
 			exportEnabled: true,
 			theme: "light1", // "light1", "light2", "dark1", "dark2"
 			title:{
-				text: "Cumulative subscribers count in past 12 months"
+				text: "Water usage estimation for next 12 months"
 			},
 			legend:{
 				cursor: "pointer",
@@ -229,7 +235,7 @@ function chart() {
 				itemclick: toggleDataSeries
 			},
 			data: [{
-				type: "column", //change type to bar, line, area, pie, etc
+				type: "line", //change type to bar, line, area, pie, etc
 				name: "Subscribe count",
 				indexLabel: "{y}", //Shows y value on all Data Points
 				indexLabelFontColor: "#5A5757",

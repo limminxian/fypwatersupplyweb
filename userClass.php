@@ -72,6 +72,7 @@ class Service {
 	public $id;
 	public $name;
 	public $description;
+	public $toTech;
 	public $ratesArray=[];
 	public $createdby;
 
@@ -89,7 +90,7 @@ class Service {
 			$this->$key = $value;
 		}
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`CREATEDBY`) VALUES(?,?,?);");
+		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`) VALUES(?,?,?);");
 		mysqli_stmt_bind_param($stmt,"ssd", $this->name,$this->description,$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -538,11 +539,11 @@ class Company extends User{
 		}
 	}
 	
-	function getCumulativeSubscribers(){
+	function getCumulativeSubscribers($company){
 		$subscribers=[];
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"WITH SUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH),UNSUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribed' AND COMPANY=(SELECT ID FROM COMPANY WHERE ADMIN=?) GROUP BY YEARMONTH)  SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, (SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)) AS CUMULATIVESUB  FROM SUB S LEFT JOIN UNSUB U ON S.YEARMONTH = U.YEARMONTH;");
-		mysqli_stmt_bind_param($stmt,"dd",$_SESSION["loginId"],$_SESSION["loginId"]);
+		$stmt = mysqli_prepare($conn,"WITH SUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribed' AND COMPANY=? GROUP BY YEARMONTH),UNSUB AS (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribed' AND COMPANY=? GROUP BY YEARMONTH)  SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, (SUM(S.SUBSCRIBER) OVER (ORDER BY S.YEARMONTH)-COALESCE(SUM(U.SUBSCRIBER) OVER (ORDER BY U.YEARMONTH),0)) AS CUMULATIVESUB  FROM SUB S LEFT JOIN UNSUB U ON S.YEARMONTH = U.YEARMONTH;");
+		mysqli_stmt_bind_param($stmt,"dd",$company,$company);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
@@ -780,7 +781,7 @@ class Staff extends User{
 		mysqli_stmt_bind_param($stmt,"d", $staffId);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);
-		return mysqli_fetch_array($result, MYSQLI_NUM)[0];
+		return mysqli_fetch_all($result, MYSQLI_ASSOC)[0]["COMPANY"];
 	}
 	
 	function approvedToTech($ticket){
@@ -792,6 +793,19 @@ class Staff extends User{
 		mysqli_stmt_bind_param($stmt2,"dd",parent::getId(),$ticket);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_execute($stmt2);
+	}
+}
+
+class CompanyAdmin{
+	public $company;
+	
+	function getCompany($id){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "SELECT ID FROM `COMPANY` WHERE ADMIN=?;" );
+		mysqli_stmt_bind_param($stmt,"d", $id);
+		mysqli_stmt_execute($stmt);
+		$result = mysqli_stmt_get_result($stmt);
+		return mysqli_fetch_array($result, MYSQLI_NUM)[0];
 	}
 }
 
@@ -886,7 +900,7 @@ class Ticket{
 	}
 }
 
-class Tickettype{
+class ServiceType{
 	public $id;
 	public $name;
 	public $description;
@@ -948,6 +962,8 @@ class Chemical{
 	public $id;
 	public $name;
 	public $amount;
+	public $measurement;
+	public $per1lwater;
 	public $chemicalUsedArray=[];
 	
 	function setChemical($chemical){
@@ -970,9 +986,22 @@ class Chemical{
 	
 	function addChemicalStock($a){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICALUSED` (`CHEMICAL`,`AMOUNT`) SELECT ?,?");
-		mysqli_stmt_bind_param($stmt,"dd",$this->id, $a);
+		$stmt = mysqli_prepare($conn,"UPDATE CHEMICAL SET `AMOUNT` = AMOUNT + ? WHERE `ID`=?");
+		mysqli_stmt_bind_param($stmt,"dd",$a,$this->id);
 		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);
+		}
+	}
+	
+	function addChemicalUsed($a){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICALUSED` (`CHEMICAL`,`AMOUNT`) SELECT ?,?");
+		$stmt2 = mysqli_prepare($conn,"UPDATE CHEMICAL SET `AMOUNT` = AMOUNT - ? WHERE `ID`=?");
+		mysqli_stmt_bind_param($stmt,"dd",$this->id, $a);
+		mysqli_stmt_bind_param($stmt2,"dd",$a,$this->id);
+		mysqli_stmt_execute($stmt);
+		mysqli_stmt_execute($stmt2);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
 		}
@@ -995,22 +1024,18 @@ class Chemical{
 		}
 	}
 	
-	function getPer1L($chemical, $company){
+	function getPer1L(){
 		$chemicalused=[];
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT PER1LWATER FROM CHEMICAL WHERE NAME=? AND COMPANY = (SELECT ID FROM COMPANY WHERE ADMIN = ?)");
-		mysqli_stmt_bind_param($stmt,"Sd",$chemcal,$company);
+		$stmt = mysqli_prepare($conn,"SELECT PER1LWATER FROM CHEMICAL WHERE ID=?;");
+		mysqli_stmt_bind_param($stmt,"d",$this->id);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
 		else{
 			$result = mysqli_stmt_get_result($stmt);		
-			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
-				foreach ($rows as $r) {
-					array_push($chemicalused,$r);
-				}
-			}
-			return $chemicalused;
+			return mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
+			
 		}
 	}
 }
@@ -1272,7 +1297,7 @@ class DataManager{
 		$waterusage=[];
 		$conn = getdb();
 		$current = date("Y-m-01",strtotime("-12 month"));
-		$stmt = mysqli_prepare($conn,"SELECT EXTRACT(YEAR_MONTH FROM RECORDDATE) AS RECORD, SUM(NOOFPEOPLE) AS NOOFPEOPLE, SUM(WATERUSAGE) AS WATERUSAGE FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND STR_TO_DATE (RECORDDATE, '%Y-%m-%d') >= STR_TO_DATE(?, '%Y-%m-%d')  AND H.ID = W.HOMEOWNER GROUP BY RECORD;");
+		$stmt = mysqli_prepare($conn,"SELECT EXTRACT(YEAR_MONTH FROM RECORDDATE) AS RECORD, SUM(NOOFPEOPLE) AS NOOFPEOPLE, SUM(`WATERUSAGE(L)`) AS WATERUSAGE FROM WATERUSAGE W, HOMEOWNER H WHERE H.SUBSCRIBE = ? AND STR_TO_DATE (RECORDDATE, '%Y-%m-%d') >= STR_TO_DATE(?, '%Y-%m-%d')  AND H.ID = W.HOMEOWNER GROUP BY RECORD;");
 		mysqli_stmt_bind_param($stmt,"ds",$company,$current);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){

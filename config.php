@@ -11,17 +11,17 @@ $password = "7730fd74a05533e54625120ba59d494a060111ce887ccd836c95a9d7494ed0b2";
 $db = "d1rhm1e7kg5b5e"; 
 $port = 5432; */
 
-/* $servername = "localhost";
+$servername = "localhost";
 $username = "root";
 $password = "";
-$db = "fyp"; */
+$db = "fyp";
 
 
 try {
    
-    //$conn = mysqli_connect($servername,$username, $password, $db, $port);
+    $conn = mysqli_connect($servername,$username, $password, $db);
      //echo "Connected successfully"; 
-$conn = pg_connect("dbname=d1rhm1e7kg5b5e host=ec2-3-225-213-67.compute-1.amazonaws.com port=5432 user=lbftgzbfbhpkxk password=7730fd74a05533e54625120ba59d494a060111ce887ccd836c95a9d7494ed0b2 sslmode=require");
+//$conn = pg_connect("dbname=d1rhm1e7kg5b5e host=ec2-3-225-213-67.compute-1.amazonaws.com port=5432 user=lbftgzbfbhpkxk password=7730fd74a05533e54625120ba59d494a060111ce887ccd836c95a9d7494ed0b2 sslmode=require");
 
     }
 catch(exception $e)

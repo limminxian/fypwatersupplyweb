@@ -35,9 +35,10 @@ if(isset($_POST["logout"])){
 if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
 	$description = $_POST['description'];
+	$tech = $_POST['tech'];
 	//check role	
 	$a = new Service();
-	$result = $a->addService(array("name"=>$name,"description"=>$description));
+	$result = $a->addService(array("name"=>$name,"description"=>$description,"toTech"=>$tech));
 	
 	header("Location: manageServiceCompanyadmin.php");
 	
@@ -54,7 +55,17 @@ if (isset($_POST['submit'])) {
 Name: <input type="text" name="name" placeholder="Name" class="form" required ><br>
 
 Description: <input type="text" name="description" placeholder="Description" class="form" required ><br>
+
+Send To Technician Automatically:
+<input type="radio" value="1" id="yes" name="tech" required>
+
+<label for="yes">Yes</label>
+
+<input type="radio" value="0" id="no" name="tech" >
  
+ <label for="no">No</label>
+ 
+<br>
 <br>
 
 <br>

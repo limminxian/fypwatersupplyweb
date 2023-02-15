@@ -27,11 +27,11 @@ foreach($uniquenoofpeople as $a){
 }
 $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 
-	function getSubscription(){
+	function getSubscription($company){
 		$c=new Company();
 		$sub=[];
 		$unsub=[];
-		$subscribers = $c->getCumulativeSubscribers();
+		$subscribers = $c->getCumulativeSubscribers($company);
 		$current = strtotime("-12 month");
 		for($i=0;$i<12;$i++){
 			$check = false;
@@ -111,10 +111,10 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		return $c1 - $learningRate * descent(1, $c0, $c1, $data);
 	}
 	
-	function getCumulativeSubscription(){
+	function getCumulativeSubscription($company){
 		$c=new Company();
 		$cumulative=[];
-		$subscribers = $c->getCumulativeSubscribers();
+		$subscribers = $c->getCumulativeSubscribers($company);
 		$current = strtotime("-12 month");
 		for($i=0;$i<12;$i++){
 			$check = false;
@@ -125,16 +125,19 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 					$check = true;
 				}
 			}
-			if(!$check){
+			if(!$check && $i!=0){
 				array_push($cumulative,array("label"=> $cu, "y"=>end($cumulative)["y"]));
+			}
+			else if(!$check){
+				array_push($cumulative,array("label"=> $cu, "y"=>0));
 			}
 			$current = strtotime("+1 month", $current);
 		}
 		return $cumulative;
 	}
 	
-	function getCumulativeSubscriptionEstimation(){
-		$cumulative = getCumulativeSubscription();		
+	function getCumulativeSubscriptionEstimation($company){
+		$cumulative = getCumulativeSubscription($company);		
 		$data=[];
 		$i=0;
 		foreach($cumulative as $c){
@@ -145,7 +148,7 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		$linear = getLinear($data);
 		$newcumulative = [];
 		$current = time();
-		for($i=13;$i<24;$i++){
+		for($i=12;$i<24;$i++){
 			$cu = date("Ym",$current);
 			$y = $linear[0] + ($linear[1]*$i);
 			array_push($newcumulative,array("label"=> $cu, "y"=>(int)$y));
@@ -154,35 +157,51 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		return $newcumulative;
 	}
 	
-	function getWaterUsageEstimation(){
+	function overallWaterUsagePerPeople($company){
 		$data = new DataManager();
-		$waterusage = $data->getAllWaterUse($_SESSION["loginId"]);
-		$sub = getCumulativeSubscriptionEstimation();
-		$current = time();
+		$waterusage = $data->getAllWaterUse($company);
+		$totalwater=0;
+		$totalpeople=0;
+		foreach($waterusage as $w){
+			$totalwater+=$w["WATERUSAGE"];
+			$totalpeople+=$w["NOOFPEOPLE"];
+		}
+		return $totalwater/$totalpeople;
+		
+	}
+	
+	function getWaterUsageEstimation($company){
+		$overall=overallWaterUsagePerPeople($company);
+		$data = new DataManager();
+		$waterusage = $data->getAllWaterUse($company);
+		$sub = getCumulativeSubscriptionEstimation($company);
+		$current = strtotime("-12 month");
+		$estimation = time();
 		$waterperpeople=[];
 		$waterest=[];
-		$check = false;
 		for($i=0;$i<12;$i++){
+			$check = false;
 			$cu = date("Ym",$current);
+			$est = date("Ym",$estimation);
 			foreach ($waterusage as $w){
 				if(strcmp($cu,$w["RECORD"])==0){
 					$wa = $w["WATERUSAGE"]/$w["NOOFPEOPLE"];
-					array_push($waterperpeople,array($cu,$wa));
-					echo $w["WATERUSAGE"];
+					array_push($waterperpeople,array($est,$wa));
 					$check = true;
 				}
 			}
-			if(!$check && $i!=0){
-				array_push($waterperpeople,array($cu, end($waterperpeople)[1]));
+			if(!$check && $i==0){
+				array_push($waterperpeople,array($est, $overall));
 			}
-			else{
-				array_push($waterperpeople,array($cu, 0));
+			else if(!$check){
+				array_push($waterperpeople,array($est, end($waterperpeople)[1]));
 			}
 			$current = strtotime("+1 month", $current);
+			$estimation = strtotime("+1 month", $estimation);
 		}
-		print "<pre>";
-			print_r( $waterusage);
-			print "</pre>";
+		/* print "<pre>"; 
+		print_r ($sub);
+		print "<pre>"; */
 		for($i=0;$i<12;$i++){
 			$w=$waterperpeople[$i];
 			$s=$sub[$i];
@@ -192,5 +211,16 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			} 
 		}
 		return $waterest;
+	}
+	
+	function getChemicalEstimation($c,$id){
+		$chemical=[];
+		$com = new Staff();
+		$company = $com->getCompany($id);
+		foreach(getWaterUsageEstimation($company)as $a){
+			$est = (FLOAT)$a["y"]*(FLOAT)$c;
+			array_push($chemical,array("label"=>$a["label"],"y"=>(FLOAT)$est));
+		}
+		return $chemical;
 	}
 ?>

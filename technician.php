@@ -38,16 +38,28 @@ if (isset($_POST["addNew"])){
 	header("Location: addChemical.php");
 }
 
+if (isset($_POST["addstock"])){
+	$t = unserialize(base64_decode($_POST["addstock"]));
+	$_SESSION["chemical"]=$t;
+	header("Location: addChemicalStock.php");
+}
+
 if (isset($_POST["addused"])){
 	$t = unserialize(base64_decode($_POST["addused"]));
 	$_SESSION["chemical"]=$t;
-	header("Location: addChemicalStock.php");
+	header("Location: addChemicalUsed.php");
 }
 
 if (isset($_POST["view"])){
 	$t = unserialize(base64_decode($_POST["view"]));
 	$_SESSION["chemical"]=$t;
 	header("Location: viewChemicalUsed.php");
+}
+
+if (isset($_POST["viewest"])){
+	$t = unserialize(base64_decode($_POST["viewest"]));
+	$_SESSION["chemical"]=$t;
+	header("Location: viewChemicalEstimation.php");
 }
 
 $chemical = new Company();
@@ -57,6 +69,11 @@ $chemical->getAllChemical();
 <table>
  <tr bgcolor="#488AC7">
     <th>Name</th>
+    <th>Amount</th>
+    <th>Measurement</th>
+    <th>Used per 1L water</th>
+    <th></th>
+    <th></th>
     <th></th>
     <th></th>
   </tr>	
@@ -67,13 +84,23 @@ foreach($chemical->chemicalArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('name');
+		$properties = array('name','amount','measurement','per1lwater');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
 			</td>
 		<?php }
 	?>
+	<td>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="viewest"/>VIew estimation usage</button>
+	  </center>
+	</td>
+	<td>
+		<center>
+		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="addstock"/>Add stock</button>
+	  </center>
+	</td>
 	<td>
 		<center>
 		<button  value="<?=base64_encode(serialize($c))?>" class="edit"name="addused"/>Add amount used</button>

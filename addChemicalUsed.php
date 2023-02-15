@@ -21,16 +21,13 @@ include_once 'userClass.php';
 	});
 	</script>
 </head>
-<h1>Add Chemical</h1>
-<div class="center bg-img">
+<h1>Add chemical stock</h1>
+	<div class="center bg-img">
 <?php
 if (isset($_POST['submit'])) {
-	$name = $_POST['name'];
-	$measurement = $_POST['measurement'];
 	$amount = $_POST['amount'];
-	$per1lwater = $_POST['perwater'];
-	$c = new Chemical();
-	$c->addChemical(array("name"=>$name,"amount"=>$amount,"measurement"=>$measurement,"per1lwater"=>$per1lwater),$_SESSION["loginId"]);
+	$c = $_SESSION["chemical"];
+	$c->addChemicalUsed($amount);
 	header("Location: technician.php");
 }
   
@@ -40,21 +37,7 @@ if (isset($_POST['submit'])) {
 <div >
 <form action="" method="post" class="formcontainer">
 
-
- 
-Name: <input class="form" type="text" name="name" placeholder="Name" required ><br>
 Amount: <input class="form" type="number" name="amount" placeholder="Amount" required ><br>
-<label for="measure">Measure:</label>
-
-<select name="measurement" id="measurement" class="form"  required>
-  <option value="l">Litre(l)</option>
-  <option value="ml">milielitre(ml)</option>
-  <option value="gram">gram(g)</option>
-  <option value="fourRoomFlat">kilogram(kg)</option>
-  <option value="fiveRoomFlat">centimetercube(cm3)</option>
-</select>
-<br>
-Used per 1L water: <input class="form" type="number" name="perwater" placeholder="Used per 1L water" required ><br>
 
 
 <input class="formbutton" type="submit" name="submit" value="Submit" />
