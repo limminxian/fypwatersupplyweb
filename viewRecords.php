@@ -53,24 +53,21 @@ else{
 			case "estimation":
 				$s = new CompanyAdmin();
 				$company = $s->getCompany($_SESSION["loginId"]);
-		echo $company;
 				$cumulativeEstimation = getCumulativeSubscriptionEstimation($company);
 				$waterEstimation = getWaterUsageEstimation($company);
 				break;
 			case "subscribers":
 				$s = new CompanyAdmin();
 				$company = $s->getCompany($_SESSION["loginId"]);
-		echo $company;
 				$sub = getSubscription($company)[0];
 				$unsub = getSubscription($company)[1];
-				$cumulative = getCumulativeSubscription();
+				$cumulative = getCumulativeSubscription($company);
 				break;
 		}
 	}
 	else{
 		$s = new CompanyAdmin();
 		$company = $s->getCompany($_SESSION["loginId"]);
-		echo $company;
 		$sub = getSubscription($company)[0];
 		$unsub = getSubscription($company)[1];
 	}
