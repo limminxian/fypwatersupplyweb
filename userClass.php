@@ -340,7 +340,7 @@ class Company extends User{
 		if($r[0]){
 			$admin=parent::getId();
 			$this->saveAcraFile();
-			$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
+			$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`,`PHOTOPATH`, `ADMIN`) VALUES(?,?,?,?,?,'imgnotfound.jpg',?);");
 			mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
@@ -530,7 +530,7 @@ class Company extends User{
 		
 		move_uploaded_file($temp_name,$path_filename_ext);
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "UPDATE COMPANY SET PHOTOPATH = ? WHERE `ID` = (SELECT ID FROM COMPANY WHERE ADMIN = ?);" );
+		$stmt = mysqli_prepare($conn, "UPDATE COMPANY SET PHOTOPATH = ? WHERE `ADMIN` =  ?;" );
 		mysqli_stmt_bind_param($stmt,"sd",$this->photopath,$admin);
 		mysqli_stmt_execute($stmt);
 	}
@@ -551,7 +551,7 @@ class Company extends User{
 	
 	function displayProfileImage($admin){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "SELECT PHOTOPATH FROM COMPANY WHERE `ID` = (SELECT ID FROM COMPANY WHERE ADMIN = ?);" );
+		$stmt = mysqli_prepare($conn, "SELECT PHOTOPATH FROM COMPANY WHERE `ADMIN`=?;" );
 		mysqli_stmt_bind_param($stmt,"d",$admin);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -1029,6 +1029,7 @@ class Equipment{
 	public $description;
 	public $amount;
 	public $company;
+	public $servicedate;
 	public $equipmentArray=[];
 	
 	function setEquipment($equipment){
@@ -1069,7 +1070,7 @@ class Equipment{
 	
 	function getAllEquipmentHomeowner($type){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT E.* FROM `EQUIPMENT` E, `EQUIPSTOCK` T WHERE E.EQUIPMENT = T.SERIAL AND T.TYPE=?;");
+		$stmt = mysqli_prepare($conn,"SELECT E.*, C.SERVICEDATE FROM `EQUIPMENT` E, `EQUIPSTOCK` T, TASK K, TICKET C WHERE E.EQUIPMENT = T.SERIAL AND T.TYPE=? AND (E.INSTALLTASK=K.ID OR E.UNINSTALLTASK=K.ID) AND C.ID=K.TICKET;");
 		mysqli_stmt_bind_param($stmt,"d", $type);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);		

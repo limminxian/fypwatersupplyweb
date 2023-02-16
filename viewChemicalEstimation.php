@@ -57,9 +57,7 @@ window.onload = function () {
 		},
 		data: [{
 			type: "column", //change type to bar, line, area, pie, etc
-			name: "Subscribe count",
 			indexLabel: "{y}", //Shows y value on all Data Points
-			showInLegend: true,
 			indexLabelFontColor: "#5A5757",
 			indexLabelPlacement: "outside",   
 			dataPoints: <?php echo json_encode($chemical); ?>

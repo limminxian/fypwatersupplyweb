@@ -59,7 +59,7 @@ foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'equipment', 'installationdate','homeowner');
+		$properties = array('id', 'equipment', 'servicedate','homeowner');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>

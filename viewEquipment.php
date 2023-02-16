@@ -54,6 +54,7 @@ $equipment->getAllEquipment();
     <th>Name</th>
     <th>Description</th>
     <th></th>
+    <th></th>
   </tr>	
   <form action="" method="post">
   	<a class="rightButton" href="addEquipment.php">Add new equipment</a>
