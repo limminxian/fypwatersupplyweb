@@ -23,6 +23,7 @@ if (isset($_POST['submit'])) {
 			header("Location: login.php");
 		}else{		
 			echo "<div class='error'>" . $result[1] . "</div>" ;
+			header("Location: signUp.php");
 		}
 	}else{
 		$block = $_POST['block'];

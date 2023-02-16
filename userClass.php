@@ -1,6 +1,6 @@
 <?php
 include_once 'config.php';
-	
+//ini_set('display_errors', '0');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -204,16 +204,18 @@ class User{
 		$this->password = password_hash($this->password,PASSWORD_DEFAULT);
 		$stmt = mysqli_prepare($conn,"INSERT INTO `USERS` (`NUMBER`,`NAME`,`EMAIL`, `PASSWORD`, `TYPE`, `STATUS`) VALUES(?,?,?,?,?,'PENDING');");
 		mysqli_stmt_bind_param($stmt,"ssssd",$this->number, $this->name,$this->email,$this->password,$this->type);
-		mysqli_stmt_execute($stmt);
-		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+		try{
+			mysqli_stmt_execute($stmt);
+		//if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+		}catch (Exception $e) {
 			return array(False,mysqli_error($conn));
 		}
-		else{
+		
 			$result = mysqli_query($conn,"select MAX(ID) FROM `USERS`;");
 			$row = mysqli_fetch_row($result)[0];
 			$this->id=$row;
 			return array(TRUE,"Account created successfully");
-		}
+		
 	}
 	
 	function validateLogin($user){
