@@ -342,8 +342,8 @@ class Company extends User{
 			$this->saveAcraFile();
 			$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
 			mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
-			//mysqli_stmt_execute($stmt);
-			//mysqli_stmt_close($stmt);
+			mysqli_stmt_execute($stmt);
+			mysqli_stmt_close($stmt);
 			if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 				$_SESSION["errorView"]=mysqli_error($c);}
 			else{
