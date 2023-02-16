@@ -47,7 +47,6 @@ if(isset($_POST["submit"])) {
 	if ($check){
 		$a = new User();
 		$result = $a->validateLogin(array("email"=>$email,"password"=>$password));
-		var_dump($result);
 		if($result[0]){
 			header("Location:".$result[1].".php");
 		}else{
