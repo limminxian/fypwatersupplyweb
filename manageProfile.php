@@ -31,7 +31,6 @@ if(!isset($_SESSION['loginId'])){
 else{
 	$a = new Company();
 	$p = $a->displayProfileImage($_SESSION["loginId"]);
-	
 	if(isset($_POST["logout"])){
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");

@@ -57,8 +57,6 @@ $service->getAllRate($_SESSION["service"]);
  <tr bgcolor="#488AC7">
     <th>Effective date</th>
     <th>Rate</th>
-	<th></th>
-    <th></th>
   </tr>	
   <form action="" method="post">
 <?php
@@ -73,24 +71,24 @@ foreach($service->ratesArray as $r){
 				<?=$r->$prop?>
 			</td>
 		<?php }
-		if(strcmp($r->company,"1")!=0){
+		/* if(strcmp($r->company,"1")!=0){
 			
 			?>
-			<td>
-				<center>
-				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
-			</td>
-			<td>
-				<center>
-				
-	  </center>
-			</td>
+		<td>
+			<center>
+			<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
+		</td>
+		<td>
+			<center>
+			
+  </center>
+		</td>
 			<?php
 		}
 		else{?>
 			<td></td><td></td></tr>
 			<?php
-		}
+		} */
 }
 ?>
 

@@ -34,12 +34,9 @@ else{
 		header("Location: login.php");
 	}
 
-	if (isset($_POST["edit"])){
-		$t = unserialize(base64_decode($_POST["edit"]));
-		//$_SESSION["service"]=$t;
-		$t->updateService(array("status"=>"suspend"));
-		header("Location: manageServiceCompanyadmin.php");
-		//header("Location: editServiceDetails.php");
+	if (isset($_POST["suspend"])){
+		$t = unserialize(base64_decode($_POST["suspend"]));
+		$t->updateService("suspend");
 	}
 	
 	if (isset($_POST["rates"])){
@@ -60,6 +57,8 @@ $s= $service->getAllService($_SESSION["loginId"]);
     <th>Name</th>
     <th>Description</th>
     <th>Latest rate</th>
+    <th>Status</th>
+	<th></th>
 	<th></th>
   </tr>	
   <form action="" method="post">
@@ -68,7 +67,7 @@ foreach($s as $r){
 	?>
   <tr>
 	<?php
-		$properties = array('name', 'description', 'rate');
+		$properties = array('name', 'description', 'rate','status');
 		
 		foreach ($properties as $prop) {?>
 			<td>
@@ -76,15 +75,15 @@ foreach($s as $r){
 			</td>
 		<?php }?>
 			<td>
-				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="suspend"/>suspend</button>
-			</td>
-			<td>
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="rates"/>rates</button>
 			</td>
 			<?php
 		if(strcmp($r->createdby,"1")!=0){
 			
 			?>
+			<td>
+				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="suspend"/>suspend</button>
+			</td>
 			<!--td>
 				<center>
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
@@ -97,6 +96,8 @@ foreach($s as $r){
 			<?php
 		}
 		else{?>
+			<td>
+			</td>
 			</tr>
 			<?php
 		}
