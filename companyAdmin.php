@@ -46,7 +46,7 @@ $_SESSION["page"]="companyAdmin";
 
 $company = new Company();
 $company->getAllStaff();
-$company->getAllHomeowner($company->id);
+$company->getAllHomeowner($_SESSION["loginId"]);
 ?>
 
 

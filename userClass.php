@@ -293,6 +293,16 @@ class User{
 		return $this->id;
 	}
 	
+	
+	function getEmail($id){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "SELECT `EMAIL` FROM `USERS` WHERE ID=? ;" );
+		mysqli_stmt_bind_param($stmt,"s", $id);
+		mysqli_stmt_execute($stmt);
+		$result = mysqli_stmt_get_result($stmt);
+		return mysqli_fetch_array($result, MYSQLI_NUM)[0];
+	}
+	
 }
 
 class Company extends User{
@@ -331,8 +341,8 @@ class Company extends User{
 		parent::addUser($company);
 		$admin=parent::getId();
 		$this->saveAcraFile();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
+		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`,`CODE`) VALUES(?,?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt,"ssdssdd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin,$this->code);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -452,7 +462,7 @@ class Company extends User{
 	
 	function getAllHomeowner($companyId){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,U.EMAIL,BLOCKNO,UNITNO,H.STREET,H.POSTALCODE,HOUSETYPE,NOOFPEOPLE,U.STATUS,CARD FROM `USERS` U, `HOMEOWNER` H, `ROLE` R, `COMPANY` C WHERE U.`TYPE`= R.ID AND R.NAME ='HOMEOWNER' AND U.ID = H.ID AND H.SUBSCRIBE=C.ID AND C.ID=?;");
+		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,U.EMAIL,BLOCKNO,UNITNO,H.STREET,H.POSTALCODE,HOUSETYPE,NOOFPEOPLE,U.STATUS,CARD FROM `USERS` U, `HOMEOWNER` H, `ROLE` R, `COMPANY` C WHERE U.`TYPE`= R.ID AND R.NAME ='HOMEOWNER' AND U.ID = H.ID AND H.SUBSCRIBE=C.ID AND C.ADMIN=?;");
 		mysqli_stmt_bind_param($stmt,"d",$companyId);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -460,6 +470,7 @@ class Company extends User{
 		else{
 			$result = mysqli_stmt_get_result($stmt);		
 			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				$this->homeownerArray=[];
 				foreach ($rows as $r) {
 					$h = new Homeowner();
 					$h->setHomeowner($r);
@@ -608,7 +619,7 @@ class Homeowner extends User{
 			//echo substr($this->postalcode,0,2);
 		}
 		$this->code = rand(100000,999999);
-		$this->sendEmail();
+		$this->sendEmail($this->email);
 		parent::addUser($homeowner);
 		$conn = getdb();
 		//parent::addUser($homeowner);
@@ -621,7 +632,7 @@ class Homeowner extends User{
 		header("Location:login.php");
 	}
 	
-	function sendEmail(){
+	function sendEmail($email){
 		$mail = new PHPMailer(true);
 		
 		$mail->isSMTP();
@@ -634,7 +645,7 @@ class Homeowner extends User{
 		
 		$mail->setFrom('hasna.ruhi16@gmail.com');
 		
-		$mail->addAddress($this->email);
+		$mail->addAddress($email);
 		
 		$mail->isHTML(true);
 		
@@ -665,11 +676,11 @@ class Homeowner extends User{
 		
 	}
 	
-	function resendCode(){
+	function resendCode($email){
 		$this->code = rand(100000,999999);
 		$conn = getdb();
-		$this->sendEmail();
-		$stmt = mysqli_prepare($conn,"UPDATE `HOMEOWNER` SET `CODE` = ? WHERE ID = ?;");
+		$this->sendEmail($email);
+		$stmt = mysqli_prepare($conn,"UPDATE `USERS` SET `CODE` = ? WHERE ID = ?;");
 		mysqli_stmt_bind_param($stmt,"sd",$this->code,$_SESSION['loginId']);
 		mysqli_stmt_execute($stmt);
 		return TRUE;
@@ -1154,6 +1165,25 @@ class DataManager{
 	function getAllHomeowner(){
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,NUMBER,EMAIL,BLOCKNO,UNITNO,STREET,POSTALCODE,HOUSETYPE,NOOFPEOPLE,STATUS FROM `USERS` U, `HOMEOWNER` H, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='HOMEOWNER' AND U.ID = H.ID;");
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				foreach ($rows as $r) {
+					$h = new Homeowner();
+					$h->setHomeowner($r);
+					array_push($this->homeownerArray,$h);
+				}
+			}
+		}
+	}
+	
+	function getAllHomeownerCompany($id){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,NUMBER,EMAIL,BLOCKNO,UNITNO,STREET,POSTALCODE,HOUSETYPE,NOOFPEOPLE,STATUS FROM `USERS` U, `HOMEOWNER` H, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='HOMEOWNER' AND U.ID = H.ID AND COMPANY=?;");
+		mysqli_stmt_bind_param($stmt,"d",$_SESSION['loginId']);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
