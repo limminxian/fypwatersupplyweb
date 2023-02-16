@@ -561,7 +561,8 @@ class Company extends User{
 	function getCumulativeSubscribers($company){
 		$subscribers=[];
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, ((@sum1 := @sum1 + SUM(S.SUBSCRIBER)) - COALESCE(@sum2 := @sum2 + SUM(U.SUBSCRIBER),0)) AS CUMULATIVESUB FROM (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE JOIN (SELECT @sum1 := 0) A JOIN (SELECT @sum2 := 0) B WHERE CATEGORY = 'subscribe' AND COMPANY=? GROUP BY YEARMONTH) S LEFT JOIN (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribe' AND COMPANY=? GROUP BY YEARMONTH) U ON S.YEARMONTH = U.YEARMONTH UNION SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER, ((@sum1 := @sum1 + SUM(S.SUBSCRIBER)) - COALESCE(@sum2 := @sum2 + SUM(U.SUBSCRIBER),0)) AS CUMULATIVESUB FROM (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE JOIN (SELECT @sum1 := 0) A JOIN (SELECT @sum2 := 0) B WHERE CATEGORY = 'subscribe' AND COMPANY=? GROUP BY YEARMONTH) S RIGHT JOIN (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribe' AND COMPANY=? GROUP BY YEARMONTH) U ON S.YEARMONTH = U.YEARMONTH;");
+		$stmt = mysqli_prepare($conn,"SELECT S.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER FROM (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribe' AND COMPANY=? GROUP BY YEARMONTH) S LEFT JOIN (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribe' AND COMPANY=? GROUP BY YEARMONTH) U ON S.YEARMONTH = U.YEARMONTH UNION SELECT U.YEARMONTH,S.SUBSCRIBER,U.SUBSCRIBER AS UNSUBSCRIBER FROM (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'subscribe' AND COMPANY=? GROUP BY YEARMONTH) S RIGHT JOIN (SELECT EXTRACT(YEAR_MONTH FROM DATE) AS YEARMONTH, COUNT(HOMEOWNER) AS SUBSCRIBER FROM SUBSCRIBE WHERE CATEGORY = 'unsubscribe' AND COMPANY=? GROUP BY YEARMONTH) U ON S.YEARMONTH = U.YEARMONTH ;
+");
 		mysqli_stmt_bind_param($stmt,"dddd",$company,$company,$company,$company);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -576,7 +577,6 @@ class Company extends User{
 			return $subscribers;
 		}
 	}
-
 }
 
 class Homeowner extends User{
@@ -647,7 +647,7 @@ class Homeowner extends User{
 	
 	function verifyEmail($code){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT `CODE` FROM `HOMEOWNER` WHERE ID = ?;");
+		$stmt = mysqli_prepare($conn,"SELECT `CODE` FROM `USERS` WHERE ID = ?;");
 		mysqli_stmt_bind_param($stmt,"d",$_SESSION['loginId']);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);
@@ -915,50 +915,6 @@ class Ticket{
 					array_push($this->techArray,$h);
 				}
 			}
-		}
-	}
-}
-
-class ServiceType{
-	public $id;
-	public $name;
-	public $description;
-	public $totech;
-	public $company;
-	
-	function setTicketType($tickettype){
-		foreach($tickettype as $key=>$value){
-			$lowerKey = strtolower($key);
-			$this->$lowerKey = $value;
-		}
-	}
-	
-	function addTicketType($tickettype){
-		$this->setTicketType($tickettype);
-		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "INSERT INTO `TICKETTYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`COMPANY`) SELECT ?,?,?,COMPANY FROM `STAFF` WHERE `ID`=?;" );
-		mysqli_stmt_bind_param($stmt,"ssdd",$this->name,$this->description,$this->totech,$_SESSION['loginId']);
-		mysqli_stmt_execute($stmt);
-		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			echo mysqli_error($conn);
-			echo mysqli_error($conn);
-			$_SESSION["errorView"]=mysqli_error($conn);
-		}
-	}
-		
-	function updateTicketType($ticket){
-		foreach($ticket as $key=>$value){
-			$this->$key = $value;
-		}
-		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"UPDATE `TICKETTYPE` SET `NAME` = ? ,`DESCRIPTION` = ?,`TOTECH` = ? WHERE ID = ? ;");
-		mysqli_stmt_bind_param($stmt,"ssdd", $this->name,$this->description,$this->totech,$this->id);
-		mysqli_stmt_execute($stmt);
-		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			$_SESSION["errorView"]=mysqli_error($c);}
-		else{
-			mysqli_stmt_close($stmt);
-			$_SESSION["update"]=true;
 		}
 	}
 }

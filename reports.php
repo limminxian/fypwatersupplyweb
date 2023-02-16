@@ -116,12 +116,15 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 		$cumulative=[];
 		$subscribers = $c->getCumulativeSubscribers($company);
 		$current = strtotime("-12 month");
+		$cumu=0;
 		for($i=0;$i<12;$i++){
 			$check = false;
 			$cu = date("Ym",$current);
 			foreach ($subscribers as $s){
 				if(strcmp($cu,$s["YEARMONTH"])==0){
-					array_push($cumulative,array("label"=> $cu, "y"=>(int)$s["CUMULATIVESUB"]));
+					$cumu += $s["SUBSCRIBER"];
+					$cumu -= $s["UNSUBSCRIBER"];
+					array_push($cumulative,array("label"=> $cu, "y"=>(int)$cumu));
 					$check = true;
 				}
 			}
