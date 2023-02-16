@@ -950,8 +950,8 @@ class Chemical{
 	function addChemical($chemical,$admin){
 		$this->setChemical($chemical);
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICAL` (`NAME`,`AMOUNT`,`COMPANY`) SELECT ?,?,COMPANY FROM `STAFF` WHERE `ID`=?");
-		mysqli_stmt_bind_param($stmt,"sdd",$this->name, $this->amount,$admin);
+		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICAL` (`NAME`,`AMOUNT`,`COMPANY`, `MEASUREMENT`,`PER1LWATER`) SELECT ?,?, COMPANY,?,? FROM `STAFF` WHERE `ID`=?");
+		mysqli_stmt_bind_param($stmt,"sdsdd",$this->name, $this->amount,$this->measurement,$this->per1lwater,$admin);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);
@@ -1100,13 +1100,6 @@ class EquipmentStock{
 			$_SESSION["errorAddStock"]=mysqli_error($conn);
 		}
 	}
-}
-
-class WaterUsage{
-	
-	
-	
-	
 }
 
 class DataManager{

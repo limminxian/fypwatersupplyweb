@@ -47,11 +47,11 @@ Amount: <input class="form" type="number" name="amount" placeholder="Amount" req
 <label for="measure">Measure:</label>
 
 <select name="measurement" id="measurement" class="form"  required>
-  <option value="l">Litre(l)</option>
-  <option value="ml">milielitre(ml)</option>
-  <option value="gram">gram(g)</option>
-  <option value="fourRoomFlat">kilogram(kg)</option>
-  <option value="fiveRoomFlat">centimetercube(cm3)</option>
+  <option value="Litre(l)">Litre(l)</option>
+  <option value="milielitre(ml)">milielitre(ml)</option>
+  <option value="gram(g)">gram(g)</option>
+  <option value="kilogram(kg)">kilogram(kg)</option>
+  <option value="centimetercube(cm3)">centimetercube(cm3)</option>
 </select>
 <br>
 Used per 1L water: <input class="form" type="number" name="perwater" placeholder="Used per 1L water" required ><br>
