@@ -18,12 +18,11 @@ if (isset($_POST['submit'])) {
 		$file = $_FILES["fileToUpload"];
 		$a = new Company();
 		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"acrapath"=>$file,"role"=>$role));		
-		if($result[0]){		
-			echo "<div class='success'>" . $result[1] . "</div>" ;
-			header("Location: login.php");
-		}else{		
+		if($result!=""){		
 			echo "<div class='error'>" . $result[1] . "</div>" ;
+		}else{		
 			//header("Location: signUp.php");
+			header("Location: login.php");
 		}
 	}else{
 		$block = $_POST['block'];

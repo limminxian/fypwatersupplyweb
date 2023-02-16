@@ -344,14 +344,11 @@ class Company extends User{
 			mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
 			mysqli_stmt_execute($stmt);
 			mysqli_stmt_close($stmt);
-			if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-				$_SESSION["errorView"]=mysqli_error($c);}
-			else{
-				$result = mysqli_query($conn,"select MAX(ID) FROM `COMPANY`;");
-				$row = mysqli_fetch_row($result)[0];
-				$this->id=$row;
-				$_SESSION["add"]=true;
-			}
+			
+			$result = mysqli_query($conn,"select MAX(ID) FROM `COMPANY`;");
+			$row = mysqli_fetch_row($result)[0];
+			$this->id=$row;
+			$_SESSION["success"]="Company created successfully";
 		}
 		else{
 			return $r;
@@ -370,11 +367,11 @@ class Company extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'hasna.ruhi16@gmail.com'; //gmail name
-		$mail->Password = 'eupfzpgiqzvlutyh'; //gmail app password
+		$mail->Username = 'minxianlim316@gmail.com'; //gmail name
+		$mail->Password = 'drhfgmelpqblmbmw'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		$mail->setFrom('hasna.ruhi16@gmail.com');
+		$mail->setFrom('minxianlim316@gmail.com');
 		
 		$mail->addAddress($this->email);
 		
@@ -637,12 +634,12 @@ class Homeowner extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'hasna.ruhi16@gmail.com'; //gmail name
-		$mail->Password = 'eupfzpgiqzvlutyh'; //gmail app password
+		$mail->Username = 'minxianlim316@gmail.com'; //gmail name
+		$mail->Password = 'drhfgmelpqblmbmw'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
-		$mail->setFrom('hasna.ruhi16@gmail.com');
+		$mail->setFrom('minxianlim316@gmail.com');
 		
 		$mail->addAddress($email);
 		
