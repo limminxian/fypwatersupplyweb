@@ -298,13 +298,13 @@ h1,h2{
   padding: 20px;
   background-color: #83FF9F; /* light green */
   color: black;
-  -moz-animation: cssAnimation 0s ease-in 2s forwards;
+  -moz-animation: cssAnimation 0s ease-in 5s forwards;
     /* Firefox */
-    -webkit-animation: cssAnimation 0s ease-in 2s forwards;
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
     /* Safari and Chrome */
-    -o-animation: cssAnimation 0s ease-in 2s forwards;
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
     /* Opera */
-    animation: cssAnimation 0s ease-in 2s forwards;
+    animation: cssAnimation 0s ease-in 5s forwards;
     -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
 }
@@ -313,13 +313,13 @@ h1,h2{
   padding: 20px;
 	background-color: #D91D1D; /* red */
 	color: white;
-	-moz-animation: cssAnimation 0s ease-in 2s forwards;
+	-moz-animation: cssAnimation 0s ease-in 5s forwards;
     /* Firefox */
-    -webkit-animation: cssAnimation 0s ease-in 2s forwards;
+    -webkit-animation: cssAnimation 0s ease-in 5s forwards;
     /* Safari and Chrome */
-    -o-animation: cssAnimation 0s ease-in 2s forwards;
+    -o-animation: cssAnimation 0s ease-in 5s forwards;
     /* Opera */
-    animation: cssAnimation 0s ease-in 2s forwards;
+    animation: cssAnimation 0s ease-in 5s forwards;
     -webkit-animation-fill-mode: forwards;
     animation-fill-mode: forwards;
 }

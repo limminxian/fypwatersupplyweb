@@ -50,10 +50,8 @@ if(isset($_POST["submit"])) {
 		var_dump($result);
 		if($result[0]){
 			header("Location:".$result[1].".php");
-			// '<?php echo $result[1]; ?'
 		}else{
 			$_SESSION["error"] = $result[1];
-			header("Refresh:0");
 		}
 	}
 }
