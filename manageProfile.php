@@ -31,7 +31,6 @@ if(!isset($_SESSION['loginId'])){
 else{
 	$a = new Company();
 	$p = $a->displayProfileImage($_SESSION["loginId"]);
-	echo $p;
 	if(isset($_POST["logout"])){
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");
@@ -40,7 +39,7 @@ else{
 	if (isset($_POST['submit'])) {
 		$file = $_FILES["fileToUpload"];
 		$result = $a->savePhotoFile($file,$_SESSION["loginId"]);
-		
+		header("Location: ".$_SERVER['PHP_SELF']);
 	}
 ?>
 <br>
