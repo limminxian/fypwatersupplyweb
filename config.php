@@ -9,12 +9,12 @@ $servername = "us-cdbr-east-06.cleardb.net";
 $username = "bc292174f8cae7";
 $password = "68916e25";
 $db = "heroku_a43ceec7a5c075b";
-
-/* $servername = "localhost";
+/* 
+$servername = "localhost";
 $username = "root";
 $password = "";
-$db = "fyp"; */
-
+$db = "fyp";
+ */
 
 try {
    

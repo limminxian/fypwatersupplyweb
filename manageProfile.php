@@ -31,6 +31,7 @@ if(!isset($_SESSION['loginId'])){
 else{
 	$a = new Company();
 	$p = $a->displayProfileImage($_SESSION["loginId"]);
+	echo $p;
 	if(isset($_POST["logout"])){
 		unset($_SESSION["loginId"]);
 		header("Location: login.php");
@@ -47,7 +48,18 @@ else{
 
   <form action="" method="post"  class="formcontainer" enctype="multipart/form-data">
 	Profile photos: <br>
-	<img src="companylogos/<?=$p?>" height="100">
+	<?php
+	if($p==""){
+	?>
+	<img src="companylogos/imgnotfound.jpg" height="100">
+	<?php
+	}
+	else{
+		?>
+		<img src="companylogos/<?=$p?>" height="100">
+		<?php
+	}
+	?>
 <input type="file" class="form compForm" name="fileToUpload" id="fileToUpload" onchange="checkFile()" required>
 
 	<br>

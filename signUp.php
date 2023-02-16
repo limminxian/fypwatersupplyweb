@@ -18,6 +18,7 @@ if (isset($_POST['submit'])) {
 		$file = $_FILES["fileToUpload"];
 		$a = new Company();
 		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"acrapath"=>$file,"role"=>$role));
+		header("Location: login.php");
 	}else{
 		$block = $_POST['block'];
 		$unitno = $_POST['unit'];
@@ -25,6 +26,7 @@ if (isset($_POST['submit'])) {
 		$people = $_POST['people'];
 		$a = new Homeowner();
 		$result = $a->addHomeowner(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"block"=>$block,"unitno"=>$unitno,"housetype"=>$housetype,"people"=>$people,"role"=>$role));
+		header("Location: login.php");
 	}
 
 	if(isset($_SESSION["errorAddUser"]))
@@ -33,6 +35,7 @@ if (isset($_POST['submit'])) {
 		echo "<div class='error'>" . $a . "</div>" ;
 		UNSET($_SESSION["errorAddUser"]);
 	}
+	
 }
   
 
