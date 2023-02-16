@@ -36,8 +36,10 @@ else{
 
 	if (isset($_POST["edit"])){
 		$t = unserialize(base64_decode($_POST["edit"]));
-		$_SESSION["service"]=$t;
-		header("Location: editServiceDetails.php");
+		//$_SESSION["service"]=$t;
+		$t->updateService(array("status"=>"suspend"));
+		header("Location: manageServiceSuperwadmin.php");
+		//header("Location: editServiceDetails.php");
 	}
 	
 $service = new DataManager();
@@ -66,11 +68,11 @@ foreach($service->serviceArray as $r){
 			</td>
 		<?php }
 	?>
-	<!--td>
+	<td>
 		<center>
 		<button  value="<?=base64_encode(serialize($r))?>" name="edit"class="edit"/>SUSPEND</button>
 	</td>
-	<td>
+	<!--td>
 		<center>
 		
 	  </center>

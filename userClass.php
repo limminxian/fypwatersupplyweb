@@ -73,6 +73,7 @@ class Service {
 	public $name;
 	public $description;
 	public $toTech;
+	public $status;
 	public $ratesArray=[];
 	public $createdby;
 
@@ -119,13 +120,11 @@ class Service {
 			}
 	}
 	
-	function updateService($service){
-		foreach($service as $key=>$value){
-			$this->$key = $value;
-		}
+	function updateService($status){
+		$this->$status = $status;
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"UPDATE `SERVICETYPE` SET `NAME` = ? ,`DESCRIPTION` = ? WHERE ID = ? ;");
-		mysqli_stmt_bind_param($stmt,"ssd", $this->name,$this->description,$this->id);
+		$stmt = mysqli_prepare($conn,"UPDATE `SERVICETYPE` SET `STATUS` = ? WHERE ID = ? ;");
+		mysqli_stmt_bind_param($stmt,"sd", $this->status,$this->id);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($c);}

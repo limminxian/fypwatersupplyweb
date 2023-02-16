@@ -36,8 +36,10 @@ else{
 
 	if (isset($_POST["edit"])){
 		$t = unserialize(base64_decode($_POST["edit"]));
-		$_SESSION["service"]=$t;
-		header("Location: editServiceDetails.php");
+		//$_SESSION["service"]=$t;
+		$t->updateService(array("status"=>"suspend"));
+		header("Location: manageServiceCompanyadmin.php");
+		//header("Location: editServiceDetails.php");
 	}
 	
 	if (isset($_POST["rates"])){
@@ -73,6 +75,9 @@ foreach($s as $r){
 				<?=$r->$prop?>
 			</td>
 		<?php }?>
+			<td>
+				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="suspend"/>suspend</button>
+			</td>
 			<td>
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="rates"/>rates</button>
 			</td>
