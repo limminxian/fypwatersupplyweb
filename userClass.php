@@ -317,7 +317,6 @@ class Company extends User{
 	public $noofrate;
 	public $acrapath;
 	public $photopath;
-	public $code;
 	public $chemicalArray=[];
 	public $equipmentArray=[];
 	public $staffArray=[];
@@ -339,8 +338,8 @@ class Company extends User{
 		parent::addUser($company);
 		$admin=parent::getId();
 		$this->saveAcraFile();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`,`CODE`) VALUES(?,?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"ssdssdd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin,$this->code);
+		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
+		mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_close($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
