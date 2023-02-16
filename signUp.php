@@ -17,8 +17,13 @@ if (isset($_POST['submit'])) {
 		$UEN = $_POST['uen'];
 		$file = $_FILES["fileToUpload"];
 		$a = new Company();
-		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"acrapath"=>$file,"role"=>$role));
-		header("Location: login.php");
+		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"acrapath"=>$file,"role"=>$role));		
+		if($result[0]){		
+			echo "<div class='success'>" . $result[1] . "</div>" ;
+			header("Location: login.php");
+		}else{		
+			echo "<div class='error'>" . $result[1] . "</div>" ;
+		}
 	}else{
 		$block = $_POST['block'];
 		$unitno = $_POST['unit'];
@@ -26,15 +31,14 @@ if (isset($_POST['submit'])) {
 		$people = $_POST['people'];
 		$a = new Homeowner();
 		$result = $a->addHomeowner(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"block"=>$block,"unitno"=>$unitno,"housetype"=>$housetype,"people"=>$people,"role"=>$role));
-		header("Location: login.php");
+		if($result[0]){		
+			echo "<div class='success'>" . $result[1] . "</div>" ;
+			header("Location: login.php");
+		}else{		
+			echo "<div class='error'>" . $result[1] . "</div>" ;
+		}
 	}
-
-	if(isset($_SESSION["errorAddUser"]))
-	{
-		$a=strval($_SESSION["errorAddUser"]);
-		echo "<div class='error'>" . $a . "</div>" ;
-		UNSET($_SESSION["errorAddUser"]);
-	}
+	
 	
 }
   

@@ -37,7 +37,6 @@ else{
 	}
 	
 	$_SESSION["page"]="superadmin";
-	
 	if(isset($_POST["clear"])){
 		unset($_POST["searchtext"]);
 		unset($_SESSION["search"]);
@@ -57,44 +56,40 @@ else{
 		/* header("Location: editHomeownerDetails.php");; */
 	}
 	
-	if (isset($_POST["deleteComp"])){
-		$t = unserialize(base64_decode($_POST["deleteComp"]));
-		echo '
-		<script>
-		  let text = "Confirm delete?";
-		  if (confirm(text) == true) {
-			  ';echo($t->deleteCompany());echo'
-			  }
-		</script>';
-	}
-	
-	if (isset($_POST["deleteHome"])){
-		echo '<script>
-		confirm("home");
-		</script>';
-	}
 	
 	$company = new DataManager();
 	$homeowner = new DataManager();
 	
-	if(isset($_POST["search"]) and isset($_POST["searchtext"]) and ($_POST["searchtext"]!="")){$_SESSION["search"]=$_POST["searchtext"];}
-	if (isset($_SESSION["search"])){
-		$company->getSearchCompany($_SESSION["search"]);
+	if(isset($_POST["searchCom"]) and isset($_POST["searchtextCom"]) and ($_POST["searchtextCom"]!="")){$_SESSION["searchCom"]=$_POST["searchtextCom"];}
+	if (isset($_SESSION["searchCom"])){
+		$company->getSearchCompany($_SESSION["searchCom"]);
 	}
 	else{
 		$company->getAllCompany();
 	}
+	
+	if(isset($_POST["searchHome"]) and isset($_POST["searchtextHome"]) and ($_POST["searchtextHome"]!="")){$_SESSION["searchHome"]=$_POST["searchtextHome"];}
+	if (isset($_SESSION["searchHome"])){
+		$company->getSearchHomeowner($_SESSION["searchHome"]);
+	}
+	else{
+		$company->getAllHomeowner();
+	}
+	
+	if(isset($_POST["submit"])){
+		
+	}
 ?>
 
 <div class="tab">
-  <button class="tablinks" onclick="openUser(event, 'Company')" id="defaultOpen">Company</button>
-  <button class="tablinks" onclick="openUser(event, 'Homeowner')">Homeowner</button>
+  <button class="tablinks" onclick="openUser(event, 'Company');this.form.submit()" name="c" <?php if(isset($_SESSION["com"])) {echo 'id="defaultOpen"' ;}else if(!isset($_SESSION["home"])){echo 'id="defaultOpen"' ;}?>>Company</button>
+  <button class="tablinks" onclick="openUser(event, 'Homeowner');this.form.submit()" name="h" <?php if(isset($_SESSION["home"])) {echo 'id="defaultOpen"';}?>>Homeowner</button>
 </div>
 
 <div id="Company" class="tabcontent">
 	<form action="" method="post">
-		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
-		<input type="submit" name="search" class="edit" value="search" />
+		<input type="text" name="searchtextCom" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["searchCom"])) echo $_SESSION["searchCom"] ;?>" />
+		<input type="submit" name="searchCom" class="edit" value="search" />
 		<input type="submit" name="clear" class="edit" value="clear" />
 	</form>
 	<br>
@@ -141,12 +136,10 @@ else{
 <div id="Homeowner" class="tabcontent">
 
 	<form action="" method="post">
-		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
-		<input type="submit" class="edit" name="search" value="search" />
+		<input type="text" name="searchtextHome" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
+		<input type="submit" class="edit" name="searchHome" value="search" />
+		<input type="submit" name="clear" class="edit" value="clear" />
 	</form>
-    <?php
-	$homeowner->getAllHomeowner();
-	?>
 	<br>
 	<table>
 		<tr bgcolor="#488AC7">
@@ -207,9 +200,11 @@ function openUser(evt, user) {
   tablinks = document.getElementsByClassName("tablinks");
   for (i = 0; i < tablinks.length; i++) {
     tablinks[i].className = tablinks[i].className.replace(" active", "");
+    tablinks[i].id = "";
   }
   document.getElementById(user).style.display = "block";
   evt.currentTarget.className += " active";
+  evt.currentTarget.id = "defaultOpen";
 }
 
 // Get the element with id="defaultOpen" and click on it

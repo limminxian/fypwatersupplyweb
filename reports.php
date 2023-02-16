@@ -2,30 +2,69 @@
 include_once 'userClass.php';
 
 $c=new Company();
-$data = new DataManager();
-
-$sub = [];
-$unsub = [];
 
 
-$uniquenoofpeople = $data->getUniqueNoofpeople($_SESSION["loginId"]);
-$noofpeople = array("less than 3"=>0,"3 to 5"=>0,"6 to 9"=>0,"more than 10"=>0);
-$revenue = $data->getRevenue($_SESSION["loginId"]);
-foreach($uniquenoofpeople as $a){
-	if($a<=2){
-		$noofpeople["less than 3"]+=1;
+	$data = new DataManager();
+
+	function getNoofpeople($id){
+		$data = new DataManager();
+		$uniquenoofpeople = $data->getUniqueNoofpeople($id);
+		$noofpeople = array("less than 3"=>0,"3 to 5"=>0,"6 to 9"=>0,"more than 10"=>0);
+
+		foreach($uniquenoofpeople as $u){
+			$a = $u["NOOFPEOPLE"];
+			if($a<=2){
+				$noofpeople["less than 3"]+=1;
+			}
+			else if($a>2 and $a<=5){
+				$noofpeople["3 to 5"]+=1;
+			}
+			else if($a>5 and $a<=9){
+				$noofpeople["6 to 9"]+=1;
+			}
+			else{
+				$noofpeople["more than 10"]+=1;
+			}
+		}
+		$people=[];
+		foreach ($noofpeople as $k=>$n){
+			array_push($people,array("label"=>$k,"y"=>$n));
+		}
+		return $people;
 	}
-	else if($a>2 and $a<=5){
-		$noofpeople["3 to 5"]+=1;
+
+	function getRevenue($company){
+		$data = new DataManager();
+		$revenue = $data->getRevenue($company);
+		$re=[];
+		$current = strtotime("-12 month");
+		for($i=0;$i<12;$i++){
+			$check = false;
+			$cu = date("Ym",$current);
+				
+			foreach($revenue as $a){
+				if(strcmp($cu,$a["PAIDDATE"])==0){
+					array_push($re,array("label"=>$cu,"y"=>(int)$a["AMOUNT"]));
+					$check = true;
+				}
+			}
+			if(!$check){
+				array_push($re,array("label"=> $cu, "y"=>0));
+			}
+			$current = strtotime("+1 month", $current);
+		}
+		return $re;
 	}
-	else if($a>5 and $a<=9){
-		$noofpeople["6 to 9"]+=1;
+	
+	function getArea($company){
+		$data = new DataManager();
+		$areahomeowner = $data->getAreaHomeowner($company);	
+		$area=[];
+		foreach($areahomeowner as $a){
+			array_push($area,array("label"=>$a["AREA"],"y"=>$a["HOMEOWNER"]));
+		}
+		return $area;
 	}
-	else{
-		$noofpeople["more than 10"]+=1;
-	}
-}
-$areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 
 	function getSubscription($company){
 		$c=new Company();
@@ -45,7 +84,6 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			if(!$check){
 				array_push($sub,array("label"=> $cu, "y"=>0));
 			}
-			$current = strtotime("+1 month", $current);
 			
 			foreach ($subscribers as $s){
 				if(strcmp($cu,$s["YEARMONTH"])==0){
@@ -56,6 +94,7 @@ $areahomeowner = $data->getAreaHomeowner($_SESSION["loginId"]);
 			if(!$check){
 				array_push($unsub,array("label"=> $cu, "y"=>0));
 			}
+			$current = strtotime("+1 month", $current);
 		}
 		return array($sub,$unsub);
 	}

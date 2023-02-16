@@ -206,14 +206,13 @@ class User{
 		mysqli_stmt_bind_param($stmt,"ssssd",$this->number, $this->name,$this->email,$this->password,$this->type);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			$_SESSION["errorAddUser"]=mysqli_error($conn);
-			return False;
+			return array(False,mysqli_error($conn));
 		}
 		else{
 			$result = mysqli_query($conn,"select MAX(ID) FROM `USERS`;");
 			$row = mysqli_fetch_row($result)[0];
 			$this->id=$row;
-			return TRUE;
+			return array(TRUE,"Account created successfully");
 		}
 	}
 	
@@ -236,42 +235,41 @@ class User{
 			}else{
 				$row = mysqli_fetch_array($result, MYSQLI_NUM);
 				
-				if(strcmp($row[0],"ACTIVE")==0){
-					if(password_verify($this->password, $row[1])){
+				if(password_verify($this->password, $row[1])){
+					if(strcmp($row[0],"ACTIVE")==0){
 						$_SESSION['loginId']=$row[2];
 						return array(TRUE,$row[3]);
 					}
+					else if(strcmp($row[0],"PENDING")==0){
+						switch($row[3]){
+							case "companyAdmin":
+								return array(FALSE,"Your company is being verified. An email will be sent to you when the verification is done.");
+								break;
+							case "customerservice":
+							case "technician":
+								$_SESSION['role']=$row[3];
+								$_SESSION['loginId']=$row[2];
+								return array(TRUE,"staffFirstLogin");
+								break;
+							case "homeowner":
+								$_SESSION['loginId']=$row[2];
+								return array(TRUE,"homeownerVerifyEmail");
+								break;
+						}
+					}
+					else if(strcmp($row[0],"SUSPEND")==0){
+						return array(FALSE,"Your account has been suspended");
+					}
+					else if(strcmp($row[0],"REJECT")==0){
+						return array(FALSE,"Your company has been rejected");
+					}
 					else{
-						return array(FALSE,"wrong password!");
+						return array(FALSE,"Notworking");
 					}
-				}
-				else if(strcmp($row[0],"PENDING")==0){
-					switch($row[3]){
-						case "companyAdmin":
-							return array(FALSE,"Your company is being verified. An email will be sent to you when the verification is done.");
-							break;
-						case "customerservice":
-						case "technician":
-							$_SESSION['role']=$row[3];
-							$_SESSION['loginId']=$row[2];
-							return array(TRUE,"staffFirstLogin");
-							break;
-						case "homeowner":
-							$_SESSION['loginId']=$row[2];
-							return array(TRUE,"homeownerVerifyEmail");
-							break;
-					}
-				}
-				else if(strcmp($row[0],"SUSPEND")==0){
-					return array(FALSE,"Your account has been suspended");
-					
-				}
-				else if(strcmp($row[0],"REJECT")==0){
-					return array(FALSE,"Your company has been rejected");
 					
 				}
 				else{
-					return array(FALSE,"Notworking");
+					return array(FALSE,"wrong password!");
 				}
 			}
 		}
@@ -1381,7 +1379,7 @@ class DataManager{
 		$revenue=[];
 		$conn = getdb();
 		$current = date("Y-m-01",strtotime("-12 month"));
-		$stmt = mysqli_prepare($conn,"SELECT PAIDDATE, SUM(AMOUNT) FROM HOMEOWNER H, BILL B WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND H.ID=B.HOMEOWNER AND PAIDDATE > ? GROUP BY PAIDDATE;");
+		$stmt = mysqli_prepare($conn,"SELECT EXTRACT(YEAR_MONTH FROM PAIDDATE) AS PAIDDATE, SUM(AMOUNT) AS AMOUNT FROM HOMEOWNER H, BILL B WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND H.ID=B.HOMEOWNER AND PAIDDATE > ? GROUP BY PAIDDATE;");
 		mysqli_stmt_bind_param($stmt,"ds",$company,$current);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){

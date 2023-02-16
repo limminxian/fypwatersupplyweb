@@ -21,29 +21,7 @@ $(function(){
  <h1>Login👥</h1>
   <br>
   <?php
-  if(isset($_SESSION["error"])){
-		echo "<div class='error'>".$_SESSION["error"]."</div>" ;
-		UNSET($_SESSION["error"]);
-  }
-	?>
-  <br>
-  <div class="center bg-img">
-  <form action="" method="post" class="formcontainer">
-  <p>
-    <label for="email" >Email:</label><br>
-    <input class="form" type="text" name="email">
-  </p>
-  
-  <p>
-      <label for="password">Password:</label><br>
-      <input class="form" type="password" name="password" autocomplete="off">
- </p>
-    <input class="formbutton" type="submit" name="submit" value="Login" />
- </form>
- 
-
- <?php
-$check = true;
+  $check = true;
 
 
 //Submission of the form
@@ -85,7 +63,34 @@ function preVal($str) {
   return trim($str);
 }
 
-?>
+  
+  if(isset($_SESSION["error"])){
+		echo "<div class='error'>".$_SESSION["error"]."</div>" ;
+		UNSET($_SESSION["error"]);
+  }
+  
+  if(isset($_SESSION["success"]))
+	{
+		$a=strval($_SESSION["success"]);
+		echo "<div class='success'>" . $a . "</div>" ;
+		UNSET($_SESSION["success"]);
+	}
+	
+	?>
+  <br>
+  <div class="center bg-img">
+  <form action="" method="post" class="formcontainer">
+  <p>
+    <label for="email" >Email:</label><br>
+    <input class="form" type="text" name="email">
+  </p>
+  
+  <p>
+      <label for="password">Password:</label><br>
+      <input class="form" type="password" name="password" autocomplete="off">
+ </p>
+    <input class="formbutton" type="submit" name="submit" value="Login" />
+ </form>
 
 </div>
 </body>

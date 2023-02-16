@@ -47,6 +47,9 @@ else{
 	$cumulative=[];
 	$cumulativeEstimation=[];
 	$waterEstimation=[];
+	$people=[];
+	$area=[];
+	$revenue=[];
 	
 	if(isset($_SESSION["type"])){
 		switch($_SESSION["type"]){
@@ -63,6 +66,13 @@ else{
 				$unsub = getSubscription($company)[1];
 				$cumulative = getCumulativeSubscription($company);
 				break;
+			case "people":
+				$people = getNoofpeople($_SESSION["loginId"]);
+				$area = getArea($_SESSION["loginId"]);				
+				break;
+			case "revenue":
+				$revenue = getRevenue($_SESSION["loginId"]);
+				break;
 		}
 	}
 	else{
@@ -76,7 +86,7 @@ else{
 	<form method="post" action="">
 		<select name="type" id="type" onchange="this.form.submit();chart();">
 			<?php
-			$type = array("subscribers","estimation","people","revenue","area");
+			$type = array("subscribers","estimation","people","revenue");
 			foreach($type as $t){
 				if(isset($_SESSION["type"])){
 					if(strcmp($_SESSION["type"],$t)==0){
@@ -106,6 +116,12 @@ function chart() {
 	switch (c){
 		case "estimation":
 			estimation();
+			break;
+		case "people":
+			people();
+			break;
+		case "revenue":
+			revenue();
 			break;
 		case "subscribers":
 		default:
@@ -250,11 +266,120 @@ function chart() {
 			chart2.render();
 		}
 	}
+	
+	function people(){
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Homeowner no of people in the house"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "pie", //change type to bar, line, area, pie, etc
+				name: "Subscribe count",
+				legendText: "{label}",
+				indexLabel: "{label} - #percent%", //Shows y value on all Data Points
+				showInLegend: true,
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($people); ?>
+			}]
+		});
+		chart.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart.render();
+		}
+		
+		var chart2 = new CanvasJS.Chart("chartContainer2", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light2", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Homeowner Area"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "pie", //change type to bar, line, area, pie, etc
+				name: "Subscribe count",
+				legendText: "{label}",
+				indexLabel: "{label} - #percent%", //Shows y value on all Data Points
+				showInLegend: true,
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($area); ?>
+			}]
+		});
+		chart2.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart2.render();
+		}
+	}
+	
+	function revenue(){
+		var chart = new CanvasJS.Chart("chartContainer", {
+			animationEnabled: true,
+			exportEnabled: true,
+			theme: "light1", // "light1", "light2", "dark1", "dark2"
+			title:{
+				text: "Revenue for past 12 months"
+			},
+			legend:{
+				cursor: "pointer",
+				verticalAlign: "center",
+				horizontalAlign: "right",
+				itemclick: toggleDataSeries
+			},
+			data: [{
+				type: "line", //change type to bar, line, area, pie, etc
+				indexLabel: "{y}", //Shows y value on all Data Points
+				indexLabelFontColor: "#5A5757",
+				indexLabelPlacement: "outside",   
+				dataPoints: <?php echo json_encode($revenue); ?>
+			}]
+		});
+		chart.render();
+		  
+		function toggleDataSeries(e){
+			if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+				e.dataSeries.visible = false;
+			}
+			else{
+				e.dataSeries.visible = true;
+			}
+			chart.render();
+		}
+	}
 }
 window.onload = function () {chart();};
 </script>
-<div id="chartContainer"  style="height: 360px; width: 100%;"></div> <br>
-<div id="chartContainer2"  style="height: 360px; width: 100%;"></div> 
+<div id="chartContainer"   style="height: 360px; width: 100%;"></div><br><br><br><br>
+<div id="chartContainer2"   style="height: 360px; width: 100%;"></div> 
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
          <?PHP
 }
