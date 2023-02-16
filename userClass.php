@@ -1,6 +1,8 @@
 <?php
 include_once 'config.php';
 //ini_set('display_errors', '0');
+//mysqli_report(MYSQLI_REPORT_STRICT | MYSQLI_REPORT_ERROR);
+//error_reporting(0);
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -8,6 +10,7 @@ require  'phpmailer/src/Exception.php';
 require  'phpmailer/src/PHPMailer.php';
 require  'phpmailer/src/SMTP.php';
 session_start();
+
 
 class Role {
 	// Properties
@@ -91,16 +94,14 @@ class Service {
 			$this->$key = $value;
 		}
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`,`STATUS`) VALUES(?,?,?,?,`ACTIVE`);");
+		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`,`STATUS`) VALUES(?,?,?,?,'ACTIVE');");
 		mysqli_stmt_bind_param($stmt,"ssdd", $this->name,$this->description,$this->toTech,$_SESSION["loginId"]);
-		mysqli_stmt_execute($stmt);
-		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			$_SESSION["errorView"]=mysqli_error($c);
-			}
-		else{
-			mysqli_stmt_close($stmt);
-			$_SESSION["add"]=true;
+		try{
+			mysqli_stmt_execute($stmt);
+		}catch(mysqli_sql_exception $e){
+			return mysqli_error($conn);
 		}
+		$_SESSION["success"]="Service created successfully";
 	}
 	
 	function getAllRate($service){
@@ -194,6 +195,7 @@ class User{
 	public $status;
 	public $role;
 	
+
 	function addUser($user){
 		foreach($user as $key=>$value){
 			$this->$key = $value;
@@ -206,16 +208,13 @@ class User{
 		mysqli_stmt_bind_param($stmt,"ssssd",$this->number, $this->name,$this->email,$this->password,$this->type);
 		try{
 			mysqli_stmt_execute($stmt);
-		//if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-		}catch (Exception $e) {
+		}catch(mysqli_sql_exception $e){
 			return array(False,mysqli_error($conn));
 		}
-		
-			$result = mysqli_query($conn,"select MAX(ID) FROM `USERS`;");
-			$row = mysqli_fetch_row($result)[0];
-			$this->id=$row;
-			return array(TRUE,"Account created successfully");
-		
+		$result = mysqli_query($conn,"select MAX(ID) FROM `USERS`;");
+		$row = mysqli_fetch_row($result)[0];
+		$this->id=$row;
+		return array(TRUE,"Account created successfully");
 	}
 	
 	function validateLogin($user){
@@ -337,21 +336,25 @@ class Company extends User{
 	function addCompany($company){
 		$this->setCompany($company);		
 		$conn = getdb();
-		parent::addUser($company);
-		$admin=parent::getId();
-		$this->saveAcraFile();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
-		mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
-		mysqli_stmt_execute($stmt);
-		mysqli_stmt_close($stmt);
-		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			$_SESSION["errorView"]=mysqli_error($c);}
+		$r = parent::addUser($company);
+		if($r[0]){
+			$admin=parent::getId();
+			$this->saveAcraFile();
+			$stmt = mysqli_prepare($conn,"INSERT INTO `COMPANY` (`NAME`,`STREET`, `POSTALCODE`, `DESCRIPTION`, `ACRAPATH`, `ADMIN`) VALUES(?,?,?,?,?,?);");
+			mysqli_stmt_bind_param($stmt,"ssdssd",$this->compName, $this->street,$this->postalcode,$this->description,$this->acrapath,$admin);
+			//mysqli_stmt_execute($stmt);
+			//mysqli_stmt_close($stmt);
+			if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+				$_SESSION["errorView"]=mysqli_error($c);}
+			else{
+				$result = mysqli_query($conn,"select MAX(ID) FROM `COMPANY`;");
+				$row = mysqli_fetch_row($result)[0];
+				$this->id=$row;
+				$_SESSION["add"]=true;
+			}
+		}
 		else{
-			$result = mysqli_query($conn,"select MAX(ID) FROM `COMPANY`;");
-			$row = mysqli_fetch_row($result)[0];
-			$this->id=$row;
-			$_SESSION["add"]=true;
-			header("Location:login.php");
+			return $r;
 		}
 	}
 	
@@ -959,10 +962,12 @@ class Chemical{
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn,"INSERT INTO `CHEMICAL` (`NAME`,`AMOUNT`,`COMPANY`, `MEASUREMENT`,`PER1LWATER`) SELECT ?,?, COMPANY,?,? FROM `STAFF` WHERE `ID`=?");
 		mysqli_stmt_bind_param($stmt,"sdsdd",$this->name, $this->amount,$this->measurement,$this->per1lwater,$admin);
-		mysqli_stmt_execute($stmt);
-		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
-			$_SESSION["errorView"]=mysqli_error($conn);
+		try{
+			mysqli_stmt_execute($stmt);
+		}catch(mysqli_sql_exception $e){
+			return array(False,mysqli_error($conn));
 		}
+		return array(TRUE,"Chemical added successfully");
 	}
 	
 	function addChemicalStock($a){
@@ -1142,7 +1147,7 @@ class DataManager{
 	
 	function getAllCompany(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,C.ACRAPATH,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN;");
+		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,C.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,C.ACRAPATH,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN;");
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
 			$_SESSION["errorView"]=mysqli_error($conn);}
@@ -1245,7 +1250,7 @@ class DataManager{
 		$conn = getdb();
 		
 		$s = explode(" ", $search);
-		$sql = "SELECT U.ID AS ID,U.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN AND CONCAT_WS('',U.ID,U.NAME, STREET,POSTALCODE,C.DESCRIPTION) LIKE '%".$s[0]."%'";
+		$sql = "SELECT U.ID AS ID,C.NAME,U.NUMBER,EMAIL,STREET,POSTALCODE,C.DESCRIPTION,STATUS FROM `USERS` U, `COMPANY` C, `ROLE` R WHERE U.`TYPE`= R.ID AND R.NAME ='COMPANYADMIN'AND U.ID = C.ADMIN AND CONCAT_WS('',U.ID,U.NAME, STREET,POSTALCODE,C.DESCRIPTION) LIKE '%".$s[0]."%'";
 		if(count($s)>1){
 			for($i=1;$i<count($s);$i++){
 				$sql .=" AND CONCAT_WS('',U.ID,U.NAME, STREET,POSTALCODE,C.DESCRIPTION) LIKE '%".$s[$i]."%'";

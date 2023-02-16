@@ -30,8 +30,13 @@ if (isset($_POST['submit'])) {
 	$amount = $_POST['amount'];
 	$per1lwater = $_POST['perwater'];
 	$c = new Chemical();
-	$c->addChemical(array("name"=>$name,"amount"=>$amount,"measurement"=>$measurement,"per1lwater"=>$per1lwater),$_SESSION["loginId"]);
-	header("Location: technician.php");
+	$result = $c->addChemical(array("name"=>$name,"amount"=>$amount,"measurement"=>$measurement,"per1lwater"=>$per1lwater),$_SESSION["loginId"]);
+	if($result[0]){		
+		$_SESSION["success"]=$result[1];
+		header("Location: technician.php");
+	}else{		
+		echo "<div class='error'>" . $result[1] . "</div>" ;
+	}
 }
   
 

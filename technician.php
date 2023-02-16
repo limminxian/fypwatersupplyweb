@@ -61,7 +61,10 @@ if (isset($_POST["viewest"])){
 	$_SESSION["chemical"]=$t;
 	header("Location: viewChemicalEstimation.php");
 }
-
+if(isset($_SESSION["success"])){		
+	echo "<div class='success'>" . $_SESSION["success"]. "</div>" ;
+	unset($_SESSION["success"]);
+}
 $chemical = new Company();
 $chemical->getAllChemical();
 ?>

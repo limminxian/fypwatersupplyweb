@@ -35,13 +35,16 @@ if(isset($_POST["logout"])){
 if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
 	$description = $_POST['description'];
+	$tech = $_POST['tech'];
 	//check role	
 	$a = new Service();
 	$result = $a->addService(array("name"=>$name,"description"=>$description,"toTech"=>$tech));
-	header("Location: manageServiceSuperadmin.php");
-	
+	if($result!=""){
+		echo "<div class='error'>" . $result . "</div>" ;
+	}else{
+		header("Location: manageServiceSuperadmin.php");
+	}
 }
-  
 
 ?>
 

@@ -41,7 +41,10 @@ else{
 		header("Location: manageServiceSuperwadmin.php");
 		//header("Location: editServiceDetails.php");
 	}
-	
+	if(isset($_SESSION["success"])){
+		echo "<div class='success'>" . $_SESSION["success"] . "</div>" ;
+		unset($_SESSION["success"]);
+	}
 $service = new DataManager();
 $service->getAllService();
 ?>
