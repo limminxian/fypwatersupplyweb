@@ -94,7 +94,7 @@ class Service {
 			$this->$key = $value;
 		}
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`) VALUES(?,?,?,?);");
+		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`,STATUS) VALUES(?,?,?,?,'ACTIVE');");
 		mysqli_stmt_bind_param($stmt,"ssdd", $this->name,$this->description,$this->toTech,$_SESSION["loginId"]);
 		try{
 			mysqli_stmt_execute($stmt);

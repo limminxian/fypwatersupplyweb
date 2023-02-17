@@ -57,6 +57,8 @@ $s= $service->getAllService($_SESSION["loginId"]);
     <th>Name</th>
     <th>Description</th>
     <th>Latest rate</th>
+    <th>Status</th>
+	<th></th>
 	<th></th>
   </tr>	
   <form action="" method="post">
@@ -65,7 +67,7 @@ foreach($s as $r){
 	?>
   <tr>
 	<?php
-		$properties = array('name', 'description', 'rate');
+		$properties = array('name', 'description', 'rate','status');
 		
 		foreach ($properties as $prop) {?>
 			<td>
