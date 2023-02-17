@@ -367,11 +367,11 @@ class Company extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'minxianlim316@gmail.com'; //gmail name
-		$mail->Password = 'drhfgmelpqblmbmw'; //gmail app password
+		$mail->Username = 'sim2fyp22s404@gmail.com'; //gmail name
+		$mail->Password = 'texbndfggrjkgena'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		$mail->setFrom('minxianlim316@gmail.com');
+		$mail->setFrom('sim2fyp22s404@gmail.com');
 		
 		$mail->addAddress($this->email);
 		
@@ -634,12 +634,12 @@ class Homeowner extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'minxianlim316@gmail.com'; //gmail name
-		$mail->Password = 'drhfgmelpqblmbmw'; //gmail app password
+		$mail->Username = 'sim2fyp22s404@gmail.com'; //gmail name
+		$mail->Password = 'texbndfggrjkgena'; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
 		
-		$mail->setFrom('minxianlim316@gmail.com');
+		$mail->setFrom('sim2fyp22s404@gmail.com');
 		
 		$mail->addAddress($email);
 		
