@@ -42,7 +42,7 @@ if (isset($_POST["edit"])){
 		/* header("Location: editHomeownerDetails.php");; */
 	}
 	
-$_SESSION["page"]="companyAdmin";
+$_SESSION["page"]="companyadmin";
 
 $company = new Company();
 $company->getAllStaff();
