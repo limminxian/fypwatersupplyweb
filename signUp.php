@@ -20,6 +20,7 @@ if (isset($_POST['submit'])) {
 		$result = $a->addCompany(array("name"=>$name,"email"=>$email,"password"=>$password,"number"=>$number,"street"=>$street,"postalcode"=>$postalcode,"description"=>$description,"compName"=>$compName,"UEN"=>$UEN,"acrapath"=>$file,"role"=>$role));		
 		if($result!=""){		
 			echo "<div class='error'>" . $result[1] . "</div>" ;
+			unset($_POST['role']);
 		}else{		
 			//header("Location: signUp.php");
 			header("Location: login.php");
@@ -37,6 +38,7 @@ if (isset($_POST['submit'])) {
 			header("Location: login.php");
 		}else{		
 			echo "<div class='error'>" . $result[1] . "</div>" ;
+			unset($_POST['role']);
 		}
 	}
 	
@@ -62,7 +64,7 @@ $(function(){
 	<h1>Register</h1>
 </head>
 <div class="center bg-img">
-<form action="" method="post" class="formcontainer" enctype="multipart/form-data">
+<form action="" method="post" class="formcontainer" enctype="multipart/form-data" >
 
 Role:
 <input type="radio" value="companyadmin" id="companyadmin" name="role" onclick="companyFuntion()" required>
@@ -105,7 +107,7 @@ ACRA certificate: <input type="file" class="form compForm" name="fileToUpload" i
 
 Block: <input type="text" class="form homeForm" name="block" placeholder="block" required ><br>
 
-Unit no: <input type="number" class="form homeForm" name="unit" placeholder="unit no" ><br>
+Unit no: <input type="number" title="" class="form homeForm" name="unit" placeholder="unit no"><br>
 
 <label for="house">House type:</label>
 
