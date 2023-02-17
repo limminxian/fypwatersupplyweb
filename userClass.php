@@ -739,7 +739,7 @@ class Staff extends User{
 			mysqli_stmt_close($stmt);
 			$_SESSION["addUser"]=true;
 			//check duplicate key
-			header("Location:companyAdmin.php");
+			header("Location:companyadmin.php");
 		}
 	}
 	
