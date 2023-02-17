@@ -1433,7 +1433,7 @@ class DataManager{
 		$revenue=[];
 		$conn = getdb();
 		$current = date("Y-m-01",strtotime("-12 month"));
-		$stmt = mysqli_prepare($conn,"SELECT EXTRACT(YEAR_MONTH FROM PAIDDATE) AS PAIDDATE, SUM(AMOUNT) AS AMOUNT FROM HOMEOWNER H, BILL B WHERE H.SUBSCRIBE = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND H.ID=B.HOMEOWNER AND PAIDDATE > ? GROUP BY PAIDDATE;");
+		$stmt = mysqli_prepare($conn,"SELECT EXTRACT(YEAR_MONTH FROM PAIDDATE) AS PAIDDATE, SUM(AMOUNT) AS AMOUNT FROM BILL B WHERE B.COMPANY = (SELECT ID FROM COMPANY WHERE ADMIN = ?) AND PAIDDATE > ? GROUP BY PAIDDATE;");
 		mysqli_stmt_bind_param($stmt,"ds",$company,$current);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){

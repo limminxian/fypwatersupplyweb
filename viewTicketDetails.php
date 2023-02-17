@@ -68,7 +68,7 @@
 		if(isset($_POST["type"])){
 			$t = unserialize(base64_decode($_POST["type"]));
 			$ticket->changeType($t);
-			unset($_POST);
+			unset($_POST["type"]);
 			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
 		}
@@ -86,7 +86,7 @@
 		}
 		
 		if(isset($_POST["aprvTech"])){
-			$ticket->updateStatus("OPEN");
+			$ticket->updateStatus("open");
 			$c = unserialize(base64_decode($_POST["tech"]));
 			$c->approvedToTech($ticket->id);
 			header("Location: customerservice.php");
@@ -113,27 +113,22 @@
 		<form action="" method="post" class="formcontainer">
 				
 				<?php
-				$check=true;
-					?>
-					
-				<?php
-				// $ticettype = new Tickettype();
-				
 				if($ticket->totech==1){
 				?>
-					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="aprvTech"/>
+					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="aprvTech">
 					<select name="tech" id="tech">
 					<?php
+					$check=true;
 					foreach($ticket->techArray as $t){
 						if($check){
 					?>
-							<option value=<?=base64_encode(serialize($t))?> selected="selected"><?=$t->id." ".$t->name." ( least workload )"?></option>
+							<option value="<?=base64_encode(serialize($t))?>" selected="selected"><?=$t->id." ".$t->name." ( least workload )"?></option>
 								<?php
 								$check=false;
 						}
 						else{
 							?>
-								<option value=<?=base64_encode(serialize($t))?>><?=$t->id." ".$t->name?></option>
+								<option value="<?=base64_encode(serialize($t))?>"><?=$t->id." ".$t->name?></option>
 								<?php
 						}
 					}
@@ -144,11 +139,9 @@
 				}
 				else{
 				?>
-					<input  class="formbutton" type="submit" value="Close Ticket" name="close""/>
-				<?php
-				}
-				?>
-        </form>
+					<input  class="formbutton" type="submit" value="Close Ticket" name="close">
+				<?php}?>
+				</form>
 		
 		<div id="wrapper">
             <div id="menu">
