@@ -44,6 +44,7 @@ if (isset($_POST["csv"])){
 }
 
 ?>
+<h1> <?=$c->name?> Used</h1>
 <br>
 <table>
  <tr bgcolor="#488AC7">

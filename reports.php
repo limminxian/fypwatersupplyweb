@@ -256,11 +256,12 @@ $c=new Company();
 		/* print "<pre>"; 
 		print_r ($sub);
 		print "<pre>"; */
+		$mean = $data->getMeanHomeowner($company)["NOOFPEOPLEMEAN"];
 		for($i=0;$i<12;$i++){
 			$w=$waterperpeople[$i];
 			$s=$sub[$i];
 			if (strcmp($s["label"],$w[0]==0)){
-				$c = $s["y"]*$w[1];
+				$c = $s["y"]*$mean*$w[1];
 				array_push($waterest,array("label"=> $w[0], "y"=>(int)$c));
 			} 
 		}

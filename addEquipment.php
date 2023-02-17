@@ -28,8 +28,14 @@ if (isset($_POST['submit'])) {
 	$name = $_POST['name'];
 	$description = $_POST['description'];
 	$c = new Equipment();
-	$c->addEquipment(array("name"=>$name,"description"=>$description));
+	$result = $c->addEquipment(array("name"=>$name,"description"=>$description));
 	//header("Location: viewEquipment.php");
+	if($result[0]){		
+		$_SESSION["success"]=$result[1];
+		header("Location: viewEquipment.php");
+	}else{		
+		echo "<div class='error'>" . $result[1] . "</div>" ;
+	}
 }
   
 

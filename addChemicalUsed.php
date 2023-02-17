@@ -21,12 +21,11 @@ include_once 'userClass.php';
 	});
 	</script>
 </head>
-<h1>Add chemical stock</h1>
 	<div class="center bg-img">
 <?php
+$c = $_SESSION["chemical"];
 if (isset($_POST['submit'])) {
 	$amount = $_POST['amount'];
-	$c = $_SESSION["chemical"];
 	$c->addChemicalUsed($amount);
 	header("Location: technician.php");
 }
@@ -37,6 +36,7 @@ if(isset($_POST["logout"])){
 	}
 ?>
 
+<h1>Add <?=$c->name?> used</h1>
 <div >
 <form action="" method="post" class="formcontainer">
 

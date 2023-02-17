@@ -19,7 +19,6 @@
 <?php 
 include_once 'userClass.php';
 include_once 'reports.php';
-$_SESSION["page"]="viewRecords";
 if(!isset($_SESSION['loginId'])){
 	echo "Not allowed! Please login!";
 	?>
