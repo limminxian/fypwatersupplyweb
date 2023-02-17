@@ -30,7 +30,7 @@ if (isset($_POST['submit'])) {
 	$result = $c->addEquipmentStock(array("type"=>$_SESSION["equiptype"]->type,"serial"=>$serial));
 	if($result[0]){		
 		$_SESSION["success"]=$result[1];
-		//header("Location: viewEquipmentStock.php");
+		header("Location: viewEquipmentStock.php");
 	}else{		
 		echo "<div class='error'>" . $result[1] . "</div>" ;
 	}
