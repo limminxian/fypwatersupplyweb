@@ -12,7 +12,7 @@ $(function(){
 });
 </script>
 <h1>Please install the technician app to access the services↴
-<img src="img/QRcode.png" >
+<img src="img/technicianqr.jpg" >
 <?php
 session_start();
 if(isset($_POST["logout"])){
