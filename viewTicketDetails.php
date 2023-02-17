@@ -30,41 +30,7 @@
 		$company = $s->getCompany($_SESSION["loginId"]);
 		$type = $ticket->getAllType($company);
 		//array("others","maintenance","payment","installation");
-		?>
-		<div class="formcontainer">
-		<?php
-		foreach($ticket as $key=>$a){
-			if(strcmp($key,"type")==0){
-				?>
-				<p><?=$key?>: 
-				<form method="post" action="">
-					<select name="type" id="type" onchange="this.form.submit()">
-					<?php
-					foreach($type as $t){
-						var_dump($t);
-						if(strcmp($t->name,$a)==0){
-							?>
-							  <option value=<?=base64_encode(serialize($t))?> selected="selected"><?=$t->name?></option>
-							<?php
-						}
-						else{
-							?>
-								<option value=<?=base64_encode(serialize($t))?>><?=$t->name?></option>
-								<?php
-						}
-					}
-				?>
-					</select>
-				</form>
-				<?php
-			}
-			else if(strcmp($key,"chatArray")!=0 AND strcmp($key,"techArray")!=0){
-				echo "<p>".$key. ": " .$a."</p>";
-			}
-		}
-		?>
-		</div>
-		<?php
+		
 		if(isset($_POST["type"])){
 			$t = unserialize(base64_decode($_POST["type"]));
 			$ticket->changeType($t);
@@ -107,7 +73,40 @@
 		
 		$ticket->getAllChat();
 		$ticket->getAllTechnician();
-	?>
+		?>
+		<div class="formcontainer">
+		<?php
+		foreach($ticket as $key=>$a){
+			if(strcmp($key,"type")==0){
+				?>
+				<p><?=$key?>: 
+				<form method="post" action="">
+					<select name="type" id="type" onchange="this.form.submit()">
+					<?php
+					foreach($type as $t){
+						var_dump($t);
+						if(strcmp($t->name,$a)==0){
+							?>
+							  <option value="<?=base64_encode(serialize($t))?>" selected="selected"><?=$t->name?></option>
+							<?php
+						}
+						else{
+							?>
+								<option value="<?=base64_encode(serialize($t))?>"><?=$t->name?></option>
+							<?php
+						}
+					}
+				?>
+					</select>
+				</form>
+				<?php
+			}
+			else if(strcmp($key,"chatArray")!=0 AND strcmp($key,"techArray")!=0){
+				echo "<p>".$key. ": " .$a."</p>";
+			}
+		}
+		?>
+		</div>
     <body>
 		
 		<form action="" method="post" class="formcontainer">
@@ -140,7 +139,8 @@
 				else{
 				?>
 					<input  class="formbutton" type="submit" value="Close Ticket" name="close">
-				<?php}?>
+				<?php
+				}?>
 				</form>
 		
 		<div id="wrapper">
