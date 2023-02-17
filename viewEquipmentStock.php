@@ -43,7 +43,10 @@ if (isset($_POST["add"])){
 if (isset($_POST["csv"])){
 	header("Location: addEquipmentCSV.php");
 }
-
+if(isset($_SESSION["success"])){		
+	echo "<div class='success'>" . $_SESSION["success"]. "</div>" ;
+	unset($_SESSION["success"]);
+}
 ?>
 <br>
 <table>
