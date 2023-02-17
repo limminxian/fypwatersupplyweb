@@ -68,7 +68,7 @@ foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('name', 'description','amount');
+		$properties = array('name', 'description','stockamount');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>

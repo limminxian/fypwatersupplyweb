@@ -403,7 +403,7 @@ class Company extends User{
 	
 	function getAllEquipment(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT *,COUNT(S.SERIAL) AS AMOUNT FROM `EQUIPTYPE` E,EQUIPSTOCK S LEFT JOIN EQUIPMENT M ON M.EQUIPMENT = S.SERIAL WHERE M.EQUIPMENT IS NULL AND E.COMPANY = (SELECT COMPANY FROM STAFF WHERE ID=?) AND E.ID=S.TYPE GROUP BY S.TYPE;");
+		$stmt = mysqli_prepare($conn,"SELECT *,COUNT(S.SERIAL) AS STOCKAMOUNT FROM `EQUIPTYPE` E,EQUIPSTOCK S LEFT JOIN EQUIPMENT M ON M.EQUIPMENT = S.SERIAL WHERE M.EQUIPMENT IS NULL AND E.COMPANY = (SELECT COMPANY FROM STAFF WHERE ID=?) AND E.ID=S.TYPE GROUP BY S.TYPE;");
 		mysqli_stmt_bind_param($stmt,"d", $_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);		
@@ -1027,7 +1027,7 @@ class Equipment{
 	public $id;
 	public $name;
 	public $description;
-	public $amount;
+	public $stockamount;
 	public $company;
 	public $servicedate;
 	public $equipmentArray=[];
@@ -1054,7 +1054,7 @@ class Equipment{
 	
 	function getAllEquipment($type){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT * FROM `EQUIPSTOCK` S LEFT JOIN EQUIPMENT M ON M.EQUIPMENT = S.SERIAL WHERE M.EQUIPMENT IS NULL AND S.TYPE = ?;");
+		$stmt = mysqli_prepare($conn,'SELECT * FROM `EQUIPSTOCK` S LEFT JOIN EQUIPMENT M ON M.EQUIPMENT = S.SERIAL WHERE M.EQUIPMENT IS NULL AND S.TYPE = ?;');
 		mysqli_stmt_bind_param($stmt,"d", $type);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);		

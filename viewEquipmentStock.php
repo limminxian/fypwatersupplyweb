@@ -35,7 +35,7 @@ else{
 	}
 
 $equipment = new Equipment();
-$equipment->getAllEquipment($_SESSION["equiptype"]->id);
+$equipment->getAllEquipment($_SESSION["equiptype"]->type);
 if (isset($_POST["add"])){
 	header("Location: addEquipmentStock.php");
 }
