@@ -47,6 +47,10 @@ else{
 	
 $service = new Company();
 $s= $service->getAllService($_SESSION["loginId"]);
+if(isset($_SESSION["success"])){		
+	echo "<div class='success'>" . $_SESSION["success"]. "</div>" ;
+	unset($_SESSION["success"]);
+}
 ?>
 <br>
 

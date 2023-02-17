@@ -47,6 +47,10 @@ if (isset($_POST["viewhome"])){
 }
 $equipment = new Company();
 $equipment->getAllEquipment();
+if(isset($_SESSION["success"])){		
+	echo "<div class='success'>" . $_SESSION["success"]. "</div>" ;
+	unset($_SESSION["success"]);
+}
 ?>
 <br>
 <table>
