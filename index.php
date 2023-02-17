@@ -77,7 +77,7 @@ $(function(){
 ?>
 		<div class="column">
 			<div class="card">
-				<img src="img/business<?=$c->id?>.jpg" class="companyphoto" >
+				<img src="companylogos/<?=$c->photopath?>" class="companyphoto" >
 				<div class="container">
 					<h2><?=$c->compName?></h2>
 					<?php

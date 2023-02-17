@@ -34,13 +34,13 @@ else{
 		header("Location: login.php");
 	}
 
-	if (isset($_POST["edit"])){
+	/* if (isset($_POST["edit"])){
 		$t = unserialize(base64_decode($_POST["edit"]));
 		//$_SESSION["service"]=$t;
 		$t->updateService(array("status"=>"suspend"));
 		header("Location: manageServiceSuperwadmin.php");
 		//header("Location: editServiceDetails.php");
-	}
+	} */
 	if(isset($_SESSION["success"])){
 		echo "<div class='success'>" . $_SESSION["success"] . "</div>" ;
 		unset($_SESSION["success"]);
@@ -71,10 +71,7 @@ foreach($service->serviceArray as $r){
 			</td>
 		<?php }
 	?>
-	<td>
-		<center>
-		<button  value="<?=base64_encode(serialize($r))?>" name="edit"class="edit"/>SUSPEND</button>
-	</td>
+	
 	<!--td>
 		<center>
 		

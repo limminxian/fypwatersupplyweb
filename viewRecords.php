@@ -80,10 +80,12 @@ else{
 		$company = $s->getCompany($_SESSION["loginId"]);
 		$sub = getSubscription($company)[0];
 		$unsub = getSubscription($company)[1];
+		$cumulative = getCumulativeSubscription($company);
 	}
  ?>
  
 	<form method="post" action="">
+		<h3>Type of reports:</h3>
 		<select name="type" id="type" onchange="this.form.submit();chart();">
 			<?php
 			$type = array("subscribers","estimation","people","revenue");

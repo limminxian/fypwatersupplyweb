@@ -60,7 +60,7 @@ else{
 	$company = new DataManager();
 	$homeowner = new DataManager();
 	
-	if(isset($_POST["searchCom"]) and isset($_POST["searchtextCom"]) and ($_POST["searchtextCom"]!="")){$_SESSION["searchCom"]=$_POST["searchtextCom"];}
+	if(isset($_POST["searchCom"]) and isset($_POST["searchtextCom"]) and ($_POST["searchtextCom"]!="")){$_SESSION["searchCom"]=$_POST["searchtextCom"];unset($_POST["searchCom"]);}
 	if (isset($_SESSION["searchCom"])){
 		$company->getSearchCompany($_SESSION["searchCom"]);
 	}
@@ -68,16 +68,22 @@ else{
 		$company->getAllCompany();
 	}
 	
-	if(isset($_POST["searchHome"]) and isset($_POST["searchtextHome"]) and ($_POST["searchtextHome"]!="")){$_SESSION["searchHome"]=$_POST["searchtextHome"];}
+	if(isset($_POST["searchHome"]) and isset($_POST["searchtextHome"]) and ($_POST["searchtextHome"]!="")){$_SESSION["searchHome"]=$_POST["searchtextHome"];unset($_POST["searchHome"]);}
 	if (isset($_SESSION["searchHome"])){
-		$company->getSearchHomeowner($_SESSION["searchHome"]);
+		$homeowner->getSearchHomeowner($_SESSION["searchHome"]);
 	}
 	else{
-		$company->getAllHomeowner();
+		$homeowner->getAllHomeowner();
 	}
 	
-	if(isset($_POST["submit"])){
-		
+	if(isset($_POST["clearCom"])){
+		unset($_SESSION["searchCom"]);
+		header('Location: '.$_SERVER['PHP_SELF']);
+	}
+	
+	if(isset($_POST["clearHome"])){
+		unset($_SESSION["searchHome"]);
+		header('Location: '.$_SERVER['PHP_SELF']);
 	}
 ?>
 
@@ -90,7 +96,7 @@ else{
 	<form action="" method="post">
 		<input type="text" name="searchtextCom" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["searchCom"])) echo $_SESSION["searchCom"] ;?>" />
 		<input type="submit" name="searchCom" class="edit" value="search" />
-		<input type="submit" name="clear" class="edit" value="clear" />
+		<input type="submit" name="clearCom" class="edit" value="clear" />
 	</form>
 	<br>
 	<table>
@@ -136,9 +142,9 @@ else{
 <div id="Homeowner" class="tabcontent">
 
 	<form action="" method="post">
-		<input type="text" name="searchtextHome" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
+		<input type="text" name="searchtextHome" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["searchHome"])) echo $_SESSION["searchHome"] ;?>" />
 		<input type="submit" class="edit" name="searchHome" value="search" />
-		<input type="submit" name="clear" class="edit" value="clear" />
+		<input type="submit" name="clearHome" class="edit" value="clear" />
 	</form>
 	<br>
 	<table>

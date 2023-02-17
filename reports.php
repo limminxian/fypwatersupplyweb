@@ -10,27 +10,31 @@ $c=new Company();
 		$data = new DataManager();
 		$uniquenoofpeople = $data->getUniqueNoofpeople($id);
 		$noofpeople = array("less than 3"=>0,"3 to 5"=>0,"6 to 9"=>0,"more than 10"=>0);
-
-		foreach($uniquenoofpeople as $u){
-			$a = $u["NOOFPEOPLE"];
-			if($a<=2){
-				$noofpeople["less than 3"]+=1;
-			}
-			else if($a>2 and $a<=5){
-				$noofpeople["3 to 5"]+=1;
-			}
-			else if($a>5 and $a<=9){
-				$noofpeople["6 to 9"]+=1;
-			}
-			else{
-				$noofpeople["more than 10"]+=1;
-			}
+		if(empty($uniquenoofpeople)){
+			return array(array("label"=>"no subscribers","y"=>1));
 		}
-		$people=[];
-		foreach ($noofpeople as $k=>$n){
-			array_push($people,array("label"=>$k,"y"=>$n));
+		else{
+			foreach($uniquenoofpeople as $u){
+				$a = $u["NOOFPEOPLE"];
+				if($a<=2){
+					$noofpeople["less than 3"]+=1;
+				}
+				else if($a>2 and $a<=5){
+					$noofpeople["3 to 5"]+=1;
+				}
+				else if($a>5 and $a<=9){
+					$noofpeople["6 to 9"]+=1;
+				}
+				else{
+					$noofpeople["more than 10"]+=1;
+				}
+			}
+			$people=[];
+			foreach ($noofpeople as $k=>$n){
+				array_push($people,array("label"=>$k,"y"=>$n));
+			}
+			return $people;
 		}
-		return $people;
 	}
 
 	function getRevenue($company){
@@ -60,10 +64,15 @@ $c=new Company();
 		$data = new DataManager();
 		$areahomeowner = $data->getAreaHomeowner($company);	
 		$area=[];
-		foreach($areahomeowner as $a){
-			array_push($area,array("label"=>$a["AREA"],"y"=>$a["HOMEOWNER"]));
+		if(empty($areahomeowner)){
+			return array(array("label"=>"no subscribers","y"=>1));
 		}
-		return $area;
+		else{
+			foreach($areahomeowner as $a){
+				array_push($area,array("label"=>$a["AREA"],"y"=>$a["HOMEOWNER"]));
+			}
+			return $area;
+		}
 	}
 
 	function getSubscription($company){

@@ -94,7 +94,7 @@ class Service {
 			$this->$key = $value;
 		}
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`,`STATUS`) VALUES(?,?,?,?,'ACTIVE');");
+		$stmt = mysqli_prepare($conn,"INSERT INTO `SERVICETYPE` (`NAME`,`DESCRIPTION`,`TOTECH`,`CREATEDBY`) VALUES(?,?,?,?);");
 		mysqli_stmt_bind_param($stmt,"ssdd", $this->name,$this->description,$this->toTech,$_SESSION["loginId"]);
 		try{
 			mysqli_stmt_execute($stmt);
@@ -265,7 +265,7 @@ class User{
 						return array(FALSE,"Your company has been rejected");
 					}
 					else{
-						return array(FALSE,"Notworking");
+						return array(FALSE,$row[0]);
 					}
 					
 				}
@@ -461,7 +461,7 @@ class Company extends User{
 	
 	function getAllHomeowner($companyId){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,U.EMAIL,BLOCKNO,UNITNO,H.STREET,H.POSTALCODE,HOUSETYPE,NOOFPEOPLE,U.STATUS,CARD FROM `USERS` U, `HOMEOWNER` H, `ROLE` R, `COMPANY` C WHERE U.`TYPE`= R.ID AND R.NAME ='HOMEOWNER' AND U.ID = H.ID AND H.SUBSCRIBE=C.ID AND C.ADMIN=?;");
+		$stmt = mysqli_prepare($conn,"SELECT U.ID AS ID,U.NAME,U.NUMBER,U.EMAIL,BLOCKNO,UNITNO,H.STREET,H.POSTALCODE,HOUSETYPE,NOOFPEOPLE,U.STATUS,CARD FROM `USERS` U, `HOMEOWNER` H, `ROLE` R, `COMPANY` C WHERE U.`TYPE`= R.ID AND R.NAME ='HOMEOWNER' AND U.ID = H.ID AND H.SUBSCRIBE=?;");
 		mysqli_stmt_bind_param($stmt,"d",$companyId);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){

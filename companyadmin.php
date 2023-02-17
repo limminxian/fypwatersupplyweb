@@ -46,7 +46,9 @@ $_SESSION["page"]="companyAdmin";
 
 $company = new Company();
 $company->getAllStaff();
-$company->getAllHomeowner($_SESSION["loginId"]);
+$c = new CompanyAdmin();
+$id = $c->getCompany($_SESSION["loginId"]);
+$company->getAllHomeowner($id);
 ?>
 
 
@@ -103,6 +105,7 @@ $company->getAllHomeowner($_SESSION["loginId"]);
 <form action="" method="post">
 		<input type="text" name="searchtext" placeholder="use space for multiple string" value="<?php if (isset($_SESSION["search"])) echo $_SESSION["search"] ;?>" />
 		<input type="submit" class="edit"name="search" value="search" />
+		<input type="submit" class="delete"name="clear" value="clear" />
 	</form>
 	<br>
 	<table>
