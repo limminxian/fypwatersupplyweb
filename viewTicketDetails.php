@@ -59,7 +59,7 @@
 		}
 
 		if(isset($_POST["close"])){
-			$ticket->updateStatus("CLOSE");
+			$ticket->updateStatus("close");
 			unset($_POST);
 			header("Location: customerservice.php");
 			exit;
