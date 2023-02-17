@@ -923,6 +923,26 @@ class Ticket{
 			}
 		}
 	}
+	
+	function getAllType($company){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "SELECT S.*, R.* FROM SERVICETYPE S LEFT JOIN (SELECT A.SERVICE,RATE,MAXDATE FROM SERVICERATE A INNER JOIN (SELECT SERVICE,MAX(EFFECTDATE) AS MAXDATE FROM SERVICERATE GROUP BY SERVICE ) B ON A.SERVICE = B.SERVICE AND A.EFFECTDATE = B.MAXDATE)R ON R.SERVICE=S.ID WHERE CREATEDBY IN ((SELECT ID FROM USERS WHERE TYPE=(SELECT ID FROM ROLE WHERE NAME='superadmin')),(SELECT ADMIN FROM COMPANY WHERE ID=?));" );
+		mysqli_stmt_bind_param($stmt,"d",$company);
+		mysqli_stmt_execute($stmt);
+		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
+			$_SESSION["errorView"]=mysqli_error($conn);}
+		else{
+			$result = mysqli_stmt_get_result($stmt);		
+			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
+				$this->techArray=[];
+				foreach ($rows as $r) {
+					$h = new Staff();
+					$h->setStaff($r);
+					array_push($this->techArray,$h);
+				}
+			}
+		}
+	}
 }
 
 class Chat{
