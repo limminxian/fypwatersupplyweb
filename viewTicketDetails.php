@@ -24,9 +24,12 @@
 		$_SESSION["page"]="customerservice";
 		$ticket = $_SESSION["ticket"];
 		//type of ticket
-		// $type = new Tickettype;
+		//$type = new Tickettype;
 		// $type->getAllTicketType();
-		$type = array("others","maintenance","payment","installation");
+		$s = new Staff();
+		$company = $s->getCompany($_SESSION["loginId"]);
+		$type = $ticket->getAllType($company);
+		//array("others","maintenance","payment","installation");
 		?>
 		<div class="formcontainer">
 		<?php
@@ -38,14 +41,15 @@
 					<select name="type" id="type" onchange="this.form.submit()">
 					<?php
 					foreach($type as $t){
-						if(strcmp($t,$a)==0){
+						var_dump($t);
+						if(strcmp($t->name,$a)==0){
 							?>
-							  <option value=<?=$a?> selected="selected"><?=$a?></option>
+							  <option value=<?=base64_encode(serialize($t))?> selected="selected"><?=$t->name?></option>
 							<?php
 						}
 						else{
 							?>
-								<option value=<?=$t?>><?=$t?></option>
+								<option value=<?=base64_encode(serialize($t))?>><?=$t->name?></option>
 								<?php
 						}
 					}
@@ -62,7 +66,8 @@
 		</div>
 		<?php
 		if(isset($_POST["type"])){
-			$ticket->changeType($_POST["type"]);
+			$t = unserialize(base64_decode($_POST["type"]));
+			$ticket->changeType($t);
 			unset($_POST);
 			header("Location: ".$_SERVER['PHP_SELF']);
 			exit;
@@ -110,6 +115,13 @@
 				<?php
 				$check=true;
 					?>
+					
+				<?php
+				// $ticettype = new Tickettype();
+				
+				if($ticket->totech==1){
+				?>
+					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="aprvTech"/>
 					<select name="tech" id="tech">
 					<?php
 					foreach($ticket->techArray as $t){
@@ -128,12 +140,6 @@
 			
 				?>
 					</select>
-				<?php
-				// $ticettype = new Tickettype();
-				
-				if(in_array($ticket->type,array("maintenance","installation"))){
-				?>
-					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="aprvTech"/>
 				<?php
 				}
 				else{

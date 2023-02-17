@@ -762,7 +762,7 @@ class Staff extends User{
 	
 	function getAllTicket(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, ST.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` ST, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = ST.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='PENDING' AND S.ID = ?;");
+		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, ST.TOTECH, ST.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` ST, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = ST.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='PENDING' AND S.ID = ?;");
 		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -839,6 +839,7 @@ class Ticket{
 	public $name;
 	public $createdate;
 	public $type;
+	public $totech;
 	public $status;
 	public $description;
 	public $chatArray=[];
@@ -894,7 +895,8 @@ class Ticket{
 	}
 	
 	function changeType($type){
-		$this->type=$type;
+		$this->type=$type->name;
+		$this->totech=$type->totech;
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn, "UPDATE `TICKET` SET `TYPE`= (SELECT `ID` FROM `SERVICETYPE` WHERE NAME=?) WHERE `ID` =?;" );
 		mysqli_stmt_bind_param($stmt,"sd",$this->type,$this->id);
@@ -926,7 +928,7 @@ class Ticket{
 	
 	function getAllType($company){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn, "SELECT S.*, R.* FROM SERVICETYPE S LEFT JOIN (SELECT A.SERVICE,RATE,MAXDATE FROM SERVICERATE A INNER JOIN (SELECT SERVICE,MAX(EFFECTDATE) AS MAXDATE FROM SERVICERATE GROUP BY SERVICE ) B ON A.SERVICE = B.SERVICE AND A.EFFECTDATE = B.MAXDATE)R ON R.SERVICE=S.ID WHERE CREATEDBY IN ((SELECT ID FROM USERS WHERE TYPE=(SELECT ID FROM ROLE WHERE NAME='superadmin')),(SELECT ADMIN FROM COMPANY WHERE ID=?));" );
+		$stmt = mysqli_prepare($conn, "SELECT S.* FROM SERVICETYPE S WHERE CREATEDBY IN ((SELECT ID FROM USERS WHERE TYPE=(SELECT ID FROM ROLE WHERE NAME='superadmin')),(SELECT ADMIN FROM COMPANY WHERE ID=?));" );
 		mysqli_stmt_bind_param($stmt,"d",$company);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
@@ -934,13 +936,14 @@ class Ticket{
 		else{
 			$result = mysqli_stmt_get_result($stmt);		
 			while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
-				$this->techArray=[];
+				$service=[];
 				foreach ($rows as $r) {
-					$h = new Staff();
-					$h->setStaff($r);
-					array_push($this->techArray,$h);
+					$h = new Service();
+					$h->setService($r);
+					array_push($service,$h);
 				}
 			}
+			return $service;
 		}
 	}
 }
