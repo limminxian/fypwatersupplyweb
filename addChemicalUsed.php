@@ -31,7 +31,10 @@ if (isset($_POST['submit'])) {
 	header("Location: technician.php");
 }
   
-
+if(isset($_POST["logout"])){
+		unset($_SESSION["loginId"]);
+		header("Location: login.php");
+	}
 ?>
 
 <div >

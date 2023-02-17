@@ -38,7 +38,10 @@ if (isset($_POST['submit'])) {
 		echo "<div class='error'>" . $result[1] . "</div>" ;
 	}
 }
-  
+if(isset($_POST["logout"])){
+		unset($_SESSION["loginId"]);
+		header("Location: login.php");
+	}  
 
 ?>
 

@@ -67,6 +67,8 @@ if(isset($_SESSION["success"])){
 }
 $chemical = new Company();
 $chemical->getAllChemical();
+var_dump($_SESSION["loginId"]);
+var_dump($chemical->chemicalArray);
 ?>
 <br>
 <table>
