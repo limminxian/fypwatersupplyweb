@@ -21,16 +21,18 @@ include_once 'userClass.php';
 	});
 	</script>
 </head>
-<h1>Add Equipment Stock</h1>
+<h1>Add <?=$_SESSION["equiptype"]->name?> Stock</h1>
 <div class="center bg-img">
 <?php
+	var_dump($_SESSION["equiptype"]);
 if (isset($_POST['submit'])) {
 	$serial = $_POST['serial'];
 	$c = new EquipmentStock();
-	$result = $c->addEquipmentStock(array("type"=>$_SESSION["equiptype"]->id,"serial"=>$serial));
+	$result = $c->addEquipmentStock(array("type"=>$_SESSION["equiptype"]->type,"serial"=>$serial));
+	var_dump($result);
 	if($result[0]){		
 		$_SESSION["success"]=$result[1];
-		header("Location: viewEquipmentStock.php");
+		//header("Location: viewEquipmentStock.php");
 	}else{		
 		echo "<div class='error'>" . $result[1] . "</div>" ;
 	}

@@ -82,7 +82,7 @@ else{
 				while (($getData = fgetcsv($file, 10000, ",")) !== FALSE)
 				{
 					//var_dump($getData);
-					$result = $e->addEquipmentStock(array("type"=>$_SESSION["equiptype"]->id,"serial"=>$getData[0]));
+					$result = $e->addEquipmentStock(array("type"=>$_SESSION["equiptype"]->type,"serial"=>$getData[0]));
 					if($result[0]){		
 						$_SESSION["success"]=$result[1];
 						header("Location: viewEquipmentStock.php");
