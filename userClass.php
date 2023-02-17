@@ -11,6 +11,14 @@ require  'phpmailer/src/PHPMailer.php';
 require  'phpmailer/src/SMTP.php';
 session_start();
 
+$emailname = 'watersupply02@gmail.com';
+$passwordname = 'ughqjjdtgswonvuj';
+// $emailname = 'watersupply03@gmail.com';
+// $passwordname = 'uxgaejqdrruvnspk';
+// $emailname = 'watersupply04@gmail.com';
+// $passwordname = 'tqyicfdtjxprgjjw';
+// $emailname = 'watersupply131@gmail.com';
+// $passwordname = 'lseyfssimrjhsqda';
 
 class Role {
 	// Properties
@@ -367,12 +375,11 @@ class Company extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'sim2fyp22s404@gmail.com'; //gmail name
-		$mail->Password = 'texbndfggrjkgena'; //gmail app password
+		$mail->Username = global $emailname; //gmail name
+		$mail->Password = global $passwordname; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		$mail->setFrom('sim2fyp22s404@gmail.com');
-		$mail->SMTPDebug = true;
+		$mail->setFrom(global $emailname);
 		$mail->addAddress($this->email);
 		
 		$mail->isHTML(true);
@@ -634,12 +641,11 @@ class Homeowner extends User{
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = 'sim2fyp22s404@gmail.com'; //gmail name
-		$mail->Password = 'texbndfggrjkgena'; //gmail app password
+		$mail->Username = global $emailname; //gmail name
+		$mail->Password = global $passwordname; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		
-		$mail->setFrom('sim2fyp22s404@gmail.com');
+		$mail->setFrom(global $emailname);
 		
 		$mail->addAddress($email);
 		
