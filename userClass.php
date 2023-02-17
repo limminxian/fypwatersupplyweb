@@ -371,15 +371,16 @@ class Company extends User{
 		echo mysqli_error($conn);
 		mysqli_stmt_close($stmt);
 		$mail = new PHPMailer(true);
-		
+		$email = $emailname;
+		$password = $passwordname;
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = global $emailname; //gmail name
-		$mail->Password = global $passwordname; //gmail app password
+		$mail->Username = $email; //gmail name
+		$mail->Password = $password;//gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		$mail->setFrom(global $emailname);
+		$mail->setFrom($email);
 		$mail->addAddress($this->email);
 		
 		$mail->isHTML(true);
@@ -638,14 +639,16 @@ class Homeowner extends User{
 	function sendEmail($email){
 		$mail = new PHPMailer(true);
 		
+		$email = $emailname;
+		$password = $passwordname;
 		$mail->isSMTP();
 		$mail->Host = 'smtp.gmail.com';
 		$mail->SMTPAuth = true;
-		$mail->Username = global $emailname; //gmail name
-		$mail->Password = global $passwordname; //gmail app password
+		$mail->Username = $email; //gmail name
+		$mail->Password = $password; //gmail app password
 		$mail->SMTPSecure = 'ssl';
 		$mail->Port = 465;
-		$mail->setFrom(global $emailname);
+		$mail->setFrom($email);
 		
 		$mail->addAddress($email);
 		
