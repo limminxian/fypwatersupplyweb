@@ -13,6 +13,11 @@ function getdb(){
   $db = "heroku_f92e6718b416bf8";
   $port = "";
 
+/* $hostName = "us-cdbr-east-06.cleardb.net";
+$username = "bbd12ae4b2fcc3";
+$password = "df9ea7aa";
+$db = "heroku_80d6ea926f679b3"; */
+
 /* $hostName = "localhost";
 $username = "root";
 $password = "";
