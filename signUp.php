@@ -26,6 +26,7 @@ if (isset($_POST['submit'])) {
 		}
 	}else{
 		$block = $_POST['block'];
+		//if(isset($_POST['unit'])){}
 		$unitno = $_POST['unit'];
 		$housetype = $_POST['house'];
 		$people = $_POST['people'];
@@ -104,7 +105,7 @@ ACRA certificate: <input type="file" class="form compForm" name="fileToUpload" i
 
 Block: <input type="text" class="form homeForm" name="block" placeholder="block" required ><br>
 
-Unit no: <input type="number" class="form homeForm" name="unit" placeholder="unit no" required><br>
+Unit no: <input type="number" class="form homeForm" name="unit" placeholder="unit no" ><br>
 
 <label for="house">House type:</label>
 

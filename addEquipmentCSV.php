@@ -51,7 +51,7 @@ else{
                 <form class="form-horizontal" action="" method="post" name="upload_excel" enctype="multipart/form-data">
                     <fieldset>
                         <!-- Form Name -->
-                        <legend>Form Name</legend>
+                        <legend>Add <?=$_SESSION["equiptype"]->name?> Stock</legend>
                         <!-- File Button -->
                         <div class="form-group">
                             <label class="col-md-4 control-label" for="filebutton">Select File</label>

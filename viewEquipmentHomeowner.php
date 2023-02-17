@@ -35,7 +35,8 @@ else{
 	}
 
 $equipment = new Equipment();
-$equipment->getAllEquipmentHomeowner($_SESSION["equiptype"]->id);
+$equipment->getAllEquipmentHomeowner($_SESSION["equiptype"]->type);
+
 if (isset($_POST["add"])){
 	header("Location: addEquipmentStock.php");
 }
@@ -51,6 +52,7 @@ if (isset($_POST["csv"])){
     <th>ID</th>
     <th>serial number</th>
     <th>installation date</th>
+    <th>uninstallation date</th>
     <th>homeowner</th>
   </tr>	
   <form action="" method="post">
@@ -59,7 +61,7 @@ foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('id', 'equipment', 'servicedate','homeowner');
+		$properties = array('id', 'equipment', 'installationdate','uninstallationdate','homeowner');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>

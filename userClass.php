@@ -1095,7 +1095,7 @@ class Equipment{
 	
 	function getAllEquipmentHomeowner($type){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT E.*, C.SERVICEDATE FROM `EQUIPMENT` E, `EQUIPSTOCK` T, TASK K, TICKET C WHERE E.EQUIPMENT = T.SERIAL AND T.TYPE=? AND (E.INSTALLTASK=K.ID OR E.UNINSTALLTASK=K.ID) AND C.ID=K.TICKET;");
+		$stmt = mysqli_prepare($conn,"SELECT E.*, C.SERVICEDATE AS INSTALLATIONDATE, '' AS UNINSTALLATIONDATE FROM `EQUIPSTOCK` T, TASK K, TICKET C,`EQUIPMENT` E LEFT JOIN `EQUIPMENT` UE ON UE.EQUIPMENT = E.EQUIPMENT WHERE E.EQUIPMENT = T.SERIAL AND T.TYPE=? AND E.INSTALLTASK=K.ID AND C.ID=K.TICKET ;");
 		mysqli_stmt_bind_param($stmt,"d", $type);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);		
