@@ -34,10 +34,10 @@ else{
 		header("Location: login.php");
 	}
 
-	/* if (isset($_POST["suspend"])){
+	if (isset($_POST["suspend"])){
 		$t = unserialize(base64_decode($_POST["suspend"]));
 		$t->updateService("suspend");
-	} */
+	}
 	
 	if (isset($_POST["rates"])){
 		$t = unserialize(base64_decode($_POST["rates"]));
@@ -77,29 +77,22 @@ foreach($s as $r){
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="rates"/>rates</button>
 			</td>
 			<?php
-		/* if(strcmp($r->createdby,"1")!=0){
+		if(strcmp($r->createdby,"1")!=0){
 			
 			?>
-			<!--td>
+			<td>
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="suspend"/>suspend</button>
 			</td>
-			<td>
-				<center>
-				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="edit"/>edit</button>
-			</td>
-	                 <center>
-			<td>
-				
-	</center>
-			</td-->
+	         
 			<?php
 		}
 		else{?>
 			<td>
 			</td>
+			<?php
+		}?>
 			</tr>
 			<?php
-		} */
 }
 ?>
 

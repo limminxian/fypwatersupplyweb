@@ -403,7 +403,7 @@ class Company extends User{
 	
 	function getAllEquipment(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT * FROM `EQUIPTYPE` WHERE COMPANY = (SELECT COMPANY FROM STAFF WHERE ID=?);");
+		$stmt = mysqli_prepare($conn,"SELECT *,COUNT(S.SERIAL) AS AMOUNT FROM `EQUIPTYPE` E,EQUIPSTOCK S WHERE E.COMPANY = (SELECT COMPANY FROM STAFF WHERE ID=?) AND E.ID=S.TYPE GROUP BY S.TYPE;");
 		mysqli_stmt_bind_param($stmt,"d", $_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		$result = mysqli_stmt_get_result($stmt);		

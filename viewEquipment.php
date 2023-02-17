@@ -53,6 +53,7 @@ $equipment->getAllEquipment();
  <tr bgcolor="#488AC7">
     <th>Name</th>
     <th>Description</th>
+    <th>Amount</th>
     <th></th>
     <th></th>
   </tr>	
@@ -63,7 +64,7 @@ foreach($equipment->equipmentArray as $c){
 	?>
   <tr>
 	<?php
-		$properties = array('name', 'description');
+		$properties = array('name', 'description','amount');
 		foreach ($properties as $prop) {?>
 			<td>
 				<?=$c->$prop?>
