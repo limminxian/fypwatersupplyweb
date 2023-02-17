@@ -7,16 +7,16 @@ function getdb(){
   $db = "heroku_a43ceec7a5c075b";
   $port = ""; */
   
-/*   $hostName = "us-cdbr-east-06.cleardb.net";
+  $hostName = "us-cdbr-east-06.cleardb.net";
   $username = "bcd6f3dd4c4cab";
   $password = "ec185dd8";
   $db = "heroku_f92e6718b416bf8";
-  $port = ""; */
+  $port = "";
 
-$hostName = "localhost";
+/* $hostName = "localhost";
 $username = "root";
 $password = "";
-$db = "fyp";
+$db = "fyp"; */
 
 
 try {
