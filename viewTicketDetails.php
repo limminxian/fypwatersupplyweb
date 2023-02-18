@@ -78,7 +78,6 @@
 			}
 		}
 		?>
-		</div>
     <body>
 				<?php
 		if(strcmp($ticket->status,"open")==0){
@@ -93,7 +92,6 @@
 		}
 		else{
 				?>
-				<div style="text-align:center">
 				<p>Ticket type: </p>
 				<form method="post" action="">
 					<select name="type" id="type" onchange="this.form.submit()">
@@ -113,7 +111,6 @@
 				?>
 					</select>
 				</form>
-				</div>
 				<?php
 			?>
 		<form action="" method="post" class="formcontainer">
@@ -148,6 +145,8 @@
 				<?php
 				}?>
 				</form>
+				
+		</div>
 			<?php
 			}
 			?>
