@@ -25,7 +25,7 @@
 		$ticket = $_SESSION["ticket"];
 		$s = new Staff();
 		$company = $s->getCompany($_SESSION["loginId"]);
-		$type = $ticket->getAllType($company);\
+		$type = $ticket->getAllType($company);
 		
 		if(isset($_POST["type"])){
 			$t = unserialize(base64_decode($_POST["type"]));
