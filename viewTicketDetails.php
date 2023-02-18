@@ -73,15 +73,33 @@
 		<div class="formcontainer">
 		<?php
 		foreach($ticket as $key=>$a){
-			if(strcmp($key,"type")==0){
+			if(strcmp($key,"chatArray")!=0 AND strcmp($key,"techArray")!=0 AND strcmp($key,"type")!=0){
+				echo "<p>".$key. ": " .$a."</p>";
+			}
+		}
+		?>
+		</div>
+    <body>
+				<?php
+		if(strcmp($ticket->status,"open")==0){
+			$tech = new Task;?>
+		<div style="text-align:center">
+		<?php
+			echo "Ticket type :".($ticket->type)."<br>";
+			echo "Assigned to ".($tech->getTechnician($ticket->id));
+			?>
+		</div>	
+			<?php
+		}
+		else{
 				?>
-				<p><?=$key?>: 
+				<div style="text-align:center">
+				<p>Ticket type: </p>
 				<form method="post" action="">
 					<select name="type" id="type" onchange="this.form.submit()">
 					<?php
 					foreach($type as $t){
-						var_dump($t);
-						if(strcmp($t->name,$a)==0){
+						if(strcmp($t->name,$ticket->type)==0){
 							?>
 							  <option value="<?=base64_encode(serialize($t))?>" selected="selected"><?=$t->name?></option>
 							<?php
@@ -95,26 +113,8 @@
 				?>
 					</select>
 				</form>
+				</div>
 				<?php
-			}
-			else if(strcmp($key,"chatArray")!=0 AND strcmp($key,"techArray")!=0){
-				echo "<p>".$key. ": " .$a."</p>";
-			}
-		}
-		?>
-		</div>
-    <body>
-				<?php
-		if(strcmp($ticket->status,"open")==0){
-			$tech = new Task;?>
-		<div style="text-align:center">
-		<?php
-			echo "Assigned to ".($tech->getTechnician($ticket->id));
-			?>
-		</div>	
-			<?php
-		}
-		else{
 			?>
 		<form action="" method="post" class="formcontainer">
 		<?php
