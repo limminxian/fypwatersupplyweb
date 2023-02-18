@@ -19,23 +19,7 @@ session_start();
 // $passwordname = 'tqyicfdtjxprgjjw';
 // $emailname = 'watersupply131@gmail.com';
 // $passwordname = 'lseyfssimrjhsqda';
-class run{
-	function runCode(){
-		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT * FROM USERS;");
-		mysqli_stmt_execute($stmt);
-		//mysqli_stmt_bind_param($stmt,"ssd", $this->name,$this->description,$this->register);
-		$result = mysqli_stmt_get_result($stmt);
-				$y=[];
-		while ($rows = mysqli_fetch_all($result, MYSQLI_ASSOC)) {
-				foreach ($rows as $r) {
-					array_push($y,$r);
-				}
-			}
-			var_dump($y);
 
-	}
-}
 class Role {
 	// Properties
 	public $id;
@@ -785,7 +769,7 @@ class Staff extends User{
 	
 	function getAllTicket(){
 		$conn = getdb();
-		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, ST.TOTECH, ST.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` ST, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = ST.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS='pending' AND S.ID = ?;");
+		$stmt = mysqli_prepare($conn,"SELECT T.ID, U.NAME, T.CREATEDATE, ST.TOTECH, ST.NAME AS TYPE, T.STATUS, T.DESCRIPTION FROM `USERS` U, `TICKET` T, `SERVICETYPE` ST, `STAFF` S WHERE U.ID = T.HOMEOWNER AND T.TYPE = ST.ID AND T.CUSTOMERSERVICE = S.ID AND T.STATUS IN ('pending','open') AND S.ID = ?;");
 		mysqli_stmt_bind_param($stmt,"d",$_SESSION["loginId"]);
 		mysqli_stmt_execute($stmt);
 		if(mysqli_error($conn)!="" and !empty(mysqli_error($conn))){
