@@ -110,8 +110,13 @@
     <body>
 				<?php
 		if(strcmp($ticket->status,"open")==0){
-			$tech = new Task;
-			echo($tech->getTechnician($ticket->id));
+			$tech = new Task;?>
+		<div style="text-align:center">
+		<?php
+			echo "Assigned to ".($tech->getTechnician($ticket->id));
+			?>
+		</div>	
+			<?php
 		}
 		else{
 			?>
