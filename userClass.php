@@ -817,7 +817,6 @@ class Staff extends User{
 	}
 	
 	function approvedToTech($ticket){
-		//$this->type=$type;
 		$id = parent::getId();
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn, "UPDATE `STAFF` SET `WORKLOAD`= WORKLOAD + 1 WHERE `ID` =?;" );
