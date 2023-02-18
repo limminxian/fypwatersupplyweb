@@ -818,11 +818,12 @@ class Staff extends User{
 	
 	function approvedToTech($ticket){
 		//$this->type=$type;
+		$id = parent::getId();
 		$conn = getdb();
 		$stmt = mysqli_prepare($conn, "UPDATE `STAFF` SET `WORKLOAD`= WORKLOAD + 1 WHERE `ID` =?;" );
 		$stmt2 = mysqli_prepare($conn, "INSERT INTO `TASK` (TECHNICIAN,TICKET) VALUES (?,?);" );
-		mysqli_stmt_bind_param($stmt,"d",parent::getId());
-		mysqli_stmt_bind_param($stmt2,"dd",parent::getId(),$ticket);
+		mysqli_stmt_bind_param($stmt,"d",$id);
+		mysqli_stmt_bind_param($stmt2,"dd",$id,$ticket);
 		mysqli_stmt_execute($stmt);
 		mysqli_stmt_execute($stmt2);
 	}
@@ -838,6 +839,17 @@ class CompanyAdmin{
 		$result = mysqli_stmt_get_result($stmt);
 		$t = mysqli_fetch_all($result, MYSQLI_ASSOC)[0];
 		return $t["ID"];
+	}
+}
+
+class Task{
+	function getTechnician($ticket){
+		$conn = getdb();
+		$stmt = mysqli_prepare($conn, "SELECT U.`NAME` FROM USERS U,`TASK` T WHERE T.TICKET=? AND U.ID=T.TECHNICIAN ;" );
+		mysqli_stmt_bind_param($stmt,"d", $ticket);
+		mysqli_stmt_execute($stmt);
+		$result = mysqli_stmt_get_result($stmt);
+		return mysqli_fetch_array($result, MYSQLI_NUM)[0];
 	}
 }
 

@@ -108,10 +108,15 @@
 		?>
 		</div>
     <body>
-		
-		<form action="" method="post" class="formcontainer">
-				
 				<?php
+		if(strcmp($ticket->status,"open")==0){
+			$tech = new Task;
+			echo($tech->getTechnician($ticket->id));
+		}
+		else{
+			?>
+		<form action="" method="post" class="formcontainer">
+		<?php
 				if($ticket->totech==1){
 				?>
 					<input  class="formbutton" type="submit" id="aprvTech" value="Approve to Technician" name="aprvTech">
@@ -142,7 +147,9 @@
 				<?php
 				}?>
 				</form>
-		
+			<?php
+			}
+			?>
 		<div id="wrapper">
             <div id="menu">
             </div>
