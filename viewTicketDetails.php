@@ -23,13 +23,9 @@
 		include_once 'userClass.php';
 		$_SESSION["page"]="customerservice";
 		$ticket = $_SESSION["ticket"];
-		//type of ticket
-		//$type = new Tickettype;
-		// $type->getAllTicketType();
 		$s = new Staff();
 		$company = $s->getCompany($_SESSION["loginId"]);
-		$type = $ticket->getAllType($company);
-		//array("others","maintenance","payment","installation");
+		$type = $ticket->getAllType($company);\
 		
 		if(isset($_POST["type"])){
 			$t = unserialize(base64_decode($_POST["type"]));
