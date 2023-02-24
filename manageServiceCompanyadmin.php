@@ -83,7 +83,7 @@ foreach($s as $r){
 				<button  value="<?=base64_encode(serialize($r))?>" class="edit"name="rates"/>rates</button>
 			</td>
 			<?php
-		if($r->createdby!=0){
+		if($r->createdby!=1){
 			
 			?>
 			<td>
