@@ -15,10 +15,10 @@ session_start();
 //$passwordname = 'ughqjjdtgswonvuj';
 // $emailname = 'watersupply03@gmail.com';
 // $passwordname = 'uxgaejqdrruvnspk';
-$emailname = 'watersupply04@gmail.com';
-$passwordname = 'tqyicfdtjxprgjjw';
-// $emailname = 'watersupply131@gmail.com';
-// $passwordname = 'lseyfssimrjhsqda';
+// $emailname = 'watersupply04@gmail.com';
+// $passwordname = 'tqyicfdtjxprgjjw';
+$emailname = 'watersupply131@gmail.com';
+$passwordname = 'lseyfssimrjhsqda';
 
 class Role {
 	// Properties
